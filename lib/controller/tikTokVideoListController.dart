@@ -11,69 +11,54 @@ typedef LoadMoreVideo = Future<List<VPVideoController>> Function(
   List<VPVideoController> list,
 );
 
-
 class TikTokVideoListController extends ChangeNotifier {
   TikTokVideoListController({
     this.loadMoreCount = 1,
     this.preloadCount = 2,
-
-   
     this.disposeCount = 0,
   });
 
-  
   final int loadMoreCount;
 
-  
   final int preloadCount;
 
-  
   final int disposeCount;
 
-  
   LoadMoreVideo? _videoProvider;
 
   loadIndex(int target, {bool reload = false}) {
     if (!reload) {
       if (index.value == target) return;
     }
-    
+
     var oldIndex = index.value;
     var newIndex = target;
 
-    
     if (!(oldIndex == 0 && newIndex == 0)) {
       playerOfIndex(oldIndex)?.controller.seekTo(Duration.zero);
       // playerOfIndex(oldIndex)?.controller.addListener(_didUpdateValue);
       // playerOfIndex(oldIndex)?.showPauseIcon.addListener(_didUpdateValue);
       playerOfIndex(oldIndex)?.pause();
-      print('暂停$oldIndex');
     }
-   
+
     playerOfIndex(newIndex)?.controller.addListener(_didUpdateValue);
     playerOfIndex(newIndex)?.showPauseIcon.addListener(_didUpdateValue);
     playerOfIndex(newIndex)?.play();
-    print('$newIndex');
-    
+
     for (var i = 0; i < playerList.length; i++) {
-     
-      /// i < newIndex - disposeCount 向下滑动时释放视频
-      /// i > newIndex + disposeCount 向上滑动，同时避免disposeCount设置为0时失去视频预加载功能
       if (i < newIndex - disposeCount || i > newIndex + max(disposeCount, 2)) {
-        print('释放$i');
         playerOfIndex(i)?.controller.removeListener(_didUpdateValue);
         playerOfIndex(i)?.showPauseIcon.removeListener(_didUpdateValue);
         playerOfIndex(i)?.dispose();
         continue;
       }
-     
+
       if (i > newIndex && i < newIndex + preloadCount) {
-        print('$i');
         playerOfIndex(i)?.init();
         continue;
       }
     }
-   
+
     if (playerList.length - newIndex <= loadMoreCount + 1) {
       _videoProvider?.call(newIndex, playerList).then(
         (list) async {
@@ -83,7 +68,6 @@ class TikTokVideoListController extends ChangeNotifier {
       );
     }
 
-    
     index.value = target;
   }
 
@@ -91,7 +75,6 @@ class TikTokVideoListController extends ChangeNotifier {
     notifyListeners();
   }
 
- 
   VPVideoController? playerOfIndex(int index) {
     if (index < 0 || index > playerList.length - 1) {
       return null;
@@ -99,10 +82,8 @@ class TikTokVideoListController extends ChangeNotifier {
     return playerList[index];
   }
 
-
   int get videoCount => playerList.length;
 
-  
   init({
     required PageController pageController,
     required List<VPVideoController> initialList,
@@ -120,18 +101,14 @@ class TikTokVideoListController extends ChangeNotifier {
     notifyListeners();
   }
 
-  
   ValueNotifier<int> index = ValueNotifier<int>(0);
 
- 
   List<VPVideoController> playerList = [];
 
   ///
   VPVideoController get currentPlayer => playerList[index.value];
 
- 
   void dispose() {
-  
     for (var player in playerList) {
       player.showPauseIcon.dispose();
       player.dispose();
@@ -144,27 +121,19 @@ class TikTokVideoListController extends ChangeNotifier {
 typedef ControllerSetter<T> = Future<void> Function(T controller);
 typedef ControllerBuilder<T> = T Function();
 
-
 abstract class TikTokVideoController<T> {
- 
   T? get controller;
 
- 
   ValueNotifier<bool> get showPauseIcon;
 
- 
   Future<void> init({ControllerSetter<T>? afterInit});
 
-  
   Future<void> dispose();
 
- 
   Future<void> play();
 
- 
   Future<void> pause({bool showPauseIcon = false});
 }
-
 
 Completer<void>? _syncLock;
 
@@ -197,17 +166,15 @@ class VPVideoController extends TikTokVideoController<VideoPlayerController> {
 
   Completer<void>? _disposeLock;
 
-  
   Future<void> _syncCall(Future Function()? fn) async {
-   
     var lastCompleter = _syncLock;
     var completer = Completer<void>();
     _syncLock = completer;
-   
+
     await lastCompleter?.future;
-    
+
     await fn?.call();
-   
+
     completer.complete();
   }
 
