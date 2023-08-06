@@ -1,0 +1,30 @@
+import 'dart:io';
+
+
+import 'package:get/get.dart';
+import 'package:xstream/models/amphure_model.dart';
+import 'package:xstream/models/districe_model.dart';
+import 'package:xstream/models/province_model.dart';
+import 'package:xstream/models/user_model.dart';
+import 'package:xstream/models/video_model.dart';
+
+class AppController extends GetxController {
+  RxList<VideoModel> videoModels = <VideoModel>[].obs;
+  RxList<VideoModel> postVideoModels = <VideoModel>[].obs;
+
+  RxList<UserModel> currentUserModels = <UserModel>[].obs;
+  RxList<File> files = <File>[].obs;
+  RxList<String> nameFiles = <String>[].obs;
+  RxList<File> productFiles = <File>[].obs;
+  RxList<String> productNameFiles = <String>[].obs;
+  RxInt amount = 1.obs;
+  RxList<ProvinceModel> provinceModels = <ProvinceModel>[].obs;
+  RxList<ProvinceModel?> chooseProvinceModels = <ProvinceModel?>[null].obs;
+  RxList<AmphureModel> amphureModels = <AmphureModel>[].obs;
+  RxList<AmphureModel?> chooseAmphureModels = <AmphureModel?>[null].obs;
+  RxList<DistriceModel> districeModels = <DistriceModel>[].obs;
+  RxList<DistriceModel?> chooseDistriceModels = <DistriceModel?>[null].obs;
+  RxBool change = false.obs;
+
+  RxInt indexVideo = 0.obs;
+}

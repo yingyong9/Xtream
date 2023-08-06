@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "459424513585",
+    "project_id": "xstream-c6c77",
+    "storage_bucket": "xstream-c6c77.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459424513585:android:40ff3017b8559d215c5f10",
+        "android_client_info": {
+          "package_name": "com.yingyong.xstream"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "459424513585-qao50h4b1a3strk3330uf1a78l8jgmm1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yingyong.xstream",
+            "certificate_hash": "49c386dbb4b248e00e921054779d437f6f739feb"
+          }
+        },
+        {
+          "client_id": "459424513585-u6pji54im00vngfms0kbudgstjus8s7i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiQFn74AmuvH1nlH0ycSURwM7_crdh95Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "459424513585-u6pji54im00vngfms0kbudgstjus8s7i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
