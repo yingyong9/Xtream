@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       //   currentPage = MsgPage();
       //   break;
       case TikTokPageTag.me:
-        currentPage = UserPage(isSelfPage: true);
+        currentPage = const UserPage(isSelfPage: true);
         // currentPage = EditProfile();
         break;
       default:
@@ -152,7 +152,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         if (appController.currentUserModels.isEmpty) {
           Get.to(const Authen());
         } else {
-          // Get.to(CameraPage())!.then((value) => homePageLoadVideo());
           AppService().processUploadVideoFromGallery();
         }
       },
@@ -191,7 +190,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         children: <Widget>[
           PageView.builder(
             key: Key('home'),
-            physics: QuickerScrollPhysics(),
+            physics: const QuickerScrollPhysics(),
             controller: _pageController,
             scrollDirection: Axis.vertical,
             itemCount: _videoListController.videoCount,

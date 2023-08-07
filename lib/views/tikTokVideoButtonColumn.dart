@@ -259,7 +259,7 @@ class TikTokAvatar extends StatelessWidget {
     Widget avatar = Container(
       width: SysSize.avatar,
       height: SysSize.avatar,
-      margin: EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         border: Border.all(
           color: Colors.white,
@@ -277,7 +277,7 @@ class TikTokAvatar extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         color: ColorPlate.red,
       ),
-      child: Icon(
+      child: const Icon(
         Icons.add,
         size: 16,
       ),
@@ -285,7 +285,7 @@ class TikTokAvatar extends StatelessWidget {
     return Container(
       width: SysSize.avatar,
       height: 66,
-      margin: EdgeInsets.only(bottom: 6),
+      margin: const EdgeInsets.only(bottom: 6),
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: <Widget>[avatar, addButton],

@@ -24,6 +24,7 @@ class _UserVideoTableState extends State<UserVideoTable> {
   @override
   void initState() {
     super.initState();
+    
     AppService().findUrlImageVideo(uid: widget.uid);
   }
 

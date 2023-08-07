@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -18,10 +17,14 @@ Future<void> main() async {
   await Firebase.initializeApp().then((value) {
     FirebaseAuth.instance.authStateChanges().listen((event) {
       if (event != null) {
-        AppService().findCurrentUserModel();
+        AppService().findCurrentUserModel().then((value) {
+         runApp(MyApp());
+        });
+        
+      } else {
+        runApp(MyApp());
       }
     });
-    runApp(MyApp());
   });
 }
 
