@@ -9,6 +9,8 @@ import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/topToolRow.dart';
+import 'package:xstream/views/user_video_table.dart';
+import 'package:xstream/views/widget_image_network.dart';
 
 class UserPage extends StatefulWidget {
   final bool canPop;
@@ -83,93 +85,95 @@ class _UserPageState extends State<UserPage> {
                     ),
                   ),
                   child: ClipOval(
-                    child: Image.asset(
-                      'images/logo3.png',
-                      fit: BoxFit.cover,
+                    child: WidgetImageNetwork(
+                      urlImage: appController.currentUserModels.last.urlAvatar,
+                      boxFit: BoxFit.cover,
                     ),
                   ),
                 ),
               ),
             );
     });
-    Widget body = ListView(
-      physics: BouncingScrollPhysics(
-        parent: AlwaysScrollableScrollPhysics(),
-      ),
-      children: <Widget>[
-        Container(height: 20),
-        Stack(
-          alignment: Alignment.bottomLeft,
-          children: <Widget>[likeButton, avatar],
+    Widget body = Obx(() {
+      return ListView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
         ),
-        Container(
-          color: ColorPlate.back1,
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(left: 18),
-                color: ColorPlate.back1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Name',
-                          style: StandardTextStyle.big,
-                        ),
-                      ],
-                    ),
-                    Container(height: 8),
-                    Container(height: 10),
-                    Row(
-                      children: <Widget>[
-                        _UserTag(tag: 'สินค้าของคุณ'),
-                        _UserTag(tag: 'เพิ่มเพื่อน'),
-                        _UserTag(tag: 'คำสั่งซื้อของคุณ'),
-                        // _UserTag(tag: '狮子座'),
-                      ],
-                    ),
-                    Container(height: 10),
-                  ],
+        children: <Widget>[
+          Container(height: 20),
+          Stack(
+            alignment: Alignment.bottomLeft,
+            children: <Widget>[likeButton, avatar],
+          ),
+          Container(
+            color: ColorPlate.back1,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.only(left: 18),
+                  color: ColorPlate.back1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            appController.currentUserModels.last.name,
+                            style: StandardTextStyle.big,
+                          ),
+                        ],
+                      ),
+                      Container(height: 8),
+                      Container(height: 10),
+                      // const Row(
+                      //   children: <Widget>[
+                      //     _UserTag(tag: 'สินค้าของคุณ'),
+                      //     _UserTag(tag: 'เพิ่มเพื่อน'),
+                      //     _UserTag(tag: 'คำสั่งซื้อของคุณ'),
+                      //     // _UserTag(tag: '狮子座'),
+                      //   ],
+                      // ),
+                      // Container(height: 10),
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                color: ColorPlate.back1,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 2,
+                Container(
+                  color: ColorPlate.back1,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      TextGroup('356', 'กำลังติดตาม'),
+                      TextGroup('145', 'ผู้ติดตาม'),
+                      TextGroup('1423', 'ถูกใจ'),
+                    ],
+                  ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    TextGroup('356', 'กำลังติดตาม'),
-                    TextGroup('145', 'ผู้ติดตาม'),
-                    TextGroup('1423', 'ถูกใจ'),
-                  ],
-                ),
-              ),
-              Container(
-                height: 10,
-                margin: EdgeInsets.symmetric(horizontal: 12),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Colors.white.withOpacity(0.1),
+                Container(
+                  height: 10,
+                  margin: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.white.withOpacity(0.1),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              // UserVideoTable(
-              //   uid: appController.currentUserModels.last.uid,
-              // ),
-            ],
+                UserVideoTable(
+                  uid: appController.currentUserModels.last.uid,
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    });
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(

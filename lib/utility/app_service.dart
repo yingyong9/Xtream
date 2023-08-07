@@ -241,7 +241,7 @@ class AppService {
           .then((value) {
         if (value.data() != null) {
           UserModel userModel = UserModel.fromMap(value.data()!);
-          
+
           appController.currentUserModels.add(userModel);
         }
       });
@@ -370,7 +370,7 @@ class AppService {
 
       for (var element in value.docs) {
         VideoModel videoModel = VideoModel.fromMap(element.data());
-        if (uid == videoModel.mapUserModel['uid']) {
+        if (uid == videoModel.uidPost) {
           appController.postVideoModels.add(videoModel);
         }
       }
