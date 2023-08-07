@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,13 +35,8 @@ class _UserPageState extends State<UserPage> {
   void initState() {
     super.initState();
 
-    AppService().findCurrentUserModel().then((value) => print(
-        '##5aug currentLogin ----> ${appController.currentUserModels.length}'));
-
-    // AppService().findCurrentUserModel().then((value) {
-    //   AppService()
-    //     .findUrlImageVideo(uid: appController.currentUserModels.last.uid);
-    // });
+    print(
+        '##7aug currentUserModel --> ${appController.currentUserModels.length}');
   }
 
   @override
@@ -52,50 +48,50 @@ class _UserPageState extends State<UserPage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Tapped(
-            child: _UserRightButton(
+            child: const _UserRightButton(
               // title: widget.isSelfPage ? 'แก้ไขโปรไฟร์' : 'เจ้าของวีดีโอ',
               title: '',
             ),
             onTap: () {
-              Get.to(EditProfile());
+              Get.to(const EditProfile());
             },
           ),
         ],
       ),
     );
-    Widget avatar = Obx(
-       () {
-        return appController.currentUserModels.isEmpty ? const SizedBox() : Container(
-          height: 120 + MediaQuery.of(context).padding.top,
-          // padding: EdgeInsets.only(left: 18),
-          alignment: Alignment.center,
-          child: OverflowBox(
-            // alignment: Alignment.bottomLeft,
-            minHeight: 20,
-            maxHeight: 300,
-            child: Container(
-              height: 104,
-              width: 104,
-              margin: EdgeInsets.only(bottom: 12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(74),
-                color: Colors.black,
-                border: Border.all(
-                  color: Colors.white,
-                  width: 1,
+    Widget avatar = Obx(() {
+      return appController.currentUserModels.isEmpty
+          ? const SizedBox()
+          : Container(
+              height: 120 + MediaQuery.of(context).padding.top,
+              // padding: EdgeInsets.only(left: 18),
+              alignment: Alignment.center,
+              child: OverflowBox(
+                // alignment: Alignment.bottomLeft,
+                minHeight: 20,
+                maxHeight: 300,
+                child: Container(
+                  height: 104,
+                  width: 104,
+                  margin: const EdgeInsets.only(bottom: 12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(74),
+                    color: Colors.black,
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 1,
+                    ),
+                  ),
+                  child: ClipOval(
+                    child: Image.asset(
+                      'images/logo3.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
-              child: ClipOval(
-                child: Image.asset(
-                  'images/logo3.png',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-        );
-      }
-    );
+            );
+    });
     Widget body = ListView(
       physics: BouncingScrollPhysics(
         parent: AlwaysScrollableScrollPhysics(),

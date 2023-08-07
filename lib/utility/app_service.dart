@@ -241,6 +241,7 @@ class AppService {
           .then((value) {
         if (value.data() != null) {
           UserModel userModel = UserModel.fromMap(value.data()!);
+          
           appController.currentUserModels.add(userModel);
         }
       });
