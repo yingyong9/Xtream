@@ -22,6 +22,8 @@ import 'package:xstream/views/tikTokVideoButtonColumn.dart';
 import 'package:xstream/views/tiktokTabBar.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -117,10 +119,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       // case TikTokPageTag.msg:
       //   currentPage = MsgPage();
       //   break;
-      case TikTokPageTag.me:
-        currentPage = const UserPage(isSelfPage: true);
-        // currentPage = EditProfile();
-        break;
+      // case TikTokPageTag.me:
+      //   currentPage = const UserPage(isSelfPage: true);
+      //   // currentPage = EditProfile();
+      //   break;
       default:
     }
     double a = MediaQuery.of(context).size.aspectRatio;
@@ -204,6 +206,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 onAvatar: () {
                   UserModel userModel = UserModel.fromMap(
                       appController.videoModels[i].mapUserModel);
+
+                  _videoListController.currentPlayer.pause();
 
                   Get.to(DisplayPost(
                     isSelfPage: true,

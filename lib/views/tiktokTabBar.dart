@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xstream/pages/userDetailPage.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/views/selectText.dart';
 
@@ -76,7 +76,10 @@ class TikTokTabBar extends StatelessWidget {
               isSelect: current == TikTokPageTag.me,
               title: 'Profile',
             ),
-            onTap: () => onTabSwitch?.call(TikTokPageTag.me),
+            onTap: () {
+              onTabSwitch?.call(TikTokPageTag.me);
+              Get.to(UserDetailPage());
+            },
           ),
         ),
       ],

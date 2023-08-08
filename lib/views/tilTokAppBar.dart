@@ -68,12 +68,12 @@ class TikTokAppbar extends StatelessWidget {
             IosBackButton(),
             Expanded(
               child: Text(
-                title ?? '未定标题',
+                title ?? '',
                 textAlign: TextAlign.center,
                 style: StandardTextStyle.big,
               ),
             ),
-            Opacity(
+            const Opacity(
               opacity: 0,
               child: Icon(
                 Icons.panorama_fish_eye,
