@@ -7,10 +7,10 @@ import 'package:xstream/pages/edit_profile.dart';
 import 'package:xstream/pages/userDetailPage.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
-import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/topToolRow.dart';
 import 'package:xstream/views/user_video_table.dart';
 import 'package:xstream/views/widget_image_network.dart';
+import 'package:xstream/views/widget_text.dart';
 
 class UserPage extends StatefulWidget {
   final bool canPop;
@@ -175,7 +175,7 @@ class _UserPageState extends State<UserPage> {
       );
     });
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           colors: <Color>[
@@ -188,14 +188,14 @@ class _UserPageState extends State<UserPage> {
         alignment: Alignment.topCenter,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(top: 400),
+            margin: const EdgeInsets.only(top: 400),
             height: double.infinity,
             width: double.infinity,
             color: ColorPlate.back1,
           ),
           body,
           Container(
-            margin: EdgeInsets.only(top: 20),
+            margin: const EdgeInsets.only(top: 20),
             height: 62,
             child: TopToolRow(
               canPop: widget.canPop,

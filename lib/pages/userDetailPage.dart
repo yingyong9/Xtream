@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -9,6 +8,7 @@ import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/tilTokAppBar.dart';
 import 'package:xstream/views/widget_image.dart';
+import 'package:xstream/views/widget_image_network.dart';
 
 class UserDetailPage extends StatefulWidget {
   @override
@@ -29,8 +29,8 @@ class _UserDetailPageState extends State<UserDetailPage> {
       children: <Widget>[
         Expanded(
           child: Container(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            child: Text(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: const Text(
               'ข้อมูลส่วนตัว',
               style: StandardTextStyle.smallWithOpacity,
             ),
@@ -41,7 +41,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
             // Get.to(EditProfile());
           },
           child: Container(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             child: Text(
               'แก้ไข',
               style: StandardTextStyle.smallWithOpacity.apply(
@@ -59,6 +59,39 @@ class _UserDetailPageState extends State<UserDetailPage> {
         ),
         children: <Widget>[
           userHead,
+          _UserInfoRow(
+            icon: WidgetImageNetwork(
+                urlImage: appController.currentUserModels.last.urlAvatar),
+            rightIcon: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'เปลี่ยนรูปโปรไฟล์',
+                  style: StandardTextStyle.small,
+                ),
+                Icon(Icons.arrow_forward_ios),
+              ],
+            ),
+            onTap: () async {
+              AppService().processTakePhoto().then((value) async {
+                String? urlAvatar =
+                    await AppService().processUploadFile(path: 'profile');
+                print('##8aug urlAvatar ---> $urlAvatar');
+
+                Map<String, dynamic> map =
+                    appController.currentUserModels.last.toMap();
+                map['urlAvatar'] = urlAvatar;
+
+                AppService().processEditProfile(map: map);
+              });
+
+              // Get.to(EasyEditProfile(
+              //   title: 'ชื่อ',
+              //   text: appController.currentUserModels.last.name,
+              //   keyMap: 'name',
+              // ));
+            },
+          ),
           _UserInfoRow(
             title: 'ชื่อ',
             rightIcon: Row(
@@ -99,7 +132,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
             },
           ),
           _UserInfoRow(
-            icon: WidgetImage(
+            icon: const WidgetImage(
               path: 'images/call.png',
               size: 24,
             ),
@@ -121,7 +154,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
             },
           ),
           _UserInfoRow(
-            icon: WidgetImage(
+            icon: const WidgetImage(
               path: 'images/line.png',
               size: 24,
             ),
