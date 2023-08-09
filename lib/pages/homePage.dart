@@ -10,6 +10,7 @@ import 'package:xstream/other/bottomSheet.dart' as CustomBottomSheet;
 import 'package:xstream/pages/authen.dart';
 import 'package:xstream/pages/displayPost.dart';
 import 'package:xstream/pages/searchPage.dart';
+import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/pages/userPage.dart';
 import 'package:xstream/style/physics.dart';
 import 'package:xstream/utility/app_controller.dart';
@@ -209,10 +210,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
                   _videoListController.currentPlayer.pause();
 
-                  Get.to(DisplayPost(
-                    isSelfPage: true,
-                    postUserModel: userModel,
-                  ));
+                  // Get.to(DisplayPost(
+                  //   isSelfPage: true,
+                  //   postUserModel: userModel,
+                  // ));
+
+                  Get.to(UserDetailOwnerVideo(ownerVideoUserModel: userModel,));
                 },
                 onFavorite: () {
                   setState(() {
