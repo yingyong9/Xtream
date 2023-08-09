@@ -1,12 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:tapped/tapped.dart';
+import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
 import 'package:xstream/pages/confirm_buy_product.dart';
+import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_dialog.dart';
@@ -15,8 +16,6 @@ import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_icon_button.dart';
 import 'package:xstream/views/widget_image_network.dart';
 import 'package:xstream/views/widget_text.dart';
-
-
 
 class TikTokButtonColumn extends StatelessWidget {
   final double? bottomPadding;
@@ -82,7 +81,7 @@ class TikTokButtonColumn extends StatelessWidget {
           Container(
             width: SysSize.avatar,
             height: SysSize.avatar,
-            margin: EdgeInsets.only(top: 10),
+            margin: const EdgeInsets.only(top: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(SysSize.avatar / 2.0),
               // color: Colors.black.withOpacity(0.8),
@@ -93,14 +92,21 @@ class TikTokButtonColumn extends StatelessWidget {
     );
   }
 
-  Widget displayImageProduct(AppController appController, {required BuildContext context}) {
+  Widget displayImageProduct(AppController appController,
+      {required BuildContext context}) {
     return videoModel.urlProduct!.isEmpty
         ? const SizedBox()
         : InkWell(
             onTap: () {
               // dialogChooseAmountProduct(appController);
 
-              AppDialog().dialogShowUser(videoModel: videoModel, title: 'ซื้อสินค้าที่นี่', context: context);
+              // AppDialog().dialogShowUser(videoModel: videoModel, title: 'ซื้อสินค้าที่นี่', context: context);
+
+              UserModel ownerVideoUserModel =
+                  UserModel.fromMap(videoModel.mapUserModel);
+
+              Get.to(UserDetailOwnerVideo(
+                  ownerVideoUserModel: ownerVideoUserModel));
             },
             child: Container(
               margin: const EdgeInsets.only(right: 12),

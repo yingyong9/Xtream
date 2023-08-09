@@ -165,59 +165,59 @@ class _DetailPostState extends State<DetailPost> {
                                     const SizedBox(
                                       height: 8,
                                     ),
-                                    WidgetForm(
-                                      textEditingController:
-                                          phoneContactController,
-                                      hint: 'phone',
-                                      prefixWidget: const Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          WidgetImage(
-                                            path: 'images/call.png',
-                                            size: 36,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                    WidgetForm(
-                                      textEditingController: linkLineController,
-                                      hint: 'LinkLine',
-                                      prefixWidget: const Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          WidgetImage(
-                                            path: 'images/line.png',
-                                            size: 36,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                    WidgetForm(
-                                      textEditingController:
-                                          linkMessageController,
-                                      hint: 'LinkMessaging',
-                                      prefixWidget: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          WidgetImage(
-                                            path: 'images/messaging.png',
-                                            size: 36,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
+                                    // WidgetForm(
+                                    //   textEditingController:
+                                    //       phoneContactController,
+                                    //   hint: 'phone',
+                                    //   prefixWidget: const Column(
+                                    //     mainAxisAlignment:
+                                    //         MainAxisAlignment.center,
+                                    //     children: [
+                                    //       WidgetImage(
+                                    //         path: 'images/call.png',
+                                    //         size: 36,
+                                    //       ),
+                                    //     ],
+                                    //   ),
+                                    // ),
+                                    // const SizedBox(
+                                    //   height: 8,
+                                    // ),
+                                    // WidgetForm(
+                                    //   textEditingController: linkLineController,
+                                    //   hint: 'LinkLine',
+                                    //   prefixWidget: const Column(
+                                    //     mainAxisAlignment:
+                                    //         MainAxisAlignment.center,
+                                    //     children: [
+                                    //       WidgetImage(
+                                    //         path: 'images/line.png',
+                                    //         size: 36,
+                                    //       ),
+                                    //     ],
+                                    //   ),
+                                    // ),
+                                    // const SizedBox(
+                                    //   height: 8,
+                                    // ),
+                                    // WidgetForm(
+                                    //   textEditingController:
+                                    //       linkMessageController,
+                                    //   hint: 'LinkMessaging',
+                                    //   prefixWidget: Column(
+                                    //     mainAxisAlignment:
+                                    //         MainAxisAlignment.center,
+                                    //     children: [
+                                    //       WidgetImage(
+                                    //         path: 'images/messaging.png',
+                                    //         size: 36,
+                                    //       ),
+                                    //     ],
+                                    //   ),
+                                    // ),
+                                    // const SizedBox(
+                                    //   height: 8,
+                                    // ),
                                     const SizedBox(
                                       height: 64,
                                     )
