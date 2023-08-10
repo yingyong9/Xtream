@@ -10,7 +10,6 @@ import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/views/topToolRow.dart';
 import 'package:xstream/views/user_video_table.dart';
 import 'package:xstream/views/widget_image_network.dart';
-import 'package:xstream/views/widget_text.dart';
 
 class UserPage extends StatefulWidget {
   final bool canPop;
@@ -119,7 +118,9 @@ class _UserPageState extends State<UserPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            appController.currentUserModels.last.name,
+                            appController.currentUserModels.isEmpty
+                                ? ''
+                                : appController.currentUserModels.last.name,
                             style: StandardTextStyle.big,
                           ),
                         ],
@@ -165,7 +166,7 @@ class _UserPageState extends State<UserPage> {
                     ),
                   ),
                 ),
-                UserVideoTable(
+                appController.currentUserModels.isEmpty ? const SizedBox() : UserVideoTable(
                   uid: appController.currentUserModels.last.uid,
                 ),
               ],

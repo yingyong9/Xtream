@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:upgrader/upgrader.dart';
 import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_service.dart';
@@ -44,11 +45,11 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: ColorPlate.back1,
         dialogBackgroundColor: ColorPlate.back2,
         // accentColorBrightness: Brightness.light,
-        textTheme: TextTheme(
+        textTheme: const TextTheme(
           bodyText1: StandardTextStyle.normal,
         ),
       ),
-      home: HomePage(),
+      home: UpgradeAlert(child: const HomePage(),),
       // home: CameraPage(),
     );
   }
