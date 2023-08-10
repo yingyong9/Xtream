@@ -1,11 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:tapped/tapped.dart';
+
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
+import 'package:xstream/pages/authen.dart';
 import 'package:xstream/pages/confirm_buy_product.dart';
 import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/style/style.dart';
@@ -24,6 +25,7 @@ class TikTokButtonColumn extends StatelessWidget {
   final Function? onComment;
   final Function? onShare;
   final Function? onAvatar;
+  final Function()? onDisplayImageProduct;
   final VideoModel videoModel;
 
   const TikTokButtonColumn({
@@ -34,6 +36,7 @@ class TikTokButtonColumn extends StatelessWidget {
     this.onComment,
     this.onShare,
     this.onAvatar,
+    this.onDisplayImageProduct,
     required this.videoModel,
   }) : super(key: key);
 
@@ -77,7 +80,7 @@ class TikTokButtonColumn extends StatelessWidget {
           //     ),
           //   ],
           // ),
-          displayImageProduct(appController, context: context),
+          displayImageProduct(appController, context: context, onTap: onDisplayImageProduct ?? (){}),
           Container(
             width: SysSize.avatar,
             height: SysSize.avatar,
@@ -93,21 +96,11 @@ class TikTokButtonColumn extends StatelessWidget {
   }
 
   Widget displayImageProduct(AppController appController,
-      {required BuildContext context}) {
+      {required BuildContext context, required Function() onTap}) {
     return videoModel.urlProduct!.isEmpty
         ? const SizedBox()
         : InkWell(
-            onTap: () {
-              // dialogChooseAmountProduct(appController);
-
-              // AppDialog().dialogShowUser(videoModel: videoModel, title: 'ซื้อสินค้าที่นี่', context: context);
-
-              UserModel ownerVideoUserModel =
-                  UserModel.fromMap(videoModel.mapUserModel);
-
-              Get.to(UserDetailOwnerVideo(
-                  ownerVideoUserModel: ownerVideoUserModel));
-            },
+            onTap: onTap,
             child: Container(
               margin: const EdgeInsets.only(right: 12),
               padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -359,7 +352,7 @@ class _IconButton extends StatelessWidget {
         Container(height: 2),
         Text(
           text ?? '??',
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.normal,
             fontSize: SysSize.small,
             color: ColorPlate.white,
@@ -368,7 +361,7 @@ class _IconButton extends StatelessWidget {
       ],
     );
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: DefaultTextStyle(
         child: body,
         style: shadowStyle,

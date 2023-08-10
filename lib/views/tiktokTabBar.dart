@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xstream/pages/authen.dart';
 import 'package:xstream/pages/userDetailPage.dart';
 import 'package:xstream/style/style.dart';
+import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/views/selectText.dart';
 
 enum TikTokPageTag {
@@ -28,6 +30,7 @@ class TikTokTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppController appController = Get.put(AppController());
     final EdgeInsets padding = MediaQuery.of(context).padding;
     Widget row = Row(
       children: <Widget>[
@@ -78,7 +81,12 @@ class TikTokTabBar extends StatelessWidget {
             ),
             onTap: () {
               onTabSwitch?.call(TikTokPageTag.me);
-              Get.to(UserDetailPage());
+
+              if (appController.currentUserModels.isNotEmpty) {
+                Get.to(UserDetailPage());
+              } else {
+                // Get.to(Authen());
+              }
             },
           ),
         ),

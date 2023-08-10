@@ -8,7 +8,6 @@ import 'package:xstream/models/video_model.dart';
 
 import 'package:xstream/other/bottomSheet.dart' as CustomBottomSheet;
 import 'package:xstream/pages/authen.dart';
-import 'package:xstream/pages/displayPost.dart';
 import 'package:xstream/pages/searchPage.dart';
 import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/pages/userPage.dart';
@@ -69,6 +68,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   void homePageLoadVideo() {
     AppService().readAllVideo().then((value) {
+      
       videoDataList = appController.videoModels;
       WidgetsBinding.instance.addObserver(this);
       _videoListController.init(
@@ -97,6 +97,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       });
       tkController.addListener(
         () {
+          print('listener Work');
           if (tkController.value == TikTokPagePositon.middle) {
             _videoListController.currentPlayer.play();
           } else {
@@ -139,6 +140,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       current: tabBarType,
       onTabSwitch: (type) async {
         if (appController.currentUserModels.isEmpty) {
+          _videoListController.currentPlayer.pause();
           Get.to(const Authen());
         } else {
           setState(() {
@@ -152,6 +154,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         }
       },
       onAddButton: () {
+        _videoListController.currentPlayer.pause();
         if (appController.currentUserModels.isEmpty) {
           Get.to(const Authen());
         } else {
@@ -210,12 +213,26 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
                   _videoListController.currentPlayer.pause();
 
-                  // Get.to(DisplayPost(
-                  //   isSelfPage: true,
-                  //   postUserModel: userModel,
-                  // ));
+                  if (appController.currentUserModels.isEmpty) {
+                    Get.to(const Authen());
+                  } else {
+                    Get.to(UserDetailOwnerVideo(
+                      ownerVideoUserModel: userModel,
+                    ));
+                  }
+                },
+                onDisplayImageProduct: () {
+                  _videoListController.currentPlayer.pause();
 
-                  Get.to(UserDetailOwnerVideo(ownerVideoUserModel: userModel,));
+                  UserModel ownerVideoUserModel = UserModel.fromMap(
+                      appController.videoModels[i].mapUserModel);
+
+                  if (appController.currentUserModels.isEmpty) {
+                    Get.to(const Authen());
+                  } else {
+                    Get.to(UserDetailOwnerVideo(
+                        ownerVideoUserModel: ownerVideoUserModel));
+                  }
                 },
                 onFavorite: () {
                   setState(() {

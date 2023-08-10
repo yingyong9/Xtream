@@ -253,21 +253,21 @@ class _UserDetailOwnerVideoState extends State<UserDetailOwnerVideo> {
           ),
           onTap: () {},
         ),
-        _UserInfoRow(
-          title: 'Sign Out',
-          rightIcon: const Row(
-            children: [
-              Text(
-                'ออกจากระบบ',
-                style: StandardTextStyle.big,
-              ),
-              Icon(Icons.arrow_forward_ios),
-            ],
-          ),
-          onTap: () {
-            AppService().processSignOut();
-          },
-        ),
+        // _UserInfoRow(
+        //   title: 'Sign Out',
+        //   rightIcon: const Row(
+        //     children: [
+        //       Text(
+        //         'ออกจากระบบ',
+        //         style: StandardTextStyle.big,
+        //       ),
+        //       Icon(Icons.arrow_forward_ios),
+        //     ],
+        //   ),
+        //   onTap: () {
+        //     AppService().processSignOut();
+        //   },
+        // ),
       ],
     );
 

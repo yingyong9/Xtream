@@ -21,7 +21,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
   @override
   Widget build(BuildContext context) {
     Widget head = Obx(() {
-      return TikTokAppbar(
+      return appController.currentUserModels.isEmpty ? const SizedBox() : TikTokAppbar(
         title: appController.currentUserModels.last.name,
       );
     });
@@ -53,7 +53,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
       ],
     );
     Widget body = Obx(() {
-      return ListView(
+      return appController.currentUserModels.isEmpty ? const SizedBox() : ListView(
         padding: EdgeInsets.only(
           bottom: 80 + MediaQuery.of(context).padding.bottom,
         ),
@@ -101,7 +101,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
                   appController.currentUserModels.last.name,
                   style: StandardTextStyle.small,
                 ),
-                Icon(Icons.arrow_forward_ios),
+                const Icon(Icons.arrow_forward_ios),
               ],
             ),
             onTap: () {
