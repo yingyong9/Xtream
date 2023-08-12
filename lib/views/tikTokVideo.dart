@@ -148,6 +148,7 @@ class VideoLoadingPlaceHolder extends StatelessWidget {
 class VideoUserInfo extends StatelessWidget {
   final String? desc;
   final VideoModel? videoModel;
+  
 
   const VideoUserInfo({
     Key? key,
@@ -180,23 +181,27 @@ class VideoUserInfo extends StatelessWidget {
             ],
           ),
           Container(height: 6),
+          // Text(
+          //   desc ?? '',
+          //   style: StandardTextStyle.normal,
+          // ),
           Text(
-            desc ?? '',
+            videoModel!.detail ?? '',
             style: StandardTextStyle.normal,
           ),
           Container(height: 6),
-          const Row(
-            children: <Widget>[
-              Icon(Icons.music_note, size: 14),
-              Expanded(
-                child: Text(
-                  'คำอธิบาย ???',
-                  maxLines: 9,
-                  style: StandardTextStyle.normal,
-                ),
-              )
-            ],
-          )
+          // const Row(
+          //   children: <Widget>[
+          //     Icon(Icons.music_note, size: 14),
+          //     Expanded(
+          //       child: Text(
+          //         'คำอธิบาย ???',
+          //         maxLines: 9,
+          //         style: StandardTextStyle.normal,
+          //       ),
+          //     )
+          //   ],
+          // ),
         ],
       ),
     );

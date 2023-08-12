@@ -249,12 +249,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           // showAboutDialog(context: context);
                         },
                         onComment: () {
-                          // CustomBottomSheet.showModalBottomSheet(
-                          //   backgroundColor: Colors.white.withOpacity(0),
-                          //   context: context,
-                          //   builder: (BuildContext context) =>
-                          //       TikTokCommentBottomSheet(),
-                          // );
 
                           Get.bottomSheet(
                             TikTokCommentBottomSheet(docIdVideo: appController.docIdVideos[i],),
