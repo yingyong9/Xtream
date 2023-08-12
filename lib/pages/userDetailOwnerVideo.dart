@@ -6,10 +6,8 @@ import 'package:get/get.dart';
 import 'package:tapped/tapped.dart';
 
 import 'package:xstream/models/user_model.dart';
-import 'package:xstream/pages/easy_edit_profile.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
-import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/tilTokAppBar.dart';
 import 'package:xstream/views/widget_image.dart';
 import 'package:xstream/views/widget_image_network.dart';
@@ -18,12 +16,14 @@ class UserDetailOwnerVideo extends StatefulWidget {
   const UserDetailOwnerVideo({
     Key? key,
     required this.ownerVideoUserModel,
+    this.displayBack,
   }) : super(key: key);
 
   @override
   _UserDetailOwnerVideoState createState() => _UserDetailOwnerVideoState();
 
   final UserModel ownerVideoUserModel;
+  final bool? displayBack;
 }
 
 class _UserDetailOwnerVideoState extends State<UserDetailOwnerVideo> {
@@ -33,6 +33,7 @@ class _UserDetailOwnerVideoState extends State<UserDetailOwnerVideo> {
   Widget build(BuildContext context) {
     Widget head = TikTokAppbar(
       title: widget.ownerVideoUserModel.name,
+      displayBack: widget.displayBack,
     );
     var userHead = Row(
       children: <Widget>[

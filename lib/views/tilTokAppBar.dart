@@ -1,5 +1,6 @@
-
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:xstream/style/style.dart';
 
 import 'backButton.dart';
@@ -50,9 +51,11 @@ class TikTokAppbar extends StatelessWidget {
   const TikTokAppbar({
     Key? key,
     required this.title,
+    this.displayBack,
   }) : super(key: key);
 
   final String? title;
+  final bool? displayBack;
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +65,10 @@ class TikTokAppbar extends StatelessWidget {
       width: double.infinity,
       alignment: Alignment.center,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Row(
           children: <Widget>[
-            IosBackButton(),
+            displayBack ?? true ? IosBackButton() : const SizedBox(height: 50,),
             Expanded(
               child: Text(
                 title ?? '',

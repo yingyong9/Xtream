@@ -70,16 +70,16 @@ class TikTokButtonColumn extends StatelessWidget {
               ),
             ],
           ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.end,
-          //   children: [
-          //     _IconButton(
-          //       icon: IconToText(Icons.mode_comment, size: SysSize.iconBig - 4),
-          //       text: '4213',
-          //       onTap: onComment,
-          //     ),
-          //   ],
-          // ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _IconButton(
+                icon: IconToText(Icons.mode_comment, size: SysSize.iconBig - 4),
+                text: '4213',
+                onTap: onComment,
+              ),
+            ],
+          ),
           displayImageProduct(appController, context: context, onTap: onDisplayImageProduct ?? (){}),
           Container(
             width: SysSize.avatar,

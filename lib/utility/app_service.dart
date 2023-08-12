@@ -14,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:path/path.dart';
 import 'package:xstream/models/amphure_model.dart';
+import 'package:xstream/models/comment_model.dart';
 import 'package:xstream/models/districe_model.dart';
 import 'package:xstream/models/otp_require_thaibulk.dart';
 import 'package:xstream/models/province_model.dart';
@@ -216,6 +217,7 @@ class AppService {
   Future<void> readAllVideo() async {
     if (appController.videoModels.isNotEmpty) {
       appController.videoModels.clear();
+      appController.docIdVideos.clear();
     }
 
     await FirebaseFirestore.instance
@@ -226,6 +228,7 @@ class AppService {
       for (var element in value.docs) {
         VideoModel videoModel = VideoModel.fromMap(element.data());
         appController.videoModels.add(videoModel);
+        appController.docIdVideos.add(element.id);
       }
     });
   }
@@ -362,7 +365,6 @@ class AppService {
   }
 
   Future<void> findUrlImageVideo({required String uid}) async {
-    
     FirebaseFirestore.instance.collection('video').get().then((value) {
       if (appController.postVideoModels.isNotEmpty) {
         appController.postVideoModels.clear();
@@ -372,6 +374,38 @@ class AppService {
         VideoModel videoModel = VideoModel.fromMap(element.data());
         if (uid == videoModel.uidPost) {
           appController.postVideoModels.add(videoModel);
+        }
+      }
+    });
+  }
+
+  Future<void> insertComment(
+      {required String docIdVideo,
+      required Map<String, dynamic> mapComment}) async {
+    FirebaseFirestore.instance
+        .collection('video')
+        .doc(docIdVideo)
+        .collection('comment')
+        .doc()
+        .set(mapComment);
+  }
+
+  Future<void> readCommentModelByDocIdVideo(
+      {required String docIdVideo}) async {
+    if (appController.commentModels.isNotEmpty) {
+      appController.commentModels.clear();
+    }
+
+    FirebaseFirestore.instance
+        .collection('video')
+        .doc(docIdVideo)
+        .collection('comment').orderBy('timestamp', descending: true)
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        for (var element in value.docs) {
+          CommentModel commentModel = CommentModel.fromMap(element.data());
+          appController.commentModels.add(commentModel);
         }
       }
     });

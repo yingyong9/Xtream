@@ -1,13 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:xstream/models/video_model.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/views/tikTokVideoGesture.dart';
 import 'package:xstream/views/widget_image.dart';
-
-
-
 
 ///
 class TikTokVideoPage extends StatelessWidget {
@@ -172,31 +170,43 @@ class VideoUserInfo extends StatelessWidget {
         children: <Widget>[
           Row(
             children: [
-              const WidgetImage(path: 'images/redbottom.png', size: 30,),
+              const WidgetImage(
+                path: 'images/redbottom.png',
+                size: 30,
+              ),
               Text(
-                videoModel == null ? '' : '@${videoModel!.mapUserModel["name"]}',
+                videoModel == null
+                    ? ''
+                    : '@${videoModel!.mapUserModel["name"]}',
                 style: StandardTextStyle.big,
               ),
             ],
           ),
           Container(height: 6),
-          Text(
-            desc ?? '',
+          // Text(
+          //   desc ?? '',
+          //   style: StandardTextStyle.normal,
+          // ),
+          ExpandableText(
+            videoModel!.detail ?? '',
+            expandText: 'ดูเพิ่มเติม',linkStyle: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+            collapseText: 'ซ่อน',
+            maxLines: 3,
             style: StandardTextStyle.normal,
           ),
           Container(height: 6),
-          const Row(
-            children: <Widget>[
-              Icon(Icons.music_note, size: 14),
-              Expanded(
-                child: Text(
-                  'คำอธิบาย ???',
-                  maxLines: 9,
-                  style: StandardTextStyle.normal,
-                ),
-              )
-            ],
-          )
+          // const Row(
+          //   children: <Widget>[
+          //     Icon(Icons.music_note, size: 14),
+          //     Expanded(
+          //       child: Text(
+          //         'คำอธิบาย ???',
+          //         maxLines: 9,
+          //         style: StandardTextStyle.normal,
+          //       ),
+          //     )
+          //   ],
+          // ),
         ],
       ),
     );
