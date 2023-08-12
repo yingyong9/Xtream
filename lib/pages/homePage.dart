@@ -183,132 +183,138 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           )
         : Container();
 
-    return Obx(
-       () {
-        return appController.videoModels.isEmpty ? const SizedBox() : TikTokScaffold(
-          controller: tkController,
-          hasBottomPadding: hasBackground,
-          tabBar: tikTokTabBar,
-          header: header,
-          leftPage: searchPage,
-          rightPage: UserDetailOwnerVideo(
-              ownerVideoUserModel: UserModel.fromMap(appController
-                  .videoModels[appController.indexVideo.value].mapUserModel), displayBack: false,),
-          enableGesture: tabBarType == TikTokPageTag.home,
-          // onPullDownRefresh: _fetchData,
-          page: Stack(
-            // index: currentPage == null ? 0 : 1,
-            children: <Widget>[
-              PageView.builder(
-                key: Key('home'),
-                physics: const QuickerScrollPhysics(),
-                controller: _pageController,
-                scrollDirection: Axis.vertical,
-                itemCount: _videoListController.videoCount,
-                itemBuilder: (context, i) {
-                  bool isF = SafeMap(favoriteMap)[i].boolean;
-                  var player = _videoListController.playerOfIndex(i)!;
-                  var data = player.videoInfo!;
-
-                  Widget buttons = TikTokButtonColumn(
-                    isFavorite: isF,
-                    onAvatar: () {
-                      UserModel userModel = UserModel.fromMap(
-                          appController.videoModels[i].mapUserModel);
-
-                      _videoListController.currentPlayer.pause();
-
-                      if (appController.currentUserModels.isEmpty) {
-                        Get.to(const Authen());
-                      } else {
-                        Get.to(UserDetailOwnerVideo(
-                          ownerVideoUserModel: userModel,
-                        ));
-                      }
-                    },
-                    onDisplayImageProduct: () {
-                      _videoListController.currentPlayer.pause();
-
-                      UserModel ownerVideoUserModel = UserModel.fromMap(
-                          appController.videoModels[i].mapUserModel);
-
-                      if (appController.currentUserModels.isEmpty) {
-                        Get.to(const Authen());
-                      } else {
-                        Get.to(UserDetailOwnerVideo(
-                            ownerVideoUserModel: ownerVideoUserModel));
-                      }
-                    },
-                    onFavorite: () {
-                      setState(() {
-                        favoriteMap[i] = !isF;
-                      });
-                      // showAboutDialog(context: context);
-                    },
-                    onComment: () {
-                      CustomBottomSheet.showModalBottomSheet(
-                        backgroundColor: Colors.white.withOpacity(0),
-                        context: context,
-                        builder: (BuildContext context) =>
-                            TikTokCommentBottomSheet(),
-                      );
-                    },
-                    onShare: () {},
-                    videoModel: i < appController.videoModels.length
-                        ? appController.videoModels[i]
-                        : appController.videoModels.last,
-                  );
-                  // video
-                  Widget currentVideo = Center(
-                    child: AspectRatio(
-                      aspectRatio: player.controller.value.aspectRatio,
-                      child: VideoPlayer(player.controller),
-                    ),
-                  );
-
-                  currentVideo = TikTokVideoPage(
-                    hidePauseIcon: !player.showPauseIcon.value,
-                    aspectRatio: 9 / 16.0,
-                    key: Key(data.url + '$i'),
-                    tag: data.url,
-                    bottomPadding: hasBottomPadding ? 16.0 : 16.0,
-                    userInfoWidget: VideoUserInfo(
-                      desc: data.desc,
-                      bottomPadding: hasBottomPadding ? 16.0 : 50.0,
-                      videoModel: i < appController.videoModels.length
-                          ? appController.videoModels[i]
-                          : appController.videoModels.last,
-                    ),
-                    onSingleTap: () async {
-                      if (player.controller.value.isPlaying) {
-                        await player.pause();
-                      } else {
-                        await player.play();
-                      }
-                      setState(() {});
-                    },
-                    onAddFavorite: () {
-                      setState(() {
-                        favoriteMap[i] = true;
-                      });
-                    },
-                    rightButtonColumn: buttons,
-                    video: currentVideo,
-                  );
-                  return currentVideo;
-                },
-                onPageChanged: (value) {
-                  print('##4aug value =======> $value');
-                  if (value < appController.videoModels.length) {
-                    appController.indexVideo.value = value;
-                  } else {}
-                },
+    return Obx(() {
+      return appController.videoModels.isEmpty
+          ? const SizedBox()
+          : TikTokScaffold(
+              controller: tkController,
+              hasBottomPadding: hasBackground,
+              tabBar: tikTokTabBar,
+              header: header,
+              leftPage: searchPage,
+              rightPage: UserDetailOwnerVideo(
+                ownerVideoUserModel: UserModel.fromMap(appController
+                    .videoModels[appController.indexVideo.value].mapUserModel),
+                displayBack: false,
               ),
-              currentPage ?? Container(),
-            ],
-          ),
-        );
-      }
-    );
+              enableGesture: tabBarType == TikTokPageTag.home,
+              // onPullDownRefresh: _fetchData,
+              page: Stack(
+                // index: currentPage == null ? 0 : 1,
+                children: <Widget>[
+                  PageView.builder(
+                    key: const Key('home'),
+                    physics: const QuickerScrollPhysics(),
+                    controller: _pageController,
+                    scrollDirection: Axis.vertical,
+                    itemCount: _videoListController.videoCount,
+                    itemBuilder: (context, i) {
+                      bool isF = SafeMap(favoriteMap)[i].boolean;
+                      var player = _videoListController.playerOfIndex(i)!;
+                      var data = player.videoInfo!;
+
+                      Widget buttons = TikTokButtonColumn(
+                        isFavorite: isF,
+                        onAvatar: () {
+                          UserModel userModel = UserModel.fromMap(
+                              appController.videoModels[i].mapUserModel);
+
+                          _videoListController.currentPlayer.pause();
+
+                          if (appController.currentUserModels.isEmpty) {
+                            Get.to(const Authen());
+                          } else {
+                            Get.to(UserDetailOwnerVideo(
+                              ownerVideoUserModel: userModel,
+                            ));
+                          }
+                        },
+                        onDisplayImageProduct: () {
+                          _videoListController.currentPlayer.pause();
+
+                          UserModel ownerVideoUserModel = UserModel.fromMap(
+                              appController.videoModels[i].mapUserModel);
+
+                          if (appController.currentUserModels.isEmpty) {
+                            Get.to(const Authen());
+                          } else {
+                            Get.to(UserDetailOwnerVideo(
+                                ownerVideoUserModel: ownerVideoUserModel));
+                          }
+                        },
+                        onFavorite: () {
+                          setState(() {
+                            favoriteMap[i] = !isF;
+                          });
+                          // showAboutDialog(context: context);
+                        },
+                        onComment: () {
+                          // CustomBottomSheet.showModalBottomSheet(
+                          //   backgroundColor: Colors.white.withOpacity(0),
+                          //   context: context,
+                          //   builder: (BuildContext context) =>
+                          //       TikTokCommentBottomSheet(),
+                          // );
+
+                          Get.bottomSheet(
+                            TikTokCommentBottomSheet(docIdVideo: appController.docIdVideos[i],),
+                          );
+                        },
+                        onShare: () {},
+                        videoModel: i < appController.videoModels.length
+                            ? appController.videoModels[i]
+                            : appController.videoModels.last,
+                      );
+                      // video
+                      Widget currentVideo = Center(
+                        child: AspectRatio(
+                          aspectRatio: player.controller.value.aspectRatio,
+                          child: VideoPlayer(player.controller),
+                        ),
+                      );
+
+                      currentVideo = TikTokVideoPage(
+                        hidePauseIcon: !player.showPauseIcon.value,
+                        aspectRatio: 9 / 16.0,
+                        key: Key(data.url + '$i'),
+                        tag: data.url,
+                        bottomPadding: hasBottomPadding ? 16.0 : 16.0,
+                        userInfoWidget: VideoUserInfo(
+                          desc: data.desc,
+                          bottomPadding: hasBottomPadding ? 16.0 : 50.0,
+                          videoModel: i < appController.videoModels.length
+                              ? appController.videoModels[i]
+                              : appController.videoModels.last,
+                        ),
+                        onSingleTap: () async {
+                          if (player.controller.value.isPlaying) {
+                            await player.pause();
+                          } else {
+                            await player.play();
+                          }
+                          setState(() {});
+                        },
+                        onAddFavorite: () {
+                          setState(() {
+                            favoriteMap[i] = true;
+                          });
+                        },
+                        rightButtonColumn: buttons,
+                        video: currentVideo,
+                      );
+                      return currentVideo;
+                    },
+                    onPageChanged: (value) {
+                      print('##4aug value =======> $value');
+                      if (value < appController.videoModels.length) {
+                        appController.indexVideo.value = value;
+                      } else {}
+                    },
+                  ),
+                  currentPage ?? Container(),
+                ],
+              ),
+            );
+    });
   }
 }

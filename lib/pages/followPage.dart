@@ -48,7 +48,7 @@ class _FollowPageState extends State<FollowPage> {
             CustomBottomSheet.showModalBottomSheet(
               backgroundColor: Colors.white.withOpacity(0),
               context: context,
-              builder: (BuildContext context) => TikTokCommentBottomSheet(),
+              builder: (BuildContext context) => TikTokCommentBottomSheet(docIdVideo: '',),
             );
           },
           onShare: () {},
