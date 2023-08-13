@@ -26,6 +26,7 @@ class TikTokButtonColumn extends StatelessWidget {
   final Function? onShare;
   final Function? onAvatar;
   final Function()? onDisplayImageProduct;
+  final Function()? onAddButton;
   final VideoModel videoModel;
 
   const TikTokButtonColumn({
@@ -37,6 +38,7 @@ class TikTokButtonColumn extends StatelessWidget {
     this.onShare,
     this.onAvatar,
     this.onDisplayImageProduct,
+    this.onAddButton,
     required this.videoModel,
   }) : super(key: key);
 
@@ -58,6 +60,7 @@ class TikTokButtonColumn extends StatelessWidget {
           Tapped(
             child: TikTokAvatar(
               videoModel: videoModel,
+              onAddButton: onAddButton,
             ),
             onTap: onAvatar,
           ),
@@ -80,7 +83,8 @@ class TikTokButtonColumn extends StatelessWidget {
               ),
             ],
           ),
-          displayImageProduct(appController, context: context, onTap: onDisplayImageProduct ?? (){}),
+          displayImageProduct(appController,
+              context: context, onTap: onDisplayImageProduct ?? () {}),
           Container(
             width: SysSize.avatar,
             height: SysSize.avatar,
@@ -249,9 +253,11 @@ class TikTokAvatar extends StatelessWidget {
   const TikTokAvatar({
     Key? key,
     required this.videoModel,
+    this.onAddButton,
   }) : super(key: key);
 
   final VideoModel videoModel;
+  final Function()? onAddButton;
 
   @override
   Widget build(BuildContext context) {
@@ -269,16 +275,19 @@ class TikTokAvatar extends StatelessWidget {
       ),
       child: WidgetAvatar(urlImage: videoModel.mapUserModel['urlAvatar']),
     );
-    Widget addButton = Container(
-      width: 20,
-      height: 20,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: ColorPlate.red,
-      ),
-      child: const Icon(
-        Icons.add,
-        size: 16,
+    Widget addButton = InkWell(
+      onTap: onAddButton,
+      child: Container(
+        width: 20,
+        height: 20,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: ColorPlate.red,
+        ),
+        child: const Icon(
+          Icons.add,
+          size: 16,
+        ),
       ),
     );
     return Container(
