@@ -28,6 +28,7 @@ class TikTokButtonColumn extends StatelessWidget {
   final Function()? onDisplayImageProduct;
   final Function()? onAddButton;
   final VideoModel videoModel;
+  final bool statusFriend;
 
   const TikTokButtonColumn({
     Key? key,
@@ -40,6 +41,7 @@ class TikTokButtonColumn extends StatelessWidget {
     this.onDisplayImageProduct,
     this.onAddButton,
     required this.videoModel,
+    required this.statusFriend,
   }) : super(key: key);
 
   @override
@@ -61,6 +63,7 @@ class TikTokButtonColumn extends StatelessWidget {
             child: TikTokAvatar(
               videoModel: videoModel,
               onAddButton: onAddButton,
+              statusFriend: statusFriend,
             ),
             onTap: onAvatar,
           ),
@@ -249,15 +252,24 @@ class FavoriteIcon extends StatelessWidget {
   }
 }
 
-class TikTokAvatar extends StatelessWidget {
+class TikTokAvatar extends StatefulWidget {
   const TikTokAvatar({
     Key? key,
     required this.videoModel,
     this.onAddButton,
+    required this.statusFriend,
   }) : super(key: key);
 
   final VideoModel videoModel;
   final Function()? onAddButton;
+  final bool statusFriend;
+
+  @override
+  State<TikTokAvatar> createState() => _TikTokAvatarState();
+}
+
+class _TikTokAvatarState extends State<TikTokAvatar> {
+  AppController appController = Get.put(AppController());
 
   @override
   Widget build(BuildContext context) {
@@ -273,23 +285,26 @@ class TikTokAvatar extends StatelessWidget {
         borderRadius: BorderRadius.circular(SysSize.avatar / 2.0),
         color: Colors.black,
       ),
-      child: WidgetAvatar(urlImage: videoModel.mapUserModel['urlAvatar']),
+      child:
+          WidgetAvatar(urlImage: widget.videoModel.mapUserModel['urlAvatar']),
     );
-    Widget addButton = InkWell(
-      onTap: onAddButton,
-      child: Container(
-        width: 20,
-        height: 20,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: ColorPlate.red,
-        ),
-        child: const Icon(
-          Icons.add,
-          size: 16,
-        ),
-      ),
-    );
+    Widget addButton = ((widget.statusFriend) || (appController.currentUserModels.last.uid == widget.videoModel.mapUserModel['uid']))
+        ? const SizedBox()
+        : InkWell(
+            onTap: widget.onAddButton,
+            child: Container(
+              width: 20,
+              height: 20,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: ColorPlate.red,
+              ),
+              child: const Icon(
+                Icons.add,
+                size: 16,
+              ),
+            ),
+          );
     return Container(
       width: SysSize.avatar,
       height: 66,
