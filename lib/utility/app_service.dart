@@ -162,10 +162,12 @@ class AppService {
                   .then((value) async {
                 String uid = value.user!.uid;
                 UserModel userModel = UserModel(
-                    name: 'Khun$phoneNumber',
-                    uid: uid,
-                    urlAvatar: AppConstant.urlAvatar,
-                    phone: phoneNumber);
+                  name: 'Khun$phoneNumber',
+                  uid: uid,
+                  urlAvatar: AppConstant.urlAvatar,
+                  phone: phoneNumber,
+                  friends: [],
+                );
                 await FirebaseFirestore.instance
                     .collection('user')
                     .doc(uid)
@@ -399,7 +401,8 @@ class AppService {
     FirebaseFirestore.instance
         .collection('video')
         .doc(docIdVideo)
-        .collection('comment').orderBy('timestamp', descending: true)
+        .collection('comment')
+        .orderBy('timestamp', descending: true)
         .get()
         .then((value) {
       if (value.docs.isNotEmpty) {
@@ -409,5 +412,56 @@ class AppService {
         }
       }
     });
+  }
+
+  Future<void> processAddLoginToFriend(
+      {required Map<String, dynamic> mapFriendModel}) async {
+    var result = await FirebaseFirestore.instance
+        .collection('user')
+        .doc(mapFriendModel['uid'])
+        .get();
+
+
+
+    UserModel userModel = UserModel.fromMap(result.data()!);
+    Map<String, dynamic> map = userModel.toMap();
+
+    print('map ก่อน ---> $map');
+
+    var friends = <String>[];
+    friends.addAll(map['friends']);
+
+    if (friends.contains(appController.currentUserModels.last.uid)) {
+      //Friend Allreday
+      AppSnackBar(
+              title: 'เป็น Friend ไปแล้ว',
+              message: 'ขออภัย ข้อมูลวีดีโอไม่อัพเดท')
+          .errorSnackBar();
+    } else {
+      friends.add(appController.currentUserModels.last.uid);
+      map['friends'] = friends;
+
+      print('map หลัง ---> $map');
+
+      FirebaseFirestore.instance
+          .collection('user')
+          .doc(mapFriendModel['uid'])
+          .update(map)
+          .then((value) {
+        print('Update success');
+      });
+    }
+  }
+
+  bool checkStatusFriend({required VideoModel videoModel}) {
+    bool result = false; // UnFriend
+
+    UserModel userModel = UserModel.fromMap(videoModel.mapUserModel);
+
+    if (userModel.friends.isNotEmpty) {
+      result =
+          userModel.friends.contains(appController.currentUserModels.last.uid);
+    }
+    return result;
   }
 }

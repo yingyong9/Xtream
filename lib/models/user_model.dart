@@ -11,12 +11,12 @@ class UserModel {
   final String? linkMessaging;
   final String? linktiktok;
   final String? email;
-
   final String? facebook;
   final String? lazada;
   final String? shoppee;
   final String? intagram;
   final String? twitter;
+  final List<String> friends;
   UserModel({
     required this.name,
     required this.uid,
@@ -32,6 +32,7 @@ class UserModel {
     this.shoppee,
     this.intagram,
     this.twitter,
+    required this.friends,
   });
 
   Map<String, dynamic> toMap() {
@@ -50,6 +51,7 @@ class UserModel {
       'shoppee': shoppee,
       'intagram': intagram,
       'twitter': twitter,
+      'friends': friends,
     };
   }
 
@@ -69,6 +71,7 @@ class UserModel {
       shoppee: map['shoppee'] ?? '',
       intagram: map['intagram'] ?? '',
       twitter: map['twitter'] ?? '',
+      friends: List<String>.from(map['friends'] ?? []),
     );
   }
 

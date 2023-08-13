@@ -249,15 +249,28 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           // showAboutDialog(context: context);
                         },
                         onComment: () {
-
                           Get.bottomSheet(
-                            TikTokCommentBottomSheet(docIdVideo: appController.docIdVideos[i],),
+                            TikTokCommentBottomSheet(
+                              docIdVideo: appController.docIdVideos[i],
+                            ),
                           );
                         },
                         onShare: () {},
+                        onAddButton: () {
+                          print(
+                              'onAddButton Work at uid ของคนที่กด --> ${appController.currentUserModels.last.uid}');
+                          print(
+                              'onAddButton Work at uid ของคนที่จะไปอยู่ด้วย --> ${appController.videoModels[i].mapUserModel['uid']}');
+
+                          AppService().processAddLoginToFriend(
+                              mapFriendModel:
+                                  appController.videoModels[i].mapUserModel);
+                        },
                         videoModel: i < appController.videoModels.length
                             ? appController.videoModels[i]
                             : appController.videoModels.last,
+                        statusFriend: AppService().checkStatusFriend(
+                            videoModel: appController.videoModels[i]),
                       );
                       // video
                       Widget currentVideo = Center(
