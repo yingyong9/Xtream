@@ -22,6 +22,7 @@ import 'package:xstream/views/tikTokScaffold.dart';
 import 'package:xstream/views/tikTokVideo.dart';
 import 'package:xstream/views/tikTokVideoButtonColumn.dart';
 import 'package:xstream/views/tiktokTabBar.dart';
+import 'package:xstream/views/widget_progress.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -185,7 +186,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     return Obx(() {
       return appController.videoModels.isEmpty
-          ? const SizedBox()
+          ? const WidgetProgress()
           : TikTokScaffold(
               controller: tkController,
               hasBottomPadding: hasBackground,
@@ -269,8 +270,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         videoModel: i < appController.videoModels.length
                             ? appController.videoModels[i]
                             : appController.videoModels.last,
-                        statusFriend: AppService().checkStatusFriend(
-                            videoModel: appController.videoModels[i]),
+                        statusFriend: appController.statusFriends.isEmpty
+                            ? false
+                            : appController.statusFriends[i],
                       );
                       // video
                       Widget currentVideo = Center(
@@ -318,7 +320,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       } else {}
                     },
                   ),
-                  currentPage ?? Container(),
+                  // currentPage ?? const WidgetProgress(),
+                  // currentPage == null ? const WidgetProgress() : currentPage ,
                 ],
               ),
             );

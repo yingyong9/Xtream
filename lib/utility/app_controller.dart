@@ -10,8 +10,11 @@ import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
 
 class AppController extends GetxController {
+
   RxList<VideoModel> videoModels = <VideoModel>[].obs;
   RxList<String> docIdVideos = <String>[].obs;
+  RxList<bool> statusFriends = <bool>[].obs;
+
   RxList<VideoModel> postVideoModels = <VideoModel>[].obs;
 
   RxList<UserModel> currentUserModels = <UserModel>[].obs;
