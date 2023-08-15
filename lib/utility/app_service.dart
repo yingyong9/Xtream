@@ -220,17 +220,21 @@ class AppService {
     if (appController.videoModels.isNotEmpty) {
       appController.videoModels.clear();
       appController.docIdVideos.clear();
+      appController.statusFriends.clear();
     }
 
     await FirebaseFirestore.instance
         .collection('video')
         .orderBy('timestamp', descending: true)
         .get()
-        .then((value) {
+        .then((value) async {
       for (var element in value.docs) {
         VideoModel videoModel = VideoModel.fromMap(element.data());
         appController.videoModels.add(videoModel);
         appController.docIdVideos.add(element.id);
+
+        bool statusFriend = await checkStatusFriend(videoModel: videoModel);
+        appController.statusFriends.add(statusFriend);
       }
     });
   }
@@ -421,8 +425,6 @@ class AppService {
         .doc(mapFriendModel['uid'])
         .get();
 
-
-
     UserModel userModel = UserModel.fromMap(result.data()!);
     Map<String, dynamic> map = userModel.toMap();
 
@@ -447,16 +449,27 @@ class AppService {
           .collection('user')
           .doc(mapFriendModel['uid'])
           .update(map)
-          .then((value) {
+          .then((value) async {
         print('Update success');
+
+        appController.statusFriends.clear();
+        for (var element in appController.videoModels) {
+          bool statusFriend = await checkStatusFriend(videoModel: element);
+          appController.statusFriends.add(statusFriend);
+        }
       });
     }
   }
 
-  bool checkStatusFriend({required VideoModel videoModel}) {
+  Future<bool> checkStatusFriend({required VideoModel videoModel}) async {
     bool result = false; // UnFriend
 
-    UserModel userModel = UserModel.fromMap(videoModel.mapUserModel);
+    var snapshopDocument = await FirebaseFirestore.instance
+        .collection('user')
+        .doc(videoModel.mapUserModel['uid'])
+        .get();
+
+    UserModel userModel = UserModel.fromMap(snapshopDocument.data()!);
 
     if (userModel.friends.isNotEmpty) {
       result =

@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tapped/tapped.dart';
@@ -271,6 +272,28 @@ class TikTokAvatar extends StatefulWidget {
 class _TikTokAvatarState extends State<TikTokAvatar> {
   AppController appController = Get.put(AppController());
 
+  UserModel? ownerUserModel;
+
+  @override
+  void initState() {
+    super.initState();
+    findOwnerUserModel();
+  }
+
+  Future<void> findOwnerUserModel() async {
+    await FirebaseFirestore.instance
+        .collection('user')
+        .doc(widget.videoModel.mapUserModel['uid'])
+        .get()
+        .then((value) {
+      if (value.data() != null) {
+        ownerUserModel = UserModel.fromMap(value.data()!);
+        print('ownerUserModel ---> ${ownerUserModel!.toMap()}');
+        setState(() {});
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget avatar = Container(
@@ -286,9 +309,11 @@ class _TikTokAvatarState extends State<TikTokAvatar> {
         color: Colors.black,
       ),
       child:
-          WidgetAvatar(urlImage: widget.videoModel.mapUserModel['urlAvatar']),
+          WidgetAvatar(urlImage: ownerUserModel == null ? widget.videoModel.mapUserModel['urlAvatar'] : ownerUserModel!.urlAvatar) ,
     );
-    Widget addButton = ((widget.statusFriend) || (appController.currentUserModels.last.uid == widget.videoModel.mapUserModel['uid']))
+    Widget addButton = ((widget.statusFriend) ||
+            (appController.currentUserModels.last.uid ==
+                widget.videoModel.mapUserModel['uid']))
         ? const SizedBox()
         : InkWell(
             onTap: widget.onAddButton,
