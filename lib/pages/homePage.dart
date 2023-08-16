@@ -269,9 +269,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         videoModel: i < appController.videoModels.length
                             ? appController.videoModels[i]
                             : appController.videoModels.last,
-                        statusFriend: appController.statusFriends.isEmpty
-                            ? false
-                            : appController.statusFriends[i],
+                       
                       );
                       // video
                       Widget currentVideo = Center(

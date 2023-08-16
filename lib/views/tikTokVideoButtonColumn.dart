@@ -29,7 +29,7 @@ class TikTokButtonColumn extends StatelessWidget {
   final Function()? onDisplayImageProduct;
   final Function()? onAddButton;
   final VideoModel videoModel;
-  final bool statusFriend;
+  
 
   const TikTokButtonColumn({
     Key? key,
@@ -42,7 +42,7 @@ class TikTokButtonColumn extends StatelessWidget {
     this.onDisplayImageProduct,
     this.onAddButton,
     required this.videoModel,
-    required this.statusFriend,
+    
   }) : super(key: key);
 
   @override
@@ -64,7 +64,7 @@ class TikTokButtonColumn extends StatelessWidget {
             child: TikTokAvatar(
               videoModel: videoModel,
               onAddButton: onAddButton,
-              statusFriend: statusFriend,
+             
             ),
             onTap: onAvatar,
           ),
@@ -258,12 +258,12 @@ class TikTokAvatar extends StatefulWidget {
     Key? key,
     required this.videoModel,
     this.onAddButton,
-    required this.statusFriend,
+    
   }) : super(key: key);
 
   final VideoModel videoModel;
   final Function()? onAddButton;
-  final bool statusFriend;
+  
 
   @override
   State<TikTokAvatar> createState() => _TikTokAvatarState();

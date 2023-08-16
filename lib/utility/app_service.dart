@@ -222,7 +222,7 @@ class AppService {
     if (appController.videoModels.isNotEmpty) {
       appController.videoModels.clear();
       appController.docIdVideos.clear();
-      appController.statusFriends.clear();
+     
     }
 
     await FirebaseFirestore.instance
@@ -235,8 +235,8 @@ class AppService {
         appController.videoModels.add(videoModel);
         appController.docIdVideos.add(element.id);
 
-        bool statusFriend = await checkStatusFriend(videoModel: videoModel);
-        appController.statusFriends.add(statusFriend);
+        
+        
       }
     });
   }
@@ -454,11 +454,7 @@ class AppService {
           .then((value) async {
         print('Update success');
 
-        appController.statusFriends.clear();
-        for (var element in appController.videoModels) {
-          bool statusFriend = await checkStatusFriend(videoModel: element);
-          appController.statusFriends.add(statusFriend);
-        }
+       
       });
     }
   }
