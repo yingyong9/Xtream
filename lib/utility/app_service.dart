@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -29,9 +31,9 @@ import 'package:xstream/utility/app_snackbar.dart';
 class AppService {
   AppController appController = Get.put(AppController());
 
-  Future<void> processTakePhoto() async {
+  Future<void> processTakePhoto({required ImageSource imageSource}) async {
     var result = await ImagePicker()
-        .pickImage(source: ImageSource.gallery, maxWidth: 800, maxHeight: 800);
+        .pickImage(source: imageSource, maxWidth: 800, maxHeight: 800);
     if (result != null) {
       File file = File(result.path);
       appController.files.add(file);
@@ -174,7 +176,7 @@ class AppService {
                     .set(userModel.toMap())
                     .then((value) {
                   findCurrentUserModel()
-                      .then((value) => Get.offAll(HomePage()));
+                      .then((value) => Get.offAll(const HomePage()));
                 });
               }).catchError((onError) {});
             } else {
@@ -186,13 +188,15 @@ class AppService {
                       email: 'email$phoneNumber@xstream.com',
                       password: '123456')
                   .then((value) {
-                findCurrentUserModel().then((value) => Get.offAll(HomePage()));
+                findCurrentUserModel()
+                    .then((value) => Get.offAll(const HomePage()));
               });
             }
           });
         }
       });
     } on Exception catch (e) {
+      print(e);
       Get.back();
       AppSnackBar(title: 'OTP ผิด', message: 'กรุณาลองใหม่').errorSnackBar();
     }
@@ -220,7 +224,6 @@ class AppService {
     if (appController.videoModels.isNotEmpty) {
       appController.videoModels.clear();
       appController.docIdVideos.clear();
-      appController.statusFriends.clear();
     }
 
     await FirebaseFirestore.instance
@@ -232,9 +235,6 @@ class AppService {
         VideoModel videoModel = VideoModel.fromMap(element.data());
         appController.videoModels.add(videoModel);
         appController.docIdVideos.add(element.id);
-
-        bool statusFriend = await checkStatusFriend(videoModel: videoModel);
-        appController.statusFriends.add(statusFriend);
       }
     });
   }
@@ -451,29 +451,21 @@ class AppService {
           .update(map)
           .then((value) async {
         print('Update success');
-
-        appController.statusFriends.clear();
-        for (var element in appController.videoModels) {
-          bool statusFriend = await checkStatusFriend(videoModel: element);
-          appController.statusFriends.add(statusFriend);
-        }
+         AppSnackBar(
+              title: 'Add Friend สำเร็จ',
+              message: 'ขอบคุณ ที่ Add Friend อาจมีข้อมูลวีดีโอไม่อัพเดท')
+          .normalSnackBar();
       });
     }
   }
 
-  Future<bool> checkStatusFriend({required VideoModel videoModel}) async {
+  bool checkStatusFriend({required VideoModel videoModel})  {
     bool result = false; // UnFriend
 
-    var snapshopDocument = await FirebaseFirestore.instance
-        .collection('user')
-        .doc(videoModel.mapUserModel['uid'])
-        .get();
-
-    UserModel userModel = UserModel.fromMap(snapshopDocument.data()!);
+    UserModel userModel = UserModel.fromMap(videoModel.mapUserModel);
 
     if (userModel.friends.isNotEmpty) {
-      result =
-          userModel.friends.contains(appController.currentUserModels.last.uid);
+      result = userModel.friends.contains(appController.currentUserModels.last.uid);
     }
     return result;
   }

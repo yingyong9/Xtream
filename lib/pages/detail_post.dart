@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
@@ -13,10 +14,9 @@ import 'package:xstream/views/widget_back_button.dart';
 import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_form.dart';
 import 'package:xstream/views/widget_form_multiline.dart';
-import 'package:xstream/views/widget_image.dart';
+import 'package:xstream/views/widget_icon_button.dart';
 import 'package:xstream/views/widget_image_file.dart';
 import 'package:xstream/views/widget_text.dart';
-
 
 class DetailPost extends StatefulWidget {
   const DetailPost({
@@ -48,6 +48,8 @@ class _DetailPostState extends State<DetailPost> {
   TextEditingController linkLineController = TextEditingController();
   TextEditingController linkMessageController = TextEditingController();
 
+  var widgetForms = <Widget>[];
+
   @override
   void initState() {
     super.initState();
@@ -59,6 +61,25 @@ class _DetailPostState extends State<DetailPost> {
       linkMessageController.text =
           appController.currentUserModels.last.linkMessaging ?? '';
     }
+
+    widgetForms.add(const SizedBox());
+    widgetForms.add(cameraForm());
+    widgetForms.add(galleryForm());
+    widgetForms.add(productForm());
+  }
+
+  Widget galleryForm() {
+    return WidgetForm(
+      textEditingController: nameController,
+      labelWidget: const WidgetText(data: 'อยากบอกอะไร'),
+    );
+  }
+
+  Widget cameraForm() {
+    return WidgetForm(
+      textEditingController: nameController,
+      labelWidget: const WidgetText(data: 'อยากบอกอะไร'),
+    );
   }
 
   @override
@@ -68,7 +89,7 @@ class _DetailPostState extends State<DetailPost> {
         backgroundColor: ColorPlate.back1,
         leading: WidgetBackButton(
           pressFunc: () {
-            Get.offAll(HomePage());
+            Get.offAll(const HomePage());
           },
         ),
         elevation: 0,
@@ -106,18 +127,32 @@ class _DetailPostState extends State<DetailPost> {
                   ),
                   Row(
                     children: [
-                      WidgetButton(
-                        label: 'สร้างสินค้า',
+                      WidgetIconButton(
+                        iconData: Icons.camera_alt_outlined,
                         pressFunc: () {
-                          AppService().processTakePhoto();
+                          AppService().processTakePhoto(
+                              imageSource: ImageSource.camera);
+                          appController.indexForm.value = 1;
                         },
+                        size: 36,
                       ),
-                      const SizedBox(
-                        width: 8,
+                      WidgetIconButton(
+                        iconData: Icons.image_outlined,
+                        pressFunc: () {
+                          AppService().processTakePhoto(
+                              imageSource: ImageSource.gallery);
+                          appController.indexForm.value = 2;
+                        },
+                        size: 36,
                       ),
-                      WidgetButton(
-                        label: 'สินค้าของฉัน',
-                        pressFunc: () {},
+                      WidgetIconButton(
+                        iconData: Icons.shopping_cart_outlined,
+                        pressFunc: () {
+                          AppService().processTakePhoto(
+                              imageSource: ImageSource.gallery);
+                          appController.indexForm.value = 3;
+                        },
+                        size: 36,
                       ),
                     ],
                   ),
@@ -130,99 +165,8 @@ class _DetailPostState extends State<DetailPost> {
                             children: [
                               SizedBox(
                                 width: boxConstraints.maxWidth * 0.65,
-                                child: Column(
-                                  children: [
-                                    WidgetForm(
-                                      textEditingController: nameController,
-                                      labelWidget:
-                                          WidgetText(data: 'ชื่อสินค้า :'),
-                                    ),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                    WidgetForm(
-                                      textEditingController: priceController,
-                                      labelWidget:
-                                          WidgetText(data: 'ราคาสินค้า :'),
-                                    ),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                    WidgetForm(
-                                      textEditingController: stockController,
-                                      labelWidget:
-                                          WidgetText(data: 'จำนวนสินค้า :'),
-                                    ),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                    WidgetForm(
-                                      textEditingController:
-                                          affiliateController,
-                                      labelWidget:
-                                          WidgetText(data: 'นายหน้า :'),
-                                    ),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                    // WidgetForm(
-                                    //   textEditingController:
-                                    //       phoneContactController,
-                                    //   hint: 'phone',
-                                    //   prefixWidget: const Column(
-                                    //     mainAxisAlignment:
-                                    //         MainAxisAlignment.center,
-                                    //     children: [
-                                    //       WidgetImage(
-                                    //         path: 'images/call.png',
-                                    //         size: 36,
-                                    //       ),
-                                    //     ],
-                                    //   ),
-                                    // ),
-                                    // const SizedBox(
-                                    //   height: 8,
-                                    // ),
-                                    // WidgetForm(
-                                    //   textEditingController: linkLineController,
-                                    //   hint: 'LinkLine',
-                                    //   prefixWidget: const Column(
-                                    //     mainAxisAlignment:
-                                    //         MainAxisAlignment.center,
-                                    //     children: [
-                                    //       WidgetImage(
-                                    //         path: 'images/line.png',
-                                    //         size: 36,
-                                    //       ),
-                                    //     ],
-                                    //   ),
-                                    // ),
-                                    // const SizedBox(
-                                    //   height: 8,
-                                    // ),
-                                    // WidgetForm(
-                                    //   textEditingController:
-                                    //       linkMessageController,
-                                    //   hint: 'LinkMessaging',
-                                    //   prefixWidget: Column(
-                                    //     mainAxisAlignment:
-                                    //         MainAxisAlignment.center,
-                                    //     children: [
-                                    //       WidgetImage(
-                                    //         path: 'images/messaging.png',
-                                    //         size: 36,
-                                    //       ),
-                                    //     ],
-                                    //   ),
-                                    // ),
-                                    // const SizedBox(
-                                    //   height: 8,
-                                    // ),
-                                    const SizedBox(
-                                      height: 64,
-                                    )
-                                  ],
-                                ),
+                                child:
+                                    widgetForms[appController.indexForm.value],
                               ),
                               SizedBox(
                                 width: boxConstraints.maxWidth * 0.25,
@@ -301,6 +245,97 @@ class _DetailPostState extends State<DetailPost> {
           },
         ),
       ),
+    );
+  }
+
+  Widget productForm() {
+    return Column(
+      children: [
+        WidgetForm(
+          textEditingController: nameController,
+          labelWidget: const WidgetText(data: 'ชื่อสินค้า :'),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        WidgetForm(
+          textEditingController: priceController,
+          labelWidget: const WidgetText(data: 'ราคาสินค้า :'),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        WidgetForm(
+          textEditingController: stockController,
+          labelWidget: const WidgetText(data: 'จำนวนสินค้า :'),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        WidgetForm(
+          textEditingController: affiliateController,
+          labelWidget: const WidgetText(data: 'นายหน้า :'),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        // WidgetForm(
+        //   textEditingController:
+        //       phoneContactController,
+        //   hint: 'phone',
+        //   prefixWidget: const Column(
+        //     mainAxisAlignment:
+        //         MainAxisAlignment.center,
+        //     children: [
+        //       WidgetImage(
+        //         path: 'images/call.png',
+        //         size: 36,
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        // const SizedBox(
+        //   height: 8,
+        // ),
+        // WidgetForm(
+        //   textEditingController: linkLineController,
+        //   hint: 'LinkLine',
+        //   prefixWidget: const Column(
+        //     mainAxisAlignment:
+        //         MainAxisAlignment.center,
+        //     children: [
+        //       WidgetImage(
+        //         path: 'images/line.png',
+        //         size: 36,
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        // const SizedBox(
+        //   height: 8,
+        // ),
+        // WidgetForm(
+        //   textEditingController:
+        //       linkMessageController,
+        //   hint: 'LinkMessaging',
+        //   prefixWidget: Column(
+        //     mainAxisAlignment:
+        //         MainAxisAlignment.center,
+        //     children: [
+        //       WidgetImage(
+        //         path: 'images/messaging.png',
+        //         size: 36,
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        // const SizedBox(
+        //   height: 8,
+        // ),
+        const SizedBox(
+          height: 64,
+        )
+      ],
     );
   }
 }
