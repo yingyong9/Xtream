@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +13,7 @@ import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_dialog.dart';
+import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/widget_avatar.dart';
 import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_icon_button.dart';
@@ -29,7 +30,6 @@ class TikTokButtonColumn extends StatelessWidget {
   final Function()? onDisplayImageProduct;
   final Function()? onAddButton;
   final VideoModel videoModel;
-  
 
   const TikTokButtonColumn({
     Key? key,
@@ -42,7 +42,6 @@ class TikTokButtonColumn extends StatelessWidget {
     this.onDisplayImageProduct,
     this.onAddButton,
     required this.videoModel,
-    
   }) : super(key: key);
 
   @override
@@ -64,7 +63,6 @@ class TikTokButtonColumn extends StatelessWidget {
             child: TikTokAvatar(
               videoModel: videoModel,
               onAddButton: onAddButton,
-             
             ),
             onTap: onAvatar,
           ),
@@ -258,12 +256,10 @@ class TikTokAvatar extends StatefulWidget {
     Key? key,
     required this.videoModel,
     this.onAddButton,
-    
   }) : super(key: key);
 
   final VideoModel videoModel;
   final Function()? onAddButton;
-  
 
   @override
   State<TikTokAvatar> createState() => _TikTokAvatarState();
@@ -308,10 +304,14 @@ class _TikTokAvatarState extends State<TikTokAvatar> {
         borderRadius: BorderRadius.circular(SysSize.avatar / 2.0),
         color: Colors.black,
       ),
-      child:
-          WidgetAvatar(urlImage: ownerUserModel == null ? widget.videoModel.mapUserModel['urlAvatar'] : ownerUserModel!.urlAvatar) ,
+      child: WidgetAvatar(
+          urlImage: ownerUserModel == null
+              ? widget.videoModel.mapUserModel['urlAvatar']
+              : ownerUserModel!.urlAvatar),
     );
-    Widget addButton =  InkWell(
+    Widget addButton = appController.currentUserModels.last.uid == widget.videoModel.mapUserModel['uid']
+        ? const SizedBox()
+        : AppService().checkStatusFriend(videoModel: widget.videoModel) ? const SizedBox() : InkWell(
             onTap: widget.onAddButton,
             child: Container(
               width: 20,
