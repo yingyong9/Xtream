@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -29,9 +31,9 @@ import 'package:xstream/utility/app_snackbar.dart';
 class AppService {
   AppController appController = Get.put(AppController());
 
-  Future<void> processTakePhoto() async {
+  Future<void> processTakePhoto({required ImageSource imageSource}) async {
     var result = await ImagePicker()
-        .pickImage(source: ImageSource.gallery, maxWidth: 800, maxHeight: 800);
+        .pickImage(source: imageSource, maxWidth: 800, maxHeight: 800);
     if (result != null) {
       File file = File(result.path);
       appController.files.add(file);

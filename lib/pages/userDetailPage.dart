@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tapped/tapped.dart';
 import 'package:xstream/pages/easy_edit_profile.dart';
 import 'package:xstream/style/style.dart';
@@ -73,7 +74,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
               ],
             ),
             onTap: () async {
-              AppService().processTakePhoto().then((value) async {
+              AppService().processTakePhoto(imageSource: ImageSource.gallery).then((value) async {
                 String? urlAvatar =
                     await AppService().processUploadFile(path: 'profile');
                 print('##8aug urlAvatar ---> $urlAvatar');

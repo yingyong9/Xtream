@@ -311,11 +311,7 @@ class _TikTokAvatarState extends State<TikTokAvatar> {
       child:
           WidgetAvatar(urlImage: ownerUserModel == null ? widget.videoModel.mapUserModel['urlAvatar'] : ownerUserModel!.urlAvatar) ,
     );
-    Widget addButton = ((widget.statusFriend) ||
-            (appController.currentUserModels.last.uid ==
-                widget.videoModel.mapUserModel['uid']))
-        ? const SizedBox()
-        : InkWell(
+    Widget addButton =  InkWell(
             onTap: widget.onAddButton,
             child: Container(
               width: 20,

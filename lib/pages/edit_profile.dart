@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
@@ -234,7 +235,7 @@ class _EditProfileState extends State<EditProfile> {
               child: WidgetIconButton(
                 iconData: Icons.camera_alt_outlined,
                 pressFunc: () {
-                  AppService().processTakePhoto();
+                  AppService().processTakePhoto(imageSource: ImageSource.gallery);
                   controller.change.value = true;
                 },
               ),
