@@ -451,21 +451,22 @@ class AppService {
           .update(map)
           .then((value) async {
         print('Update success');
-         AppSnackBar(
-              title: 'Add Friend สำเร็จ',
-              message: 'ขอบคุณ ที่ Add Friend อาจมีข้อมูลวีดีโอไม่อัพเดท')
-          .normalSnackBar();
+        AppSnackBar(
+                title: 'Add Friend สำเร็จ',
+                message: 'ขอบคุณ ที่ Add Friend อาจมีข้อมูลวีดีโอไม่อัพเดท')
+            .normalSnackBar();
       });
     }
   }
 
-  bool checkStatusFriend({required VideoModel videoModel})  {
+  bool checkStatusFriend({required VideoModel videoModel}) {
     bool result = false; // UnFriend
 
     UserModel userModel = UserModel.fromMap(videoModel.mapUserModel);
 
     if (userModel.friends.isNotEmpty) {
-      result = userModel.friends.contains(appController.currentUserModels.last.uid);
+      result =
+          userModel.friends.contains(appController.currentUserModels.last.uid);
     }
     return result;
   }

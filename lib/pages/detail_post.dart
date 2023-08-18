@@ -125,58 +125,8 @@ class _DetailPostState extends State<DetailPost> {
                   const Divider(
                     color: ColorPlate.gray,
                   ),
-                  Row(
-                    children: [
-                      WidgetIconButton(
-                        iconData: Icons.camera_alt_outlined,
-                        pressFunc: () {
-                          AppService().processTakePhoto(
-                              imageSource: ImageSource.camera);
-                          appController.indexForm.value = 1;
-                        },
-                        size: 36,
-                      ),
-                      WidgetIconButton(
-                        iconData: Icons.image_outlined,
-                        pressFunc: () {
-                          AppService().processTakePhoto(
-                              imageSource: ImageSource.gallery);
-                          appController.indexForm.value = 2;
-                        },
-                        size: 36,
-                      ),
-                      WidgetIconButton(
-                        iconData: Icons.shopping_cart_outlined,
-                        pressFunc: () {
-                          AppService().processTakePhoto(
-                              imageSource: ImageSource.gallery);
-                          appController.indexForm.value = 3;
-                        },
-                        size: 36,
-                      ),
-                    ],
-                  ),
-                  Obx(() {
-                    return appController.files.isEmpty
-                        ? const SizedBox()
-                        : Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: boxConstraints.maxWidth * 0.65,
-                                child:
-                                    widgetForms[appController.indexForm.value],
-                              ),
-                              SizedBox(
-                                width: boxConstraints.maxWidth * 0.25,
-                                height: boxConstraints.maxWidth * 0.35,
-                                child: WidgetImageFile(
-                                    fileImage: appController.files.last),
-                              ),
-                            ],
-                          );
-                  })
+                  // displayIcon(),
+                  // displayImageFile(boxConstraints),
                 ],
               ),
             ),
@@ -246,6 +196,64 @@ class _DetailPostState extends State<DetailPost> {
         ),
       ),
     );
+  }
+
+  Obx displayImageFile(BoxConstraints boxConstraints) {
+    return Obx(() {
+                  return appController.files.isEmpty
+                      ? const SizedBox()
+                      : Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: boxConstraints.maxWidth * 0.65,
+                              child:
+                                  widgetForms[appController.indexForm.value],
+                            ),
+                            SizedBox(
+                              width: boxConstraints.maxWidth * 0.25,
+                              height: boxConstraints.maxWidth * 0.35,
+                              child: WidgetImageFile(
+                                  fileImage: appController.files.last),
+                            ),
+                          ],
+                        );
+                });
+  }
+
+  Row displayIcon() {
+    return Row(
+                  children: [
+                    WidgetIconButton(
+                      iconData: Icons.camera_alt_outlined,
+                      pressFunc: () {
+                        AppService().processTakePhoto(
+                            imageSource: ImageSource.camera);
+                        appController.indexForm.value = 1;
+                      },
+                      size: 36,
+                    ),
+                    WidgetIconButton(
+                      iconData: Icons.image_outlined,
+                      pressFunc: () {
+                        AppService().processTakePhoto(
+                            imageSource: ImageSource.gallery);
+                        appController.indexForm.value = 2;
+                      },
+                      size: 36,
+                    ),
+                    WidgetIconButton(
+                      iconData: Icons.shopping_cart_outlined,
+                      pressFunc: () {
+                        AppService().processTakePhoto(
+                            imageSource: ImageSource.gallery);
+                        appController.indexForm.value = 3;
+                      },
+                      size: 36,
+                    ),
+                  ],
+                );
   }
 
   Widget productForm() {
