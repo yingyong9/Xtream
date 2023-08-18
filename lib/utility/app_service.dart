@@ -22,6 +22,7 @@ import 'package:xstream/models/otp_require_thaibulk.dart';
 import 'package:xstream/models/province_model.dart';
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
+import 'package:xstream/pages/check_video.dart';
 import 'package:xstream/pages/detail_post.dart';
 import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/utility/app_constant.dart';
@@ -281,11 +282,20 @@ class AppService {
 
         File thumbnailFile = File(pathThumbnailFile.toString());
 
-        Get.offAll(DetailPost(
+         Get.offAll(CheckVideo(
             fileThumbnail: thumbnailFile,
             fileVideo: file,
             nameFileVideo: nameFileVideo,
             nameFileImage: nameFileImage));
+
+
+
+        //ส่วนของเดิม ที่ไม่มีการ Check Video
+        // Get.offAll(DetailPost(
+        //     fileThumbnail: thumbnailFile,
+        //     fileVideo: file,
+        //     nameFileVideo: nameFileVideo,
+        //     nameFileImage: nameFileImage));
       }
     } on Exception catch (e) {
       print(e.toString());
