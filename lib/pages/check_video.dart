@@ -5,6 +5,7 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
+import 'package:xstream/pages/detail_post.dart';
 import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/views/widget_back_button.dart';
@@ -59,32 +60,53 @@ class _CheckVideoState extends State<CheckVideo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ColorPlate.back1,
-        leading: WidgetBackButton(
-          pressFunc: () {
-            Get.offAll(const HomePage());
-          },
-        ),
-        elevation: 0,
-      ),
-      body: LayoutBuilder(
-        builder: (context, BoxConstraints boxConstraints) {
-          return SizedBox(
-            width:boxConstraints.maxWidth,
-            height: boxConstraints.maxHeight-50,
-            child: Chewie(controller: chewieController!),
-          );
-        }
-      ),
-      bottomSheet: Container(decoration: const BoxDecoration(color: Colors.black),
+      // appBar: AppBar(
+      //   backgroundColor: ColorPlate.back1,
+      //   leading: WidgetBackButton(
+      //     pressFunc: () {
+      //       Get.offAll(const HomePage());
+      //     },
+      //   ),
+      //   elevation: 0,
+      // ),
+      body: LayoutBuilder(builder: (context, BoxConstraints boxConstraints) {
+        return Stack(
+          children: [
+            SizedBox(
+              width: boxConstraints.maxWidth,
+              height: boxConstraints.maxHeight - 80,
+              child: FittedBox(
+                child: Chewie(controller: chewieController!),
+                fit: BoxFit.cover,
+              ),
+            ),
+            Positioned(
+              top: 24,
+              child: WidgetBackButton(color: Colors.black,
+                pressFunc: () {
+                  Get.offAll(const HomePage());
+                },
+              ),
+            )
+          ],
+        );
+      }),
+      bottomSheet: Container(
+        decoration: const BoxDecoration(color: Colors.black),
         width: double.infinity,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             WidgetButton(
               label: 'ถัดไป',
-              pressFunc: () {},color: ColorPlate.red,
+              pressFunc: () {
+                 Get.offAll(DetailPost(
+            fileThumbnail: widget.fileThumbnail,
+            fileVideo: widget.fileVideo,
+            nameFileVideo: widget.nameFileVideo,
+            nameFileImage: widget.nameFileImage));
+              },
+              color: ColorPlate.red,
             ),
             const SizedBox(
               width: 16,
