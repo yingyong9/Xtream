@@ -6,17 +6,21 @@ class WidgetImage extends StatelessWidget {
     Key? key,
     this.path,
     this.size,
+    this.tapFunc,
   }) : super(key: key);
 
   final String? path;
   final double? size;
+  final Function()? tapFunc;
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
-      path ?? 'images/happy.png',
-      width: size,
-      height: size,
+    return InkWell(onTap: tapFunc,
+      child: Image.asset(
+        path ?? 'images/happy.png',
+        width: size,
+        height: size,
+      ),
     );
   }
 }

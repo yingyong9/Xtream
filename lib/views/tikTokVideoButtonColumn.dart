@@ -11,12 +11,14 @@ import 'package:xstream/pages/authen.dart';
 import 'package:xstream/pages/confirm_buy_product.dart';
 import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/style/style.dart';
+import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_dialog.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/widget_avatar.dart';
 import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_icon_button.dart';
+import 'package:xstream/views/widget_image.dart';
 import 'package:xstream/views/widget_image_network.dart';
 import 'package:xstream/views/widget_text.dart';
 
@@ -30,6 +32,8 @@ class TikTokButtonColumn extends StatelessWidget {
   final Function()? onDisplayImageProduct;
   final Function()? onAddButton;
   final VideoModel videoModel;
+  final String docIdVideo;
+  final int indexVideo;
 
   const TikTokButtonColumn({
     Key? key,
@@ -42,6 +46,8 @@ class TikTokButtonColumn extends StatelessWidget {
     this.onDisplayImageProduct,
     this.onAddButton,
     required this.videoModel,
+    required this.docIdVideo,
+    required this.indexVideo,
   }) : super(key: key);
 
   @override
@@ -59,28 +65,100 @@ class TikTokButtonColumn extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          Tapped(
-            child: TikTokAvatar(
-              videoModel: videoModel,
-              onAddButton: onAddButton,
-            ),
-            onTap: onAvatar,
+          // Tapped(
+          //   child: TikTokAvatar(
+          //     videoModel: videoModel,
+          //     onAddButton: onAddButton,
+          //   ),
+          //   onTap: onAvatar,
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     FavoriteIcon(
+          //       onFavorite: onFavorite,
+          //       isFavorite: isFavorite,
+          //     ),
+          //   ],
+          // ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Column(
+                children: [
+                  WidgetText(
+                    data: videoModel.up.toString(),
+                    textStyle: AppConstant().bodyStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: SysSize.big,
+                    ),
+                  ),
+                  WidgetImage(
+                    path: 'images/arrowup2.png',
+                    size: 36,
+                    tapFunc: () {
+                      print('tab up at docIdVideo ---> $docIdVideo');
+                      print('tab up at indexVideo ---> $indexVideo');
+
+                      
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 8,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              FavoriteIcon(
-                onFavorite: onFavorite,
-                isFavorite: isFavorite,
+              Column(
+                children: [
+                  const WidgetImage(
+                    path: 'images/arrowdown2.png',
+                    size: 36,
+                  ),
+                  WidgetText(
+                    data: videoModel.down.toString(),
+                    textStyle: AppConstant().bodyStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: SysSize.big,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     Column(
+          //       children: [
+          //         WidgetImage(
+          //           path: 'images/comment.png',
+          //           size: 36,
+          //           tapFunc: onComment,
+          //         ),
+          //         WidgetText(
+          //           data: '45',
+          //           textStyle: AppConstant().bodyStyle(
+          //             fontWeight: FontWeight.bold,
+          //             fontSize: SysSize.big,
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ],
+          // ),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               _IconButton(
-                icon: IconToText(Icons.mode_comment, size: SysSize.iconBig - 4),
-                text: '4213',
+                icon: const IconToText(Icons.mode_comment_outlined,
+                    size: SysSize.iconBig - 4),
+                text: videoModel.comment.toString(),
                 onTap: onComment,
               ),
             ],
@@ -309,23 +387,26 @@ class _TikTokAvatarState extends State<TikTokAvatar> {
               ? widget.videoModel.mapUserModel['urlAvatar']
               : ownerUserModel!.urlAvatar),
     );
-    Widget addButton = appController.currentUserModels.last.uid == widget.videoModel.mapUserModel['uid']
+    Widget addButton = appController.currentUserModels.last.uid ==
+            widget.videoModel.mapUserModel['uid']
         ? const SizedBox()
-        : AppService().checkStatusFriend(videoModel: widget.videoModel) ? const SizedBox() : InkWell(
-            onTap: widget.onAddButton,
-            child: Container(
-              width: 20,
-              height: 20,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: ColorPlate.red,
-              ),
-              child: const Icon(
-                Icons.add,
-                size: 16,
-              ),
-            ),
-          );
+        : AppService().checkStatusFriend(videoModel: widget.videoModel)
+            ? const SizedBox()
+            : InkWell(
+                onTap: widget.onAddButton,
+                child: Container(
+                  width: 20,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: ColorPlate.red,
+                  ),
+                  child: const Icon(
+                    Icons.add,
+                    size: 16,
+                  ),
+                ),
+              );
     return Container(
       width: SysSize.avatar,
       height: 66,
@@ -397,11 +478,8 @@ class _IconButton extends StatelessWidget {
         Container(height: 2),
         Text(
           text ?? '??',
-          style: const TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: SysSize.small,
-            color: ColorPlate.white,
-          ),
+          style: AppConstant()
+              .bodyStyle(fontWeight: FontWeight.bold, fontSize: SysSize.big),
         ),
       ],
     );

@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    Widget? currentPage;
+    // Widget? currentPage;
 
     switch (tabBarType) {
       case TikTokPageTag.home:
@@ -269,7 +269,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         videoModel: i < appController.videoModels.length
                             ? appController.videoModels[i]
                             : appController.videoModels.last,
-                       
+                        docIdVideo: appController.docIdVideos[i],
+                        indexVideo: i,
                       );
                       // video
                       Widget currentVideo = Center(

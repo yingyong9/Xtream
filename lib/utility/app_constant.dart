@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xstream/style/style.dart';
 
 class AppConstant {
   static String host = 'stream115.otaro.co.th';
@@ -15,4 +16,10 @@ class AppConstant {
   TextStyle? h1Style({required BuildContext context}) {
     return Theme.of(context).textTheme.titleLarge;
   }
+
+  TextStyle bodyStyle({FontWeight? fontWeight, double? fontSize}) =>  TextStyle(
+        fontWeight: fontWeight ?? FontWeight.normal,
+        fontSize: fontSize ?? SysSize.small,
+        color: ColorPlate.white,
+      );
 }
