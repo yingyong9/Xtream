@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:xstream/models/video_model.dart';
 import 'package:xstream/style/style.dart';
+import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/views/tikTokVideoGesture.dart';
+import 'package:xstream/views/widget_avatar.dart';
 import 'package:xstream/views/widget_image.dart';
 
 ///
@@ -170,15 +172,22 @@ class VideoUserInfo extends StatelessWidget {
         children: <Widget>[
           Row(
             children: [
-              const WidgetImage(
-                path: 'images/redbottom.png',
-                size: 30,
+              // const WidgetImage(
+              //   path: 'images/redbottom.png',
+              //   size: 30,
+              // ),
+              WidgetAvatar(
+                urlImage: videoModel!.mapUserModel['urlAvatar'],
+                size: 48,
               ),
               Text(
                 videoModel == null
                     ? ''
-                    : '@${videoModel!.mapUserModel["name"]}',
-                style: StandardTextStyle.big,
+                    : ' @${videoModel!.mapUserModel["name"]}',
+                style: AppConstant().bodyStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
               ),
             ],
           ),
@@ -189,10 +198,12 @@ class VideoUserInfo extends StatelessWidget {
           // ),
           ExpandableText(
             videoModel!.detail ?? '',
-            expandText: 'ดูเพิ่มเติม',linkStyle: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+            expandText: 'ดูเพิ่มเติม',
+            linkStyle: const TextStyle(
+                color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
             collapseText: 'ซ่อน',
             maxLines: 3,
-            style: StandardTextStyle.normal,
+            style: AppConstant().bodyStyle(fontWeight: FontWeight.bold, fontSize: SysSize.big),
           ),
           Container(height: 6),
           // const Row(
