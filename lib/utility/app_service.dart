@@ -500,4 +500,25 @@ class AppService {
       });
     });
   }
+  Future<void> processDecrease({required String docIdVideo}) async {
+    await FirebaseFirestore.instance
+        .collection('video')
+        .doc(docIdVideo)
+        .get()
+        .then((value) async {
+      VideoModel videoModel = VideoModel.fromMap(value.data()!);
+      Map<String, dynamic> map = videoModel.toMap();
+      int down = videoModel.down!;
+      down++;
+      map['down'] = down;
+
+      await FirebaseFirestore.instance
+          .collection('video')
+          .doc(docIdVideo)
+          .update(map)
+          .then((value) {
+        print('Decrease up Success');
+      });
+    });
+  }
 }

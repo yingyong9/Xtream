@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:xstream/models/comment_model.dart';
+import 'package:xstream/models/video_model.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
@@ -16,9 +17,11 @@ class TikTokCommentBottomSheet extends StatefulWidget {
   const TikTokCommentBottomSheet({
     Key? key,
     required this.docIdVideo,
+    required this.indexVideo,
   }) : super(key: key);
 
   final String docIdVideo;
+  final int indexVideo;
 
   @override
   State<TikTokCommentBottomSheet> createState() =>
@@ -59,28 +62,11 @@ class _TikTokCommentBottomSheetState extends State<TikTokCommentBottomSheet> {
             alignment: Alignment.center,
             // color: Colors.white.withOpacity(0.2),
             child: const Text(
-              '128 Comment',
+              ' Comment',
               style: StandardTextStyle.small,
             ),
           ),
           Expanded(
-            // child: ListView(
-            //   physics: AlwaysScrollableScrollPhysics(
-            //     parent: BouncingScrollPhysics(),
-            //   ),
-            //   children: <Widget>[
-            //     _CommentRow(),
-            //     _CommentRow(),
-            //     _CommentRow(),
-            //     _CommentRow(),
-            //     _CommentRow(),
-            //     _CommentRow(),
-            //     _CommentRow(),
-            //     _CommentRow(),
-            //     _CommentRow(),
-            // _CommentRow(),
-            //   ],
-            // ),
             child: Obx(() {
               return appController.commentModels.isEmpty
                   ? const SizedBox()
@@ -123,6 +109,21 @@ class _TikTokCommentBottomSheetState extends State<TikTokCommentBottomSheet> {
                     textEditingController.text = '';
                     AppService().readCommentModelByDocIdVideo(
                         docIdVideo: widget.docIdVideo);
+
+                    Map<String, dynamic> map =
+                        appController.videoModels[widget.indexVideo].toMap();
+                    int comment =
+                        appController.videoModels[widget.indexVideo].comment!;
+                    comment++;
+                    map['comment'] = comment;
+
+                    appController.videoModels[widget.indexVideo] =
+                        VideoModel.fromMap(map);
+
+                    FirebaseFirestore.instance
+                        .collection('video')
+                        .doc(widget.docIdVideo)
+                        .update(map);
                   });
                 },
               ),
