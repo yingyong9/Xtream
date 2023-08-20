@@ -7,9 +7,7 @@ import 'package:tapped/tapped.dart';
 
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
-import 'package:xstream/pages/authen.dart';
 import 'package:xstream/pages/confirm_buy_product.dart';
-import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
@@ -87,7 +85,8 @@ class TikTokButtonColumn extends StatelessWidget {
               Column(
                 children: [
                   WidgetText(
-                    data: videoModel.up.toString(),
+                    // data: videoModel.up.toString(),
+                    data: appController.videoModels[indexVideo].up.toString(),
                     textStyle: AppConstant().bodyStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: SysSize.big,
@@ -100,7 +99,7 @@ class TikTokButtonColumn extends StatelessWidget {
                       print('tab up at docIdVideo ---> $docIdVideo');
                       print('tab up at indexVideo ---> $indexVideo');
 
-                      
+                      AppService().processIncrease(docIdVideo: docIdVideo);
                     },
                   ),
                 ],
