@@ -252,6 +252,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           Get.bottomSheet(
                             TikTokCommentBottomSheet(
                               docIdVideo: appController.docIdVideos[i],
+                              indexVideo: i,
                             ),
                           );
                         },

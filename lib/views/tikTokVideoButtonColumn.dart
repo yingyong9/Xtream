@@ -7,9 +7,7 @@ import 'package:tapped/tapped.dart';
 
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
-import 'package:xstream/pages/authen.dart';
 import 'package:xstream/pages/confirm_buy_product.dart';
-import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
@@ -87,7 +85,8 @@ class TikTokButtonColumn extends StatelessWidget {
               Column(
                 children: [
                   WidgetText(
-                    data: videoModel.up.toString(),
+                    // data: videoModel.up.toString(),
+                    data: appController.videoModels[indexVideo].up.toString(),
                     textStyle: AppConstant().bodyStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: SysSize.big,
@@ -100,7 +99,15 @@ class TikTokButtonColumn extends StatelessWidget {
                       print('tab up at docIdVideo ---> $docIdVideo');
                       print('tab up at indexVideo ---> $indexVideo');
 
-                      
+                      Map<String, dynamic> map =
+                          appController.videoModels[indexVideo].toMap();
+                      int up = appController.videoModels[indexVideo].up!;
+                      up = up + 1;
+                      map['up'] = up;
+                      appController.videoModels[indexVideo] =
+                          VideoModel.fromMap(map);
+
+                      AppService().processIncrease(docIdVideo: docIdVideo);
                     },
                   ),
                 ],
@@ -115,12 +122,25 @@ class TikTokButtonColumn extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  const WidgetImage(
+                  WidgetImage(
                     path: 'images/arrowdown2.png',
                     size: 36,
+                    tapFunc: () {
+                      Map<String, dynamic> map =
+                          appController.videoModels[indexVideo].toMap();
+
+                      int down = appController.videoModels[indexVideo].down!;
+                      down++;
+                      map['down'] = down;
+
+                      appController.videoModels[indexVideo] =
+                          VideoModel.fromMap(map);
+
+                      AppService().processDecrease(docIdVideo: docIdVideo);
+                    },
                   ),
                   WidgetText(
-                    data: videoModel.down.toString(),
+                    data: appController.videoModels[indexVideo].down.toString(),
                     textStyle: AppConstant().bodyStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: SysSize.big,
@@ -158,7 +178,7 @@ class TikTokButtonColumn extends StatelessWidget {
               _IconButton(
                 icon: const IconToText(Icons.mode_comment_outlined,
                     size: SysSize.iconBig - 4),
-                text: videoModel.comment.toString(),
+                text: appController.videoModels[indexVideo].comment.toString(),
                 onTap: onComment,
               ),
             ],

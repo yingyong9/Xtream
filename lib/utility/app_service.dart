@@ -282,13 +282,11 @@ class AppService {
 
         File thumbnailFile = File(pathThumbnailFile.toString());
 
-         Get.offAll(CheckVideo(
+        Get.offAll(CheckVideo(
             fileThumbnail: thumbnailFile,
             fileVideo: file,
             nameFileVideo: nameFileVideo,
             nameFileImage: nameFileImage));
-
-
 
         //ส่วนของเดิม ที่ไม่มีการ Check Video
         // Get.offAll(DetailPost(
@@ -479,5 +477,48 @@ class AppService {
           userModel.friends.contains(appController.currentUserModels.last.uid);
     }
     return result;
+  }
+
+  Future<void> processIncrease({required String docIdVideo}) async {
+    await FirebaseFirestore.instance
+        .collection('video')
+        .doc(docIdVideo)
+        .get()
+        .then((value) async {
+      VideoModel videoModel = VideoModel.fromMap(value.data()!);
+      Map<String, dynamic> map = videoModel.toMap();
+      int up = videoModel.up!;
+      up++;
+      map['up'] = up;
+
+      await FirebaseFirestore.instance
+          .collection('video')
+          .doc(docIdVideo)
+          .update(map)
+          .then((value) {
+        print('Increase up Success');
+      });
+    });
+  }
+  Future<void> processDecrease({required String docIdVideo}) async {
+    await FirebaseFirestore.instance
+        .collection('video')
+        .doc(docIdVideo)
+        .get()
+        .then((value) async {
+      VideoModel videoModel = VideoModel.fromMap(value.data()!);
+      Map<String, dynamic> map = videoModel.toMap();
+      int down = videoModel.down!;
+      down++;
+      map['down'] = down;
+
+      await FirebaseFirestore.instance
+          .collection('video')
+          .doc(docIdVideo)
+          .update(map)
+          .then((value) {
+        print('Decrease up Success');
+      });
+    });
   }
 }
