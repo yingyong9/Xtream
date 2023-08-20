@@ -61,9 +61,13 @@ class _TikTokCommentBottomSheetState extends State<TikTokCommentBottomSheet> {
             height: 24,
             alignment: Alignment.center,
             // color: Colors.white.withOpacity(0.2),
-            child: const Text(
-              ' Comment',
-              style: StandardTextStyle.small,
+            child: Obx(
+               () {
+                return  Text(
+                  '${appController.videoModels[widget.indexVideo].comment} Comment',
+                  style: StandardTextStyle.small,
+                );
+              }
             ),
           ),
           Expanded(
