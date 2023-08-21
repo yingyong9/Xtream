@@ -209,7 +209,7 @@ class TikTokButtonColumn extends StatelessWidget {
               margin: const EdgeInsets.only(right: 12),
               padding: const EdgeInsets.symmetric(horizontal: 5),
               width: 110,
-              height: 170,
+              height: videoModel.nameProduct!.isEmpty ? 110 : 170,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -221,13 +221,13 @@ class TikTokButtonColumn extends StatelessWidget {
                     size: 100,
                     boxFit: BoxFit.cover,
                   ),
-                  Text(
+                  videoModel.nameProduct!.isEmpty ? const SizedBox() : Text(
                     videoModel.nameProduct!,
                     style: TextStyle(color: ColorPlate.black),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  Row(
+                  videoModel.priceProduct!.isEmpty ? const SizedBox() : Row(
                     children: [
                       WidgetText(
                         data: '฿',
