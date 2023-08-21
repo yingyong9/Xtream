@@ -7,10 +7,12 @@ class CommentModel {
   final String comment;
   final Timestamp timestamp;
   final Map<String, dynamic> mapComment;
+  final bool upBool;
   CommentModel({
     required this.comment,
     required this.timestamp,
     required this.mapComment,
+    required this.upBool,
   });
 
   Map<String, dynamic> toMap() {
@@ -18,6 +20,7 @@ class CommentModel {
       'comment': comment,
       'timestamp': timestamp,
       'mapComment': mapComment,
+      'upBool': upBool,
     };
   }
 
@@ -26,10 +29,12 @@ class CommentModel {
       comment: (map['comment'] ?? '') as String,
       timestamp: (map['timestamp'] ?? Timestamp(0, 0)),
       mapComment: Map<String, dynamic>.from(map['mapComment'] ?? {}),
+      upBool: (map['upBool'] ?? false) as bool,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory CommentModel.fromJson(String source) => CommentModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory CommentModel.fromJson(String source) =>
+      CommentModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

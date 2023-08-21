@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         hintColor: Colors.white,
         // accentColor: Colors.white,
         primaryColor: ColorPlate.orange,
-        primaryColorBrightness: Brightness.dark,
+        // primaryColorBrightness: Brightness.dark,
         scaffoldBackgroundColor: ColorPlate.back1,
         dialogBackgroundColor: ColorPlate.back2,
         // accentColorBrightness: Brightness.light,

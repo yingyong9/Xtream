@@ -238,8 +238,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           if (appController.currentUserModels.isEmpty) {
                             Get.to(const Authen());
                           } else {
-                            Get.to(UserDetailOwnerVideo(
-                                ownerVideoUserModel: ownerVideoUserModel));
+                            // Get.to(UserDetailOwnerVideo(
+                            //     ownerVideoUserModel: ownerVideoUserModel));
+
+                             Get.bottomSheet(
+                            TikTokCommentBottomSheet(
+                              docIdVideo: appController.docIdVideos[i],
+                              indexVideo: i,
+                            ),
+                          );
                           }
                         },
                         onFavorite: () {

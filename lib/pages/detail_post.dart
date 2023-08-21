@@ -125,8 +125,8 @@ class _DetailPostState extends State<DetailPost> {
                   const Divider(
                     color: ColorPlate.gray,
                   ),
-                  // displayIcon(),
-                  // displayImageFile(boxConstraints),
+                  displayIcon(),
+                  displayImageFile(boxConstraints),
                 ],
               ),
             ),
@@ -160,15 +160,7 @@ class _DetailPostState extends State<DetailPost> {
             } else {
               // Have Product
 
-              if ((nameController.text.isEmpty) ||
-                  (priceController.text.isEmpty) ||
-                  (affiliateController.text.isEmpty)) {
-                Get.back();
-                AppSnackBar(
-                        title: 'มีช่องว่าง',
-                        message: 'ชื่อ, ราคา และ นายหน้าสินค้า ต้องมี')
-                    .errorSnackBar();
-              } else {
+             
                 String? urlImageProduct =
                     await AppService().processUploadFile(path: 'product');
 
@@ -190,7 +182,7 @@ class _DetailPostState extends State<DetailPost> {
                       urlProduct: urlImageProduct,
                     )
                     .then((value) => Get.back());
-              }
+              
             }
           },
         ),
@@ -225,24 +217,24 @@ class _DetailPostState extends State<DetailPost> {
   Row displayIcon() {
     return Row(
                   children: [
-                    WidgetIconButton(
-                      iconData: Icons.camera_alt_outlined,
-                      pressFunc: () {
-                        AppService().processTakePhoto(
-                            imageSource: ImageSource.camera);
-                        appController.indexForm.value = 1;
-                      },
-                      size: 36,
-                    ),
-                    WidgetIconButton(
-                      iconData: Icons.image_outlined,
-                      pressFunc: () {
-                        AppService().processTakePhoto(
-                            imageSource: ImageSource.gallery);
-                        appController.indexForm.value = 2;
-                      },
-                      size: 36,
-                    ),
+                    // WidgetIconButton(
+                    //   iconData: Icons.camera_alt_outlined,
+                    //   pressFunc: () {
+                    //     AppService().processTakePhoto(
+                    //         imageSource: ImageSource.camera);
+                    //     appController.indexForm.value = 1;
+                    //   },
+                    //   size: 36,
+                    // ),
+                    // WidgetIconButton(
+                    //   iconData: Icons.image_outlined,
+                    //   pressFunc: () {
+                    //     AppService().processTakePhoto(
+                    //         imageSource: ImageSource.gallery);
+                    //     appController.indexForm.value = 2;
+                    //   },
+                    //   size: 36,
+                    // ),
                     WidgetIconButton(
                       iconData: Icons.shopping_cart_outlined,
                       pressFunc: () {
