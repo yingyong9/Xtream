@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_print
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -61,14 +61,12 @@ class _TikTokCommentBottomSheetState extends State<TikTokCommentBottomSheet> {
             height: 24,
             alignment: Alignment.center,
             // color: Colors.white.withOpacity(0.2),
-            child: Obx(
-               () {
-                return  Text(
-                  '${appController.videoModels[widget.indexVideo].comment} Comment',
-                  style: StandardTextStyle.small,
-                );
-              }
-            ),
+            child: Obx(() {
+              return Text(
+                '${appController.videoModels[widget.indexVideo].comment} Comment',
+                style: StandardTextStyle.small,
+              );
+            }),
           ),
           Expanded(
             child: Obx(() {
@@ -87,55 +85,111 @@ class _TikTokCommentBottomSheetState extends State<TikTokCommentBottomSheet> {
             padding: const EdgeInsets.only(left: 8, right: 8),
             child: WidgetForm(
               textEditingController: textEditingController,
-              suffixWidget: WidgetIconButton(
-                iconData: Icons.send,
-                pressFunc: () async {
-                  print('send at docIdVideo ---> ${widget.docIdVideo}');
-
-                  Map<String, dynamic> map =
-                      appController.currentUserModels.last.toMap();
-
-                  print('mapCurrentLogin ---> $map');
-
-                  print('textEdit ---> ${textEditingController.text}');
-
-                  CommentModel commentModel = CommentModel(
-                      comment: textEditingController.text,
-                      timestamp: Timestamp.fromDate(DateTime.now()),
-                      mapComment: map);
-
-                  AppService()
-                      .insertComment(
-                          docIdVideo: widget.docIdVideo,
-                          mapComment: commentModel.toMap())
-                      .then((value) {
-                    print('Insert Comment Success');
-                    textEditingController.text = '';
-                    AppService().readCommentModelByDocIdVideo(
-                        docIdVideo: widget.docIdVideo);
-
-                    Map<String, dynamic> map =
-                        appController.videoModels[widget.indexVideo].toMap();
-                    int comment =
-                        appController.videoModels[widget.indexVideo].comment!;
-                    comment++;
-                    map['comment'] = comment;
-
-                    appController.videoModels[widget.indexVideo] =
-                        VideoModel.fromMap(map);
-
-                    FirebaseFirestore.instance
-                        .collection('video')
-                        .doc(widget.docIdVideo)
-                        .update(map);
-                  });
-                },
+              suffixWidget: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  InkWell(
+                    onTap: () async {
+                      print('tap up');
+                      processAddComment(upBool: true);
+                    },
+                    child: const Icon(Icons.arrow_circle_up),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      print('tap down');
+                      processAddComment(upBool: false);
+                    },
+                    child: const Icon(Icons.arrow_circle_down),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                ],
               ),
+              // suffixWidget: WidgetIconButton(
+              //   iconData: Icons.send,
+              //   pressFunc: () async {
+              //     print('send at docIdVideo ---> ${widget.docIdVideo}');
+
+              //     Map<String, dynamic> map =
+              //         appController.currentUserModels.last.toMap();
+
+              //     print('mapCurrentLogin ---> $map');
+
+              //     print('textEdit ---> ${textEditingController.text}');
+
+              //     CommentModel commentModel = CommentModel(
+              //         comment: textEditingController.text,
+              //         timestamp: Timestamp.fromDate(DateTime.now()),
+              //         mapComment: map);
+
+              //     AppService()
+              //         .insertComment(
+              //             docIdVideo: widget.docIdVideo,
+              //             mapComment: commentModel.toMap())
+              //         .then((value) {
+              //       print('Insert Comment Success');
+              //       textEditingController.text = '';
+              //       AppService().readCommentModelByDocIdVideo(
+              //           docIdVideo: widget.docIdVideo);
+
+              //       Map<String, dynamic> map =
+              //           appController.videoModels[widget.indexVideo].toMap();
+              //       int comment =
+              //           appController.videoModels[widget.indexVideo].comment!;
+              //       comment++;
+              //       map['comment'] = comment;
+
+              //       appController.videoModels[widget.indexVideo] =
+              //           VideoModel.fromMap(map);
+
+              //       FirebaseFirestore.instance
+              //           .collection('video')
+              //           .doc(widget.docIdVideo)
+              //           .update(map);
+              //     });
+              //   },
+              // ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  void processAddComment({required bool upBool}) {
+    Map<String, dynamic> map = appController.currentUserModels.last.toMap();
+
+    CommentModel commentModel = CommentModel(
+        comment: textEditingController.text,
+        timestamp: Timestamp.fromDate(DateTime.now()),
+        mapComment: map, upBool: upBool);
+
+    AppService()
+        .insertComment(
+            docIdVideo: widget.docIdVideo, mapComment: commentModel.toMap())
+        .then((value) {
+      print('Insert Comment Success');
+      textEditingController.text = '';
+      AppService().readCommentModelByDocIdVideo(docIdVideo: widget.docIdVideo);
+
+      Map<String, dynamic> map =
+          appController.videoModels[widget.indexVideo].toMap();
+      int comment = appController.videoModels[widget.indexVideo].comment!;
+      comment++;
+      map['comment'] = comment;
+
+      appController.videoModels[widget.indexVideo] = VideoModel.fromMap(map);
+
+      FirebaseFirestore.instance
+          .collection('video')
+          .doc(widget.docIdVideo)
+          .update(map);
+    });
   }
 }
 
@@ -163,21 +217,18 @@ class _CommentRow extends StatelessWidget {
         ),
       ],
     );
-    Widget right = const Column(
+    Widget right =  Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Icon(
-          Icons.favorite,
-          color: Colors.white,
+          commentModel.upBool ? Icons.arrow_circle_up : Icons.arrow_circle_down,
+          color: commentModel.upBool ? Colors.red : Colors.white,
         ),
-        Text(
-          '54',
-          style: StandardTextStyle.small,
-        ),
+       
       ],
     );
     right = Opacity(
-      opacity: 0.3,
+      opacity: 1,
       child: right,
     );
     var avatar = Container(

@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_print
+// ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_print, sort_child_properties_last
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -223,13 +223,13 @@ class TikTokButtonColumn extends StatelessWidget {
                   ),
                   videoModel.nameProduct!.isEmpty ? const SizedBox() : Text(
                     videoModel.nameProduct!,
-                    style: TextStyle(color: ColorPlate.black),
+                    style: const TextStyle(color: ColorPlate.black),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   videoModel.priceProduct!.isEmpty ? const SizedBox() : Row(
                     children: [
-                      WidgetText(
+                      const WidgetText(
                         data: '฿',
                         textStyle: TextStyle(
                             color: ColorPlate.black,
@@ -237,7 +237,7 @@ class TikTokButtonColumn extends StatelessWidget {
                       ),
                       WidgetText(
                         data: videoModel.priceProduct!,
-                        textStyle: TextStyle(
+                        textStyle: const TextStyle(
                             color: ColorPlate.black,
                             fontWeight: FontWeight.w700,
                             fontSize: 20),
