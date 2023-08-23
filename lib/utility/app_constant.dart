@@ -17,9 +17,9 @@ class AppConstant {
     return Theme.of(context).textTheme.titleLarge;
   }
 
-  TextStyle bodyStyle({FontWeight? fontWeight, double? fontSize}) =>  TextStyle(
+  TextStyle bodyStyle({FontWeight? fontWeight, double? fontSize, Color? color}) =>  TextStyle(
         fontWeight: fontWeight ?? FontWeight.normal,
         fontSize: fontSize ?? SysSize.small,
-        color: ColorPlate.white,
+        color: color ?? ColorPlate.white,
       );
 }

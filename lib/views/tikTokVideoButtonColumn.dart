@@ -7,7 +7,7 @@ import 'package:tapped/tapped.dart';
 
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
-import 'package:xstream/pages/confirm_buy_product.dart';
+import 'package:xstream/pages/add_address_delivery.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
@@ -19,6 +19,7 @@ import 'package:xstream/views/widget_icon_button.dart';
 import 'package:xstream/views/widget_image.dart';
 import 'package:xstream/views/widget_image_network.dart';
 import 'package:xstream/views/widget_text.dart';
+import 'package:xstream/views/widget_text_button.dart';
 
 class TikTokButtonColumn extends StatelessWidget {
   final double? bottomPadding;
@@ -221,29 +222,33 @@ class TikTokButtonColumn extends StatelessWidget {
                     size: 100,
                     boxFit: BoxFit.cover,
                   ),
-                  videoModel.nameProduct!.isEmpty ? const SizedBox() : Text(
-                    videoModel.nameProduct!,
-                    style: const TextStyle(color: ColorPlate.black),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  videoModel.priceProduct!.isEmpty ? const SizedBox() : Row(
-                    children: [
-                      const WidgetText(
-                        data: '฿',
-                        textStyle: TextStyle(
-                            color: ColorPlate.black,
-                            fontWeight: FontWeight.w700),
-                      ),
-                      WidgetText(
-                        data: videoModel.priceProduct!,
-                        textStyle: const TextStyle(
-                            color: ColorPlate.black,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20),
-                      ),
-                    ],
-                  ),
+                  videoModel.nameProduct!.isEmpty
+                      ? const SizedBox()
+                      : Text(
+                          videoModel.nameProduct!,
+                          style: const TextStyle(color: ColorPlate.black),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                  videoModel.priceProduct!.isEmpty
+                      ? const SizedBox()
+                      : Row(
+                          children: [
+                            const WidgetText(
+                              data: '฿',
+                              textStyle: TextStyle(
+                                  color: ColorPlate.black,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            WidgetText(
+                              data: videoModel.priceProduct!,
+                              textStyle: const TextStyle(
+                                  color: ColorPlate.black,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 20),
+                            ),
+                          ],
+                        ),
                 ],
               ),
               decoration: BoxDecoration(color: ColorPlate.white),
@@ -260,7 +265,7 @@ class TikTokButtonColumn extends StatelessWidget {
           children: [
             Row(
               children: [
-                WidgetText(
+                const WidgetText(
                   data: 'จำนวน',
                   textStyle: TextStyle(color: Colors.black),
                 ),
@@ -317,7 +322,7 @@ class TikTokButtonColumn extends StatelessWidget {
             label: 'ยืนยัน',
             pressFunc: () {
               Get.back();
-              Get.to(ConfirmBuyProduct(
+              Get.to(AddAddressDelivery(
                   videoModel: videoModel,
                   amountProduct: appController.amount.value));
             },

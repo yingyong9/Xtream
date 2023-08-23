@@ -2,15 +2,18 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:xstream/models/address_model.dart';
 import 'package:xstream/models/video_model.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
+import 'package:xstream/utility/app_snackbar.dart';
+import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_form.dart';
 import 'package:xstream/views/widget_text.dart';
 
-class ConfirmBuyProduct extends StatefulWidget {
-  const ConfirmBuyProduct({
+class AddAddressDelivery extends StatefulWidget {
+  const AddAddressDelivery({
     Key? key,
     required this.videoModel,
     required this.amountProduct,
@@ -20,11 +23,16 @@ class ConfirmBuyProduct extends StatefulWidget {
   final int amountProduct;
 
   @override
-  State<ConfirmBuyProduct> createState() => _ConfirmBuyProductState();
+  State<AddAddressDelivery> createState() => _AddAddressDeliveryState();
 }
 
-class _ConfirmBuyProductState extends State<ConfirmBuyProduct> {
+class _AddAddressDeliveryState extends State<AddAddressDelivery> {
   AppController appController = Get.put(AppController());
+
+  TextEditingController nameReceiveController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController homeNumberController = TextEditingController();
+  TextEditingController remarkController = TextEditingController();
 
   @override
   void initState() {
@@ -51,6 +59,7 @@ class _ConfirmBuyProductState extends State<ConfirmBuyProduct> {
             districeDropdown(),
             homeNumberForm(),
             moreDetailForm(),
+            saveButton(),
           ],
         ),
       ),
@@ -65,7 +74,8 @@ class _ConfirmBuyProductState extends State<ConfirmBuyProduct> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  decoration: BoxDecoration(color: ColorPlate.darkGray,
+                  decoration: BoxDecoration(
+                      color: ColorPlate.darkGray,
                       borderRadius: BorderRadius.circular(10)),
                   width: 250,
                   height: 50,
@@ -110,7 +120,8 @@ class _ConfirmBuyProductState extends State<ConfirmBuyProduct> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  decoration: BoxDecoration(color: ColorPlate.darkGray,
+                  decoration: BoxDecoration(
+                      color: ColorPlate.darkGray,
                       borderRadius: BorderRadius.circular(10)),
                   width: 250,
                   height: 50,
@@ -193,8 +204,9 @@ class _ConfirmBuyProductState extends State<ConfirmBuyProduct> {
         Container(
           width: 250,
           margin: const EdgeInsets.only(top: 8),
-          child: const WidgetForm(
-            labelWidget: WidgetText(data: 'เบอร์โทรศัพย์มือถือ'),
+          child: WidgetForm(
+            textEditingController: phoneNumberController,
+            labelWidget: const WidgetText(data: 'เบอร์โทรศัพย์มือถือ ***'),
           ),
         ),
       ],
@@ -208,8 +220,9 @@ class _ConfirmBuyProductState extends State<ConfirmBuyProduct> {
         Container(
           width: 250,
           margin: const EdgeInsets.only(top: 8),
-          child: const WidgetForm(
-            labelWidget: WidgetText(data: 'ชื่อ-นามผู้รับ'),
+          child: WidgetForm(
+            textEditingController: nameReceiveController,
+            labelWidget: const WidgetText(data: 'ชื่อ-นามผู้รับ ***'),
           ),
         ),
       ],
@@ -226,8 +239,9 @@ class _ConfirmBuyProductState extends State<ConfirmBuyProduct> {
                 Container(
                   width: 250,
                   margin: const EdgeInsets.only(top: 8),
-                  child: const WidgetForm(
-                    labelWidget: WidgetText(data: 'บ้านเลขที่'),
+                  child: WidgetForm(
+                    textEditingController: homeNumberController,
+                    labelWidget: const WidgetText(data: 'บ้านเลขที่ ***'),
                   ),
                 ),
               ],
@@ -245,9 +259,51 @@ class _ConfirmBuyProductState extends State<ConfirmBuyProduct> {
                 Container(
                   width: 250,
                   margin: const EdgeInsets.only(top: 8),
-                  child: const WidgetForm(
-                    labelWidget:
-                        WidgetText(data: 'ข้อมูลเพิ่มเติมให้ขนส่ง(อาจมี)'),
+                  child: WidgetForm(
+                    textEditingController: remarkController,
+                    labelWidget: const WidgetText(
+                        data: 'ข้อมูลเพิ่มเติมให้ขนส่ง(อาจมี)'),
+                  ),
+                ),
+              ],
+            );
+    });
+  }
+
+  Widget saveButton() {
+    return Obx(() {
+      return appController.chooseDistriceModels.last == null
+          ? const SizedBox()
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 250,
+                  margin: EdgeInsets.only(top: 8),
+                  child: WidgetButton(
+                    label: 'บันทึก',
+                    pressFunc: () {
+                      if ((nameReceiveController.text.isEmpty) ||
+                          (phoneNumberController.text.isEmpty) ||
+                          (homeNumberController.text.isEmpty)) {
+                        AppSnackBar(
+                                title: 'กรอกข้อมูลไม่ครบ',
+                                message: 'ข้อมูลที่มี *** ต้องกรอกให้ครบ')
+                            .errorSnackBar();
+                      } else {
+                        print('OK');
+
+                        AddressModel addressModel = AddressModel(
+                            name: nameReceiveController.text,
+                            phone: phoneNumberController.text,
+                            province: appController.provinceModels.last.name_th,
+                            amphur: appController.amphureModels.last.name_th,
+                            district: appController.districeModels.last.name_th,
+                            houseNumber: homeNumberController.text,
+                            remark: remarkController.text);
+                      }
+                    },
+                    color: ColorPlate.red,
                   ),
                 ),
               ],
