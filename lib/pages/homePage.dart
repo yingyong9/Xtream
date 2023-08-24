@@ -15,6 +15,7 @@ import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/style/physics.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
+import 'package:xstream/views/product_bottomSheet.dart';
 import 'package:xstream/views/tikTokCommentBottomSheet.dart';
 import 'package:xstream/views/tikTokHeader.dart';
 import 'package:xstream/views/tikTokScaffold.dart';
@@ -238,15 +239,20 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           if (appController.currentUserModels.isEmpty) {
                             Get.to(const Authen());
                           } else {
-                            // Get.to(UserDetailOwnerVideo(
-                            //     ownerVideoUserModel: ownerVideoUserModel));
-
-                             Get.bottomSheet(
-                            TikTokCommentBottomSheet(
-                              docIdVideo: appController.docIdVideos[i],
-                              indexVideo: i,
-                            ),
-                          );
+                            if (appController
+                                .videoModels[i].priceProduct!.isEmpty) {
+                              Get.bottomSheet(
+                                TikTokCommentBottomSheet(
+                                  docIdVideo: appController.docIdVideos[i],
+                                  indexVideo: i,
+                                ),
+                              );
+                            } else {
+                              appController.amount.value = 1;
+                              Get.bottomSheet(ProductButtonSheet(
+                                indexVideo: i,
+                              ));
+                            }
                           }
                         },
                         onFavorite: () {

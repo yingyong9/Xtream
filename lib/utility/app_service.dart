@@ -472,9 +472,9 @@ class AppService {
 
     UserModel userModel = UserModel.fromMap(videoModel.mapUserModel);
 
-    if (userModel.friends.isNotEmpty) {
+    if (userModel.friends!.isNotEmpty) {
       result =
-          userModel.friends.contains(appController.currentUserModels.last.uid);
+          userModel.friends!.contains(appController.currentUserModels.last.uid);
     }
     return result;
   }
