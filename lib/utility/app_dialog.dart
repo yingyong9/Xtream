@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:xstream/models/video_model.dart';
+import 'package:xstream/style/style.dart';
 import 'package:xstream/views/widget_avatar.dart';
 import 'package:xstream/views/widget_image.dart';
 import 'package:xstream/views/widget_progress.dart';
@@ -106,7 +107,7 @@ class AppDialog {
     Get.dialog(
       AlertDialog(
         alignment: alignmentGeometry,
-        backgroundColor: Colors.white,
+        backgroundColor: ColorPlate.back2,
         icon: icon,
         title: title,
         content: content,
@@ -117,7 +118,7 @@ class AppDialog {
                 pressFunc: () {
                   Get.back();
                 },
-              )
+              ), secondAction ?? const SizedBox(),
         ],
       ),
     );

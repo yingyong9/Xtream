@@ -324,7 +324,7 @@ class TikTokButtonColumn extends StatelessWidget {
               Get.back();
               Get.to(AddAddressDelivery(
                   videoModel: videoModel,
-                  amountProduct: appController.amount.value));
+                  amountProduct: appController.amount.value, indexVideo: indexVideo,));
             },
           ),
         ));

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xstream/pages/add_address_delivery.dart';
+import 'package:xstream/pages/order_page.dart';
 
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
@@ -86,9 +87,17 @@ class ProductButtonSheet extends StatelessWidget {
                   child: WidgetButton(
                     label: 'ยืนยัน',
                     pressFunc: () {
-                      Get.to(AddAddressDelivery(
-                          videoModel: appController.videoModels[indexVideo],
-                          amountProduct: appController.amount.value));
+                      print(
+                          'mapAddress ----> ${appController.currentUserModels.last.mapAddress!.length}');
+
+                      if (appController
+                          .currentUserModels.last.mapAddress!.isEmpty) {
+                        Get.to(AddAddressDelivery(
+                            videoModel: appController.videoModels[indexVideo],
+                            amountProduct: appController.amount.value, indexVideo: indexVideo,));
+                      } else {
+                        Get.to( OrderPage(indexVideo: indexVideo,));
+                      }
                     },
                     color: ColorPlate.red,
                   ),

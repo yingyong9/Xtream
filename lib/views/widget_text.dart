@@ -6,13 +6,15 @@ class WidgetText extends StatelessWidget {
     Key? key,
     required this.data,
     this.textStyle,
+    this.maxLines,
   }) : super(key: key);
 
   final String data;
   final TextStyle? textStyle;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
-    return Text(data, style: textStyle,);
+    return Text(data, style: textStyle, maxLines: maxLines, overflow: TextOverflow.ellipsis,);
   }
 }

@@ -1,26 +1,33 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
+
 import 'package:xstream/models/address_model.dart';
 import 'package:xstream/models/video_model.dart';
+import 'package:xstream/pages/order_page.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
+import 'package:xstream/utility/app_dialog.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/utility/app_snackbar.dart';
 import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_form.dart';
+import 'package:xstream/views/widget_image.dart';
 import 'package:xstream/views/widget_text.dart';
+import 'package:xstream/views/widget_text_button.dart';
 
 class AddAddressDelivery extends StatefulWidget {
   const AddAddressDelivery({
     Key? key,
     required this.videoModel,
     required this.amountProduct,
+    required this.indexVideo,
   }) : super(key: key);
 
   final VideoModel videoModel;
   final int amountProduct;
+  final int indexVideo;
 
   @override
   State<AddAddressDelivery> createState() => _AddAddressDeliveryState();
@@ -291,16 +298,57 @@ class _AddAddressDeliveryState extends State<AddAddressDelivery> {
                                 message: 'ข้อมูลที่มี *** ต้องกรอกให้ครบ')
                             .errorSnackBar();
                       } else {
-                        print('OK');
-
                         AddressModel addressModel = AddressModel(
                             name: nameReceiveController.text,
                             phone: phoneNumberController.text,
-                            province: appController.provinceModels.last.name_th,
-                            amphur: appController.amphureModels.last.name_th,
-                            district: appController.districeModels.last.name_th,
+                            province: appController
+                                .chooseProvinceModels.last!.name_th,
+                            amphur:
+                                appController.chooseAmphureModels.last!.name_th,
+                            district: appController
+                                .chooseDistriceModels.last!.name_th,
                             houseNumber: homeNumberController.text,
                             remark: remarkController.text);
+
+                        print('addressModel ---> ${addressModel.toMap()}');
+
+                        AppDialog().normalDialog(
+                            icon: const WidgetImage(),
+                            title: const WidgetText(
+                                data: 'คุณต้องการ เก็บที่อยู่ คุณมัย'),
+                            firstAction: WidgetTextButton(
+                              label: 'ต้องการ',
+                              pressFunc: () async {
+                                Map<String, dynamic> map = appController
+                                    .currentUserModels.last
+                                    .toMap();
+
+                                if (appController.currentUserModels.last
+                                    .mapAddress!.isNotEmpty) {
+                                  //มี address อยู่แล้ว
+                                } else {
+                                  var mapAddress = <Map<String, dynamic>>[];
+                                  mapAddress.add(addressModel.toMap());
+                                  map['mapAddress'] = mapAddress;
+
+                                  FirebaseFirestore.instance
+                                      .collection('user')
+                                      .doc(appController
+                                          .currentUserModels.last.uid)
+                                      .update(map)
+                                      .then((value) {
+                                    print('Update address Success');
+                                    Get.offAll(OrderPage(indexVideo: widget.indexVideo,));
+                                  });
+                                }
+                              },
+                            ),
+                            secondAction: WidgetTextButton(
+                              label: 'ไม่ต้องการ',
+                              pressFunc: () {
+                                Get.back();
+                              },
+                            ));
                       }
                     },
                     color: ColorPlate.red,
