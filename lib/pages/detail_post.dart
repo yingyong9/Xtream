@@ -107,17 +107,29 @@ class _DetailPostState extends State<DetailPost> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        width: boxConstraints.maxWidth * 0.75 - 16,
-                        child: WidgetFormMultiLine(
-                          textEditingController: detailController,
-                          hint: 'กรอกข้อความ',
-                          maxLines: 5,
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: boxConstraints.maxWidth * 0.75 - 16,
+                            child: WidgetFormMultiLine(
+                              textEditingController: detailController,
+                              hint: 'กรอกข้อความ',
+                              maxLines: 5,
+                            ),
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              displayIcon(),
+                              displayIcon2(),
+                            ],
+                          ),
+                        ],
                       ),
                       SizedBox(
                         width: boxConstraints.maxWidth * 0.25,
-                        height: boxConstraints.maxWidth * 0.35,
+                        height: boxConstraints.maxWidth * 0.35 + 36,
                         child: WidgetImageFile(fileImage: widget.fileThumbnail),
                       ),
                     ],
@@ -125,7 +137,6 @@ class _DetailPostState extends State<DetailPost> {
                   const Divider(
                     color: ColorPlate.gray,
                   ),
-                  displayIcon(),
                   displayImageFile(boxConstraints),
                 ],
               ),
@@ -160,29 +171,26 @@ class _DetailPostState extends State<DetailPost> {
             } else {
               // Have Product
 
-             
-                String? urlImageProduct =
-                    await AppService().processUploadFile(path: 'product');
+              String? urlImageProduct =
+                  await AppService().processUploadFile(path: 'product');
 
-                String? urlImage = await AppService()
-                    .processUploadThumbnailVideo(
-                        fileThumbnail: widget.fileThumbnail,
-                        nameFile: widget.nameFileImage);
+              String? urlImage = await AppService().processUploadThumbnailVideo(
+                  fileThumbnail: widget.fileThumbnail,
+                  nameFile: widget.nameFileImage);
 
-                AppService()
-                    .processFtpUploadAndInsertDataVideo(
-                      fileVideo: widget.fileVideo,
-                      nameFileVideo: widget.nameFileVideo,
-                      urlThumbnail: urlImage!,
-                      detail: detailController.text,
-                      nameProduct: nameController.text,
-                      priceProduct: priceController.text,
-                      stockProduct: stockController.text,
-                      affiliateProduct: affiliateController.text,
-                      urlProduct: urlImageProduct,
-                    )
-                    .then((value) => Get.back());
-              
+              AppService()
+                  .processFtpUploadAndInsertDataVideo(
+                    fileVideo: widget.fileVideo,
+                    nameFileVideo: widget.nameFileVideo,
+                    urlThumbnail: urlImage!,
+                    detail: detailController.text,
+                    nameProduct: nameController.text,
+                    priceProduct: priceController.text,
+                    stockProduct: stockController.text,
+                    affiliateProduct: affiliateController.text,
+                    urlProduct: urlImageProduct,
+                  )
+                  .then((value) => Get.back());
             }
           },
         ),
@@ -192,60 +200,51 @@ class _DetailPostState extends State<DetailPost> {
 
   Obx displayImageFile(BoxConstraints boxConstraints) {
     return Obx(() {
-                  return appController.files.isEmpty
-                      ? const SizedBox()
-                      : Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: boxConstraints.maxWidth * 0.65,
-                              child:
-                                  widgetForms[appController.indexForm.value],
-                            ),
-                            SizedBox(
-                              width: boxConstraints.maxWidth * 0.25,
-                              height: boxConstraints.maxWidth * 0.35,
-                              child: WidgetImageFile(
-                                  fileImage: appController.files.last),
-                            ),
-                          ],
-                        );
-                });
+      return appController.files.isEmpty
+          ? const SizedBox()
+          : Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: boxConstraints.maxWidth * 0.65,
+                  child: widgetForms[appController.indexForm.value],
+                ),
+                SizedBox(
+                  width: boxConstraints.maxWidth * 0.25,
+                  height: boxConstraints.maxWidth * 0.35,
+                  child: WidgetImageFile(fileImage: appController.files.last),
+                ),
+              ],
+            );
+    });
   }
 
   Row displayIcon() {
     return Row(
-                  children: [
-                    // WidgetIconButton(
-                    //   iconData: Icons.camera_alt_outlined,
-                    //   pressFunc: () {
-                    //     AppService().processTakePhoto(
-                    //         imageSource: ImageSource.camera);
-                    //     appController.indexForm.value = 1;
-                    //   },
-                    //   size: 36,
-                    // ),
-                    // WidgetIconButton(
-                    //   iconData: Icons.image_outlined,
-                    //   pressFunc: () {
-                    //     AppService().processTakePhoto(
-                    //         imageSource: ImageSource.gallery);
-                    //     appController.indexForm.value = 2;
-                    //   },
-                    //   size: 36,
-                    // ),
-                    WidgetIconButton(
-                      iconData: Icons.shopping_cart_outlined,
-                      pressFunc: () {
-                        AppService().processTakePhoto(
-                            imageSource: ImageSource.gallery);
-                        appController.indexForm.value = 3;
-                      },
-                      size: 36,
-                    ),
-                  ],
-                );
+      children: [
+        WidgetIconButton(
+          iconData: Icons.attach_file,
+          pressFunc: () {
+            AppService().processTakePhoto(imageSource: ImageSource.gallery);
+            appController.indexForm.value = 3;
+          },
+          size: 24,
+        ),
+      ],
+    );
+  }
+
+  Row displayIcon2() {
+    return Row(
+      children: [
+        WidgetIconButton(
+          iconData: Icons.tag,
+          pressFunc: () {},
+          size: 24,
+        ),
+      ],
+    );
   }
 
   Widget productForm() {

@@ -7,6 +7,7 @@ import 'package:xstream/models/order_model.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
+import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/widget_avatar.dart';
 import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_icon_button.dart';
@@ -29,6 +30,12 @@ class _OrderPageState extends State<OrderPage> {
   AppController appController = Get.put(AppController());
 
   @override
+  void initState() {
+    super.initState();
+    AppService().findCurrentUserModel();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, BoxConstraints boxConstraints) {
       return Obx(() {
@@ -42,57 +49,59 @@ class _OrderPageState extends State<OrderPage> {
               textStyle: AppConstant().h1Style(context: context),
             ),
           ),
-          body: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            children: [
-              displayAddressDelivery(),
-              const SizedBox(
-                height: 8,
-              ),
-              const Divider(
-                color: ColorPlate.white,
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              displayShop(),
-              const SizedBox(
-                height: 16,
-              ),
-              displayProduct(boxConstraints),
-              const SizedBox(
-                height: 48,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
+          body: appController.currentUserModels.isEmpty
+              ? const SizedBox()
+              : ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  children: [
+                    displayAddressDelivery(),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    const Divider(
+                      color: ColorPlate.white,
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    displayShop(),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    displayProduct(boxConstraints),
+                    const SizedBox(
+                      height: 48,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
-                          Icons.money,
-                          size: 36,
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        WidgetText(
-                          data: 'ชำระเงินปลายทาง',
-                          textStyle:
-                              AppConstant().h1Style(context: context, size: 30),
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.money,
+                                size: 36,
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              WidgetText(
+                                data: 'ชำระเงินปลายทาง',
+                                textStyle: AppConstant()
+                                    .h1Style(context: context, size: 30),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
+                    )
+                  ],
+                ),
           bottomSheet: Container(
             padding: const EdgeInsets.all(8),
             decoration: const BoxDecoration(color: ColorPlate.back1),
@@ -119,7 +128,7 @@ class _OrderPageState extends State<OrderPage> {
                   width: boxConstraints.maxWidth,
                   child: WidgetButton(
                     label: 'ทำการสั่งซื้อ',
-                    pressFunc: ()async {
+                    pressFunc: () async {
                       OrderModel orderModel = OrderModel(
                           amount: appController.amount.value,
                           priceProduct: int.parse(appController
@@ -135,7 +144,17 @@ class _OrderPageState extends State<OrderPage> {
 
                       print('orderModel ---> ${orderModel.toMap()}');
 
-                      
+                      FirebaseFirestore.instance
+                          .collection('user')
+                          .doc(appController
+                              .videoModels[widget.indexVideo].uidPost)
+                          .collection('order')
+                          .doc()
+                          .set(orderModel.toMap())
+                          .then((value) {
+                        Get.back();
+                        print('########### Order Success #############');
+                      });
                     },
                     color: ColorPlate.red,
                   ),

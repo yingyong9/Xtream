@@ -337,7 +337,8 @@ class _AddAddressDeliveryState extends State<AddAddressDelivery> {
                                           .currentUserModels.last.uid)
                                       .update(map)
                                       .then((value) {
-                                    print('Update address Success');
+                                    print('Update address Success widget.indexVideo ---> ${widget.indexVideo}');
+
                                     Get.offAll(OrderPage(indexVideo: widget.indexVideo,));
                                   });
                                 }
