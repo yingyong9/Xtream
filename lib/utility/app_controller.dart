@@ -29,10 +29,8 @@ class AppController extends GetxController {
   RxList<DistriceModel?> chooseDistriceModels = <DistriceModel?>[null].obs;
   RxBool change = false.obs;
   RxInt indexVideo = 0.obs;
-
   RxList<CommentModel> commentModels = <CommentModel>[].obs;
-
   RxInt indexForm = 0.obs;
-
   RxList<OrderModel> orderModels = <OrderModel>[].obs;
+  RxList<String> docIdOrders = <String>[].obs;
 }

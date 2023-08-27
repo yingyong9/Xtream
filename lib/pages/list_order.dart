@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xstream/style/style.dart';
@@ -38,65 +39,75 @@ class _ListOrderState extends State<ListOrder> {
               // padding: const EdgeInsets.symmetric(horizontal: 8),
               itemCount: appController.orderModels.length,
               itemBuilder: (context, index) => ExpansionTile(
-                trailing: const Icon(
-                  Icons.shopping_cart,
-                  color: Colors.red,
-                ),
+                trailing: Obx(() {
+                  return Icon(
+                    Icons.shopping_cart,
+                    color: appController.orderModels[index].status == 'start'
+                        ? Colors.red
+                        : appController.orderModels[index].status == 'order'
+                            ? Colors.purple
+                            : Colors.green,
+                  );
+                }),
                 title: Column(
                   children: [
-                    Row(
-                      children: [
-                        // WidgetImageNetwork(urlImage: appController.orderModels[index].urlImageProduct, size: 48, boxFit: BoxFit.cover,),
-                        WidgetAvatar(
-                          urlImage: appController
-                              .orderModels[index].mapBuyer['urlAvatar'],
-                          size: 48,
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        SizedBox(
-                          // width: 145,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
+                     Obx(
+                        () {
+                         return appController.orderModels.isEmpty ?  const SizedBox() : Row(
+                          children: [
+                            // WidgetImageNetwork(urlImage: appController.orderModels[index].urlImageProduct, size: 48, boxFit: BoxFit.cover,),
+                            WidgetAvatar(
+                              urlImage: appController
+                                  .orderModels[index].mapBuyer['urlAvatar'],
+                              size: 48,
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            SizedBox(
+                              // width: 145,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  WidgetText(
-                                    data: appController
-                                        .orderModels[index].mapBuyer['name'],
-                                    textStyle: AppConstant().bodyStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500),
+                                  Row(
+                                    children: [
+                                      WidgetText(
+                                        data: appController
+                                            .orderModels[index].mapBuyer['name'],
+                                        textStyle: AppConstant().bodyStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      const SizedBox(
+                                        width: 32,
+                                      ),
+                                      WidgetText(
+                                        data: AppService().timeToString(
+                                            timestamp: appController
+                                                .orderModels[index].timestamp),
+                                        textStyle:
+                                            AppConstant().bodyStyle(fontSize: 16),
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(
-                                    width: 32,
-                                  ),
-                                  WidgetText(
-                                    data: AppService().timeToString(
-                                        timestamp: appController
-                                            .orderModels[index].timestamp),
-                                    textStyle:
-                                        AppConstant().bodyStyle(fontSize: 16),
+                                  SizedBox(
+                                    width: 230,
+                                    child: WidgetText(
+                                      data: appController
+                                          .orderModels[index].nameProduct,
+                                      textStyle: AppConstant().bodyStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey.shade600),
+                                    ),
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                width: 230,
-                                child: WidgetText(
-                                  data: appController
-                                      .orderModels[index].nameProduct,
-                                  textStyle: AppConstant().bodyStyle(
-                                      fontSize: 16,
-                                      color: Colors.grey.shade600),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        // const Spacer(),
-                      ],
-                    ),
+                            ),
+                            // const Spacer(),
+                          ],
+                    );
+                       }
+                     ),
                     // const Divider(
                     //   color: Colors.white,
                     // ),
@@ -167,12 +178,17 @@ class _ListOrderState extends State<ListOrder> {
                         children: [
                           WidgetButton(
                             label: 'รับออเตอร์',
-                            pressFunc: () {},
+                            pressFunc: () {
+                              processTakeAction(index: index, status: 'order');
+                            },
                             color: Colors.purple,
                           ),
                           WidgetButton(
                             label: 'ส่งสินค้า',
-                            pressFunc: () {},
+                            pressFunc: () {
+                              processTakeAction(
+                                  index: index, status: 'delivery');
+                            },
                             color: Colors.green,
                           ),
                           WidgetButton(
@@ -187,5 +203,24 @@ class _ListOrderState extends State<ListOrder> {
               ),
             ),
     );
+  }
+
+  Future<void> processTakeAction(
+      {required int index, required String status}) async {
+    print('docIdorder ----> ${appController.docIdOrders[index]}');
+
+    Map<String, dynamic> map = appController.orderModels[index].toMap();
+    map['status'] = status;
+    print('map -----> $map');
+
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(appController.currentUserModels.last.uid)
+        .collection('order')
+        .doc(appController.docIdOrders[index])
+        .update(map)
+        .then((value) {
+      AppService().readAllOrder();
+    });
   }
 }

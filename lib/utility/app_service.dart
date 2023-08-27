@@ -532,6 +532,7 @@ class AppService {
   Future<void> readAllOrder() async {
     if (appController.orderModels.isNotEmpty) {
       appController.orderModels.clear();
+      appController.docIdOrders.clear();
     }
 
     FirebaseFirestore.instance
@@ -545,6 +546,7 @@ class AppService {
         for (var element in value.docs) {
           OrderModel orderModel = OrderModel.fromMap(element.data());
           appController.orderModels.add(orderModel);
+          appController.docIdOrders.add(element.id);
         }
       }
     });
