@@ -11,6 +11,7 @@ class OrderModel {
   final Timestamp timestamp;
   final Map<String, dynamic> mapAddress;
   final Map<String, dynamic> mapBuyer;
+  final String urlImageProduct;
   OrderModel({
     required this.amount,
     required this.priceProduct,
@@ -19,8 +20,8 @@ class OrderModel {
     required this.timestamp,
     required this.mapAddress,
     required this.mapBuyer,
+    required this.urlImageProduct,
   });
-
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -31,6 +32,7 @@ class OrderModel {
       'timestamp': timestamp,
       'mapAddress': mapAddress,
       'mapBuyer': mapBuyer,
+      'urlImageProduct': urlImageProduct,
     };
   }
 
@@ -43,10 +45,12 @@ class OrderModel {
       timestamp: (map['timestamp'] ?? Timestamp(0, 0)),
       mapAddress: Map<String, dynamic>.from(map['mapAddress'] ?? {}),
       mapBuyer: Map<String, dynamic>.from(map['mapBuyer'] ?? {}),
+      urlImageProduct: (map['urlImageProduct'] ?? '') as String,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory OrderModel.fromJson(String source) => OrderModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory OrderModel.fromJson(String source) =>
+      OrderModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

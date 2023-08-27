@@ -308,7 +308,9 @@ class _AddAddressDeliveryState extends State<AddAddressDelivery> {
                             district: appController
                                 .chooseDistriceModels.last!.name_th,
                             houseNumber: homeNumberController.text,
-                            remark: remarkController.text);
+                            remark: remarkController.text,
+                            zipcode: appController
+                                .chooseDistriceModels.last!.zip_code);
 
                         print('addressModel ---> ${addressModel.toMap()}');
 

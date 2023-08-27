@@ -8,6 +8,7 @@ import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
+import 'package:xstream/utility/app_snackbar.dart';
 import 'package:xstream/views/widget_avatar.dart';
 import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_icon_button.dart';
@@ -70,7 +71,7 @@ class _OrderPageState extends State<OrderPage> {
                     ),
                     displayProduct(boxConstraints),
                     const SizedBox(
-                      height: 48,
+                      height: 16,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -130,17 +131,19 @@ class _OrderPageState extends State<OrderPage> {
                     label: 'ทำการสั่งซื้อ',
                     pressFunc: () async {
                       OrderModel orderModel = OrderModel(
-                          amount: appController.amount.value,
-                          priceProduct: int.parse(appController
-                              .videoModels[widget.indexVideo].priceProduct!),
-                          nameProduct: appController
-                              .videoModels[widget.indexVideo].nameProduct!,
-                          status: 'start',
-                          timestamp: Timestamp.fromDate(DateTime.now()),
-                          mapAddress: appController
-                              .currentUserModels.last.mapAddress!.last,
-                          mapBuyer:
-                              appController.currentUserModels.last.toMap());
+                        amount: appController.amount.value,
+                        priceProduct: int.parse(appController
+                            .videoModels[widget.indexVideo].priceProduct!),
+                        nameProduct: appController
+                            .videoModels[widget.indexVideo].nameProduct!,
+                        status: 'start',
+                        timestamp: Timestamp.fromDate(DateTime.now()),
+                        mapAddress: appController
+                            .currentUserModels.last.mapAddress!.last,
+                        mapBuyer: appController.currentUserModels.last.toMap(),
+                        urlImageProduct: appController
+                            .videoModels[widget.indexVideo].urlProduct!,
+                      );
 
                       print('orderModel ---> ${orderModel.toMap()}');
 
@@ -154,6 +157,10 @@ class _OrderPageState extends State<OrderPage> {
                           .then((value) {
                         Get.back();
                         print('########### Order Success #############');
+                        AppSnackBar(
+                                title: 'สั่งซื้อสำเร็จ',
+                                message: 'ขอบคุณที่ สั่งซื้อ')
+                            .normalSnackBar();
                       });
                     },
                     color: ColorPlate.red,
@@ -262,7 +269,7 @@ class _OrderPageState extends State<OrderPage> {
         ),
         WidgetText(
           data:
-              '${appController.currentUserModels.last.mapAddress!.last['houseNumber']} ${appController.currentUserModels.last.mapAddress!.last['district']}\n${appController.currentUserModels.last.mapAddress!.last['amphur']} ${appController.currentUserModels.last.mapAddress!.last['province']} ',
+              '${appController.currentUserModels.last.mapAddress!.last['houseNumber']} ${appController.currentUserModels.last.mapAddress!.last['district']}\n${appController.currentUserModels.last.mapAddress!.last['amphur']} ${appController.currentUserModels.last.mapAddress!.last['province']}\n${appController.currentUserModels.last.mapAddress!.last['zipcode']}',
           textStyle: AppConstant().bodyStyle(fontSize: 18),
         ),
       ],
