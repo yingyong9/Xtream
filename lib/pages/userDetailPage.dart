@@ -1,10 +1,13 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tapped/tapped.dart';
+
 import 'package:xstream/pages/easy_edit_profile.dart';
+import 'package:xstream/pages/list_order.dart';
 import 'package:xstream/style/style.dart';
+import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/tilTokAppBar.dart';
@@ -20,11 +23,19 @@ class _UserDetailPageState extends State<UserDetailPage> {
   AppController appController = Get.put(AppController());
 
   @override
+  void initState() {
+    super.initState();
+    AppService().readAllOrder();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Widget head = Obx(() {
-      return appController.currentUserModels.isEmpty ? const SizedBox() : TikTokAppbar(
-        title: appController.currentUserModels.last.name,
-      );
+      return appController.currentUserModels.isEmpty
+          ? const SizedBox()
+          : TikTokAppbar(
+              title: appController.currentUserModels.last.name,
+            );
     });
     var userHead = Row(
       children: <Widget>[
@@ -54,299 +65,396 @@ class _UserDetailPageState extends State<UserDetailPage> {
       ],
     );
     Widget body = Obx(() {
-      return appController.currentUserModels.isEmpty ? const SizedBox() : ListView(
-        padding: EdgeInsets.only(
-          bottom: 80 + MediaQuery.of(context).padding.bottom,
-        ),
-        children: <Widget>[
-          userHead,
-          _UserInfoRow(
-            icon: WidgetImageNetwork(
-                urlImage: appController.currentUserModels.last.urlAvatar),
-            rightIcon: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'เปลี่ยนรูปโปรไฟล์',
-                  style: StandardTextStyle.small,
-                ),
-                Icon(Icons.arrow_forward_ios),
-              ],
-            ),
-            onTap: () async {
-              AppService().processTakePhoto(imageSource: ImageSource.gallery).then((value) async {
-                String? urlAvatar =
-                    await AppService().processUploadFile(path: 'profile');
-                print('##8aug urlAvatar ---> $urlAvatar');
+      return appController.currentUserModels.isEmpty
+          ? const SizedBox()
+          : ListView(
+              padding: EdgeInsets.only(
+                bottom: 80 + MediaQuery.of(context).padding.bottom,
+              ),
+              children: <Widget>[
+                userHead,
+                _UserInfoRow(
+                  icon: WidgetImageNetwork(
+                      urlImage: appController.currentUserModels.last.urlAvatar),
+                  rightIcon: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'เปลี่ยนรูปโปรไฟล์',
+                        style: StandardTextStyle.small,
+                      ),
+                      Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () async {
+                    AppService()
+                        .processTakePhoto(imageSource: ImageSource.gallery)
+                        .then((value) async {
+                      String? urlAvatar =
+                          await AppService().processUploadFile(path: 'profile');
+                      print('##8aug urlAvatar ---> $urlAvatar');
 
-                Map<String, dynamic> map =
-                    appController.currentUserModels.last.toMap();
-                map['urlAvatar'] = urlAvatar;
+                      Map<String, dynamic> map =
+                          appController.currentUserModels.last.toMap();
+                      map['urlAvatar'] = urlAvatar;
 
-                AppService().processEditProfile(map: map);
-              });
+                      AppService().processEditProfile(map: map);
+                    });
 
-              // Get.to(EasyEditProfile(
-              //   title: 'ชื่อ',
-              //   text: appController.currentUserModels.last.name,
-              //   keyMap: 'name',
-              // ));
-            },
-          ),
-          _UserInfoRow(
-            title: 'ชื่อ',
-            rightIcon: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  appController.currentUserModels.last.name,
-                  style: StandardTextStyle.small,
+                    // Get.to(EasyEditProfile(
+                    //   title: 'ชื่อ',
+                    //   text: appController.currentUserModels.last.name,
+                    //   keyMap: 'name',
+                    // ));
+                  },
                 ),
-                const Icon(Icons.arrow_forward_ios),
-              ],
-            ),
-            onTap: () {
-              Get.to(EasyEditProfile(
-                title: 'ชื่อ',
-                text: appController.currentUserModels.last.name,
-                keyMap: 'name',
-              ));
-            },
-          ),
-          _UserInfoRow(
-            title: 'Email',
-            rightIcon: Row(
-              children: [
-                Text(
-                  appController.currentUserModels.last.email!,
-                  style: StandardTextStyle.small,
+                _UserInfoRow(
+                  title: 'ชื่อ',
+                  rightIcon: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        appController.currentUserModels.last.name,
+                        style: StandardTextStyle.small,
+                      ),
+                      const Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () {
+                    Get.to(EasyEditProfile(
+                      title: 'ชื่อ',
+                      text: appController.currentUserModels.last.name,
+                      keyMap: 'name',
+                    ));
+                  },
                 ),
-                Icon(Icons.arrow_forward_ios),
-              ],
-            ),
-            onTap: () {
-              Get.to(EasyEditProfile(
-                title: 'Email',
-                text: appController.currentUserModels.last.email ?? '',
-                keyMap: 'email',
-              ));
-            },
-          ),
-          _UserInfoRow(
-            icon: const WidgetImage(
-              path: 'images/call.png',
-              size: 24,
-            ),
-            rightIcon: Row(
-              children: [
-                Text(
-                  appController.currentUserModels.last.phoneContact ?? '',
-                  style: StandardTextStyle.small,
+                _UserInfoRow(
+                  title: 'Order',
+                  opacity: 1.0,
+                  rightIcon: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(30)),
+                        child: Text(
+                          appController.orderModels.length.toString(),
+                          style: AppConstant().bodyStyle(color: Colors.white),
+                        ),
+                      ),
+                      const Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () {
+                    Get.to(const ListOrder());
+                  },
                 ),
-                Icon(Icons.arrow_forward_ios),
-              ],
-            ),
-            onTap: () {
-              Get.to(EasyEditProfile(
-                title: 'เบอร์โทร',
-                text: appController.currentUserModels.last.phoneContact!,
-                keyMap: 'phoneContact',
-              ));
-            },
-          ),
-          _UserInfoRow(
-            icon: const WidgetImage(
-              path: 'images/line.png',
-              size: 24,
-            ),
-            rightIcon: Row(
-              children: [
-                Text(
-                  appController.currentUserModels.last.linkLine ?? '',
-                  style: StandardTextStyle.small,
+                _UserInfoRow(
+                  title: 'คำสั่งซื้อของฉัน',
+                  rightIcon: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(),
+                        child: Text(
+                          '',
+                          style: StandardTextStyle.small,
+                        ),
+                      ),
+                      const Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () {},
                 ),
-                Icon(Icons.arrow_forward_ios),
-              ],
-            ),
-            onTap: () {
-              Get.to(EasyEditProfile(
-                title: 'ID Line',
-                text: appController.currentUserModels.last.linkLine!,
-                keyMap: 'linkLine',
-              ));
-            },
-          ),
-          _UserInfoRow(
-            icon: WidgetImage(
-              path: 'images/tiktok.png',
-              size: 24,
-            ),
-            rightIcon: Row(
-              children: [
-                Text(
-                  appController.currentUserModels.last.linktiktok ?? '',
-                  style: StandardTextStyle.small,
+                _UserInfoRow(
+                  title: 'สินค้าของฉัน',
+                  rightIcon: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(),
+                        child: Text(
+                          '',
+                          style: StandardTextStyle.small,
+                        ),
+                      ),
+                      const Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () {},
                 ),
-                Icon(Icons.arrow_forward_ios),
-              ],
-            ),
-            onTap: () {
-              Get.to(EasyEditProfile(
-                title: 'Your Tiktok',
-                text: appController.currentUserModels.last.linktiktok ?? '',
-                keyMap: 'linktiktok',
-              ));
-            },
-          ),
-          _UserInfoRow(
-            icon: WidgetImage(
-              path: 'images/facebook.png',
-              size: 24,
-            ),
-            rightIcon: Row(
-              children: [
-                Text(
-                  appController.currentUserModels.last.facebook ?? '',
-                  style: StandardTextStyle.small,
+                _UserInfoRow(
+                  title: 'แซต',
+                  rightIcon: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(),
+                        child: Text(
+                          '',
+                          style: StandardTextStyle.small,
+                        ),
+                      ),
+                      const Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () {},
                 ),
-                Icon(Icons.arrow_forward_ios),
-              ],
-            ),
-            onTap: () {
-              Get.to(EasyEditProfile(
-                title: 'Your Facebook',
-                text: appController.currentUserModels.last.facebook!,
-                keyMap: 'facebook',
-              ));
-            },
-          ),
-          _UserInfoRow(
-            icon: WidgetImage(
-              path: 'images/messaging.png',
-              size: 24,
-            ),
-            rightIcon: Row(
-              children: [
-                Text(
-                  appController.currentUserModels.last.linkMessaging ?? '',
-                  style: StandardTextStyle.small,
+                _UserInfoRow(
+                  title: 'วีดีโอของฉัน',
+                  rightIcon: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(),
+                        child: Text(
+                          '',
+                          style: StandardTextStyle.small,
+                        ),
+                      ),
+                      const Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () {},
                 ),
-                Icon(Icons.arrow_forward_ios),
-              ],
-            ),
-            onTap: () {
-              Get.to(EasyEditProfile(
-                title: 'Your Messaging',
-                text: appController.currentUserModels.last.linkMessaging!,
-                keyMap: 'linkMessaging',
-              ));
-            },
-          ),
-          _UserInfoRow(
-            icon: WidgetImage(
-              path: 'images/lazada.png',
-              size: 24,
-            ),
-            rightIcon: Row(
-              children: [
-                Text(
-                  appController.currentUserModels.last.lazada ?? '',
-                  style: StandardTextStyle.small,
+                _UserInfoRow(
+                  title: 'Email',
+                  rightIcon: Row(
+                    children: [
+                      Text(
+                        appController.currentUserModels.last.email!,
+                        style: StandardTextStyle.small,
+                      ),
+                      Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () {
+                    Get.to(EasyEditProfile(
+                      title: 'Email',
+                      text: appController.currentUserModels.last.email ?? '',
+                      keyMap: 'email',
+                    ));
+                  },
                 ),
-                Icon(Icons.arrow_forward_ios),
-              ],
-            ),
-            onTap: () {
-              Get.to(EasyEditProfile(
-                title: 'Your Lazada',
-                text: appController.currentUserModels.last.lazada!,
-                keyMap: 'lazada',
-              ));
-            },
-          ),
-          _UserInfoRow(
-            icon: WidgetImage(
-              path: 'images/shopee.png',
-              size: 24,
-            ),
-            rightIcon: Row(
-              children: [
-                Text(
-                  appController.currentUserModels.last.shoppee ?? '',
-                  style: StandardTextStyle.small,
+                _UserInfoRow(
+                  icon: const WidgetImage(
+                    path: 'images/call.png',
+                    size: 24,
+                  ),
+                  rightIcon: Row(
+                    children: [
+                      Text(
+                        appController.currentUserModels.last.phoneContact ?? '',
+                        style: StandardTextStyle.small,
+                      ),
+                      Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () {
+                    Get.to(EasyEditProfile(
+                      title: 'เบอร์โทร',
+                      text: appController.currentUserModels.last.phoneContact!,
+                      keyMap: 'phoneContact',
+                    ));
+                  },
                 ),
-                Icon(Icons.arrow_forward_ios),
-              ],
-            ),
-            onTap: () {
-              Get.to(EasyEditProfile(
-                title: 'Your Shopee',
-                text: appController.currentUserModels.last.shoppee!,
-                keyMap: 'shoppee',
-              ));
-            },
-          ),
-          _UserInfoRow(
-            icon: WidgetImage(
-              path: 'images/intragram.png',
-              size: 24,
-            ),
-            rightIcon: Row(
-              children: [
-                Text(
-                  appController.currentUserModels.last.intagram ?? '',
-                  style: StandardTextStyle.small,
+                _UserInfoRow(
+                  icon: const WidgetImage(
+                    path: 'images/line.png',
+                    size: 24,
+                  ),
+                  rightIcon: Row(
+                    children: [
+                      Text(
+                        appController.currentUserModels.last.linkLine ?? '',
+                        style: StandardTextStyle.small,
+                      ),
+                      Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () {
+                    Get.to(EasyEditProfile(
+                      title: 'ID Line',
+                      text: appController.currentUserModels.last.linkLine!,
+                      keyMap: 'linkLine',
+                    ));
+                  },
                 ),
-                Icon(Icons.arrow_forward_ios),
-              ],
-            ),
-            onTap: () {
-              Get.to(EasyEditProfile(
-                title: 'Your Intagram',
-                text: appController.currentUserModels.last.intagram!,
-                keyMap: 'intagram',
-              ));
-            },
-          ),
-          _UserInfoRow(
-            icon: WidgetImage(
-              path: 'images/twitter.png',
-              size: 24,
-            ),
-            rightIcon: Row(
-              children: [
-                Text(
-                  appController.currentUserModels.last.twitter ?? '',
-                  style: StandardTextStyle.small,
+                _UserInfoRow(
+                  icon: WidgetImage(
+                    path: 'images/tiktok.png',
+                    size: 24,
+                  ),
+                  rightIcon: Row(
+                    children: [
+                      Text(
+                        appController.currentUserModels.last.linktiktok ?? '',
+                        style: StandardTextStyle.small,
+                      ),
+                      Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () {
+                    Get.to(EasyEditProfile(
+                      title: 'Your Tiktok',
+                      text:
+                          appController.currentUserModels.last.linktiktok ?? '',
+                      keyMap: 'linktiktok',
+                    ));
+                  },
                 ),
-                Icon(Icons.arrow_forward_ios),
-              ],
-            ),
-            onTap: () {
-              Get.to(EasyEditProfile(
-                title: 'Your twitter',
-                text: appController.currentUserModels.last.twitter!,
-                keyMap: 'twitter',
-              ));
-            },
-          ),
-          _UserInfoRow(
-            title: 'Sign Out',
-            rightIcon: Row(
-              children: [
-                Text(
-                  'ออกจากระบบ',
-                  style: StandardTextStyle.big,
+                _UserInfoRow(
+                  icon: WidgetImage(
+                    path: 'images/facebook.png',
+                    size: 24,
+                  ),
+                  rightIcon: Row(
+                    children: [
+                      Text(
+                        appController.currentUserModels.last.facebook ?? '',
+                        style: StandardTextStyle.small,
+                      ),
+                      Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () {
+                    Get.to(EasyEditProfile(
+                      title: 'Your Facebook',
+                      text: appController.currentUserModels.last.facebook!,
+                      keyMap: 'facebook',
+                    ));
+                  },
                 ),
-                Icon(Icons.arrow_forward_ios),
+                _UserInfoRow(
+                  icon: WidgetImage(
+                    path: 'images/messaging.png',
+                    size: 24,
+                  ),
+                  rightIcon: Row(
+                    children: [
+                      Text(
+                        appController.currentUserModels.last.linkMessaging ??
+                            '',
+                        style: StandardTextStyle.small,
+                      ),
+                      Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () {
+                    Get.to(EasyEditProfile(
+                      title: 'Your Messaging',
+                      text: appController.currentUserModels.last.linkMessaging!,
+                      keyMap: 'linkMessaging',
+                    ));
+                  },
+                ),
+                _UserInfoRow(
+                  icon: WidgetImage(
+                    path: 'images/lazada.png',
+                    size: 24,
+                  ),
+                  rightIcon: Row(
+                    children: [
+                      Text(
+                        appController.currentUserModels.last.lazada ?? '',
+                        style: StandardTextStyle.small,
+                      ),
+                      Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () {
+                    Get.to(EasyEditProfile(
+                      title: 'Your Lazada',
+                      text: appController.currentUserModels.last.lazada!,
+                      keyMap: 'lazada',
+                    ));
+                  },
+                ),
+                _UserInfoRow(
+                  icon: WidgetImage(
+                    path: 'images/shopee.png',
+                    size: 24,
+                  ),
+                  rightIcon: Row(
+                    children: [
+                      Text(
+                        appController.currentUserModels.last.shoppee ?? '',
+                        style: StandardTextStyle.small,
+                      ),
+                      Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () {
+                    Get.to(EasyEditProfile(
+                      title: 'Your Shopee',
+                      text: appController.currentUserModels.last.shoppee!,
+                      keyMap: 'shoppee',
+                    ));
+                  },
+                ),
+                _UserInfoRow(
+                  icon: WidgetImage(
+                    path: 'images/intragram.png',
+                    size: 24,
+                  ),
+                  rightIcon: Row(
+                    children: [
+                      Text(
+                        appController.currentUserModels.last.intagram ?? '',
+                        style: StandardTextStyle.small,
+                      ),
+                      Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () {
+                    Get.to(EasyEditProfile(
+                      title: 'Your Intagram',
+                      text: appController.currentUserModels.last.intagram!,
+                      keyMap: 'intagram',
+                    ));
+                  },
+                ),
+                _UserInfoRow(
+                  icon: WidgetImage(
+                    path: 'images/twitter.png',
+                    size: 24,
+                  ),
+                  rightIcon: Row(
+                    children: [
+                      Text(
+                        appController.currentUserModels.last.twitter ?? '',
+                        style: StandardTextStyle.small,
+                      ),
+                      Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () {
+                    Get.to(EasyEditProfile(
+                      title: 'Your twitter',
+                      text: appController.currentUserModels.last.twitter!,
+                      keyMap: 'twitter',
+                    ));
+                  },
+                ),
+                _UserInfoRow(
+                  title: 'Sign Out',
+                  rightIcon: Row(
+                    children: [
+                      Text(
+                        'ออกจากระบบ',
+                        style: StandardTextStyle.big,
+                      ),
+                      Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () {
+                    AppService().processSignOut();
+                  },
+                ),
               ],
-            ),
-            onTap: () {
-              AppService().processSignOut();
-            },
-          ),
-        ],
-      );
+            );
     });
     body = Center(
       child: Container(
@@ -374,15 +482,18 @@ class _UserDetailPageState extends State<UserDetailPage> {
 
 class _UserInfoRow extends StatelessWidget {
   _UserInfoRow({
+    Key? key,
     this.icon,
-    this.title,
     this.rightIcon,
+    this.title,
     this.onTap,
-  });
+    this.opacity,
+  }) : super(key: key);
   final Widget? icon;
   final Widget? rightIcon;
   final String? title;
   final Function()? onTap;
+  final double? opacity;
 
   @override
   Widget build(BuildContext context) {
@@ -416,7 +527,7 @@ class _UserInfoRow extends StatelessWidget {
             ),
           ),
           Opacity(
-            opacity: 0.6,
+            opacity: opacity ?? 0.6,
             child: rightIcon ??
                 Icon(
                   Icons.arrow_forward_ios,

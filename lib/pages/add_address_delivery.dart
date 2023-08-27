@@ -308,7 +308,9 @@ class _AddAddressDeliveryState extends State<AddAddressDelivery> {
                             district: appController
                                 .chooseDistriceModels.last!.name_th,
                             houseNumber: homeNumberController.text,
-                            remark: remarkController.text);
+                            remark: remarkController.text,
+                            zipcode: appController
+                                .chooseDistriceModels.last!.zip_code);
 
                         print('addressModel ---> ${addressModel.toMap()}');
 
@@ -337,7 +339,8 @@ class _AddAddressDeliveryState extends State<AddAddressDelivery> {
                                           .currentUserModels.last.uid)
                                       .update(map)
                                       .then((value) {
-                                    print('Update address Success');
+                                    print('Update address Success widget.indexVideo ---> ${widget.indexVideo}');
+
                                     Get.offAll(OrderPage(indexVideo: widget.indexVideo,));
                                   });
                                 }

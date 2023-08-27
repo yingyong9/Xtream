@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:xstream/models/amphure_model.dart';
 import 'package:xstream/models/comment_model.dart';
 import 'package:xstream/models/districe_model.dart';
+import 'package:xstream/models/order_model.dart';
 import 'package:xstream/models/province_model.dart';
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
@@ -11,7 +12,6 @@ import 'package:xstream/models/video_model.dart';
 class AppController extends GetxController {
   RxList<VideoModel> videoModels = <VideoModel>[].obs;
   RxList<String> docIdVideos = <String>[].obs;
- 
 
   RxList<VideoModel> postVideoModels = <VideoModel>[].obs;
 
@@ -29,8 +29,8 @@ class AppController extends GetxController {
   RxList<DistriceModel?> chooseDistriceModels = <DistriceModel?>[null].obs;
   RxBool change = false.obs;
   RxInt indexVideo = 0.obs;
-
   RxList<CommentModel> commentModels = <CommentModel>[].obs;
-
   RxInt indexForm = 0.obs;
+  RxList<OrderModel> orderModels = <OrderModel>[].obs;
+  RxList<String> docIdOrders = <String>[].obs;
 }

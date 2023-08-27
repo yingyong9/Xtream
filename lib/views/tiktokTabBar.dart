@@ -54,7 +54,7 @@ class TikTokTabBar extends StatelessWidget {
         // ),
         Expanded(
           child: GestureDetector(
-            child: Icon(
+            child: const Icon(
               Icons.add_box,
               size: 32,
             ),

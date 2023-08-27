@@ -9,6 +9,7 @@ class AddressModel {
   final String  district;
   final String  houseNumber;
   final String  remark;
+  final String  zipcode;
   AddressModel({
     required this.name,
     required this.phone,
@@ -17,6 +18,7 @@ class AddressModel {
     required this.district,
     required this.houseNumber,
     required this.remark,
+    required this.zipcode,
   });
 
   Map<String, dynamic> toMap() {
@@ -28,6 +30,7 @@ class AddressModel {
       'district': district,
       'houseNumber': houseNumber,
       'remark': remark,
+      'zipcode': zipcode,
     };
   }
 
@@ -40,6 +43,7 @@ class AddressModel {
       district: (map['district'] ?? '') as String,
       houseNumber: (map['houseNumber'] ?? '') as String,
       remark: (map['remark'] ?? '') as String,
+      zipcode: (map['zipcode'] ?? '') as String,
     );
   }
 

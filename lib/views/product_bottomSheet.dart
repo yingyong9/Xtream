@@ -90,13 +90,19 @@ class ProductButtonSheet extends StatelessWidget {
                       print(
                           'mapAddress ----> ${appController.currentUserModels.last.mapAddress!.length}');
 
+                      Get.back();
+
                       if (appController
                           .currentUserModels.last.mapAddress!.isEmpty) {
                         Get.to(AddAddressDelivery(
-                            videoModel: appController.videoModels[indexVideo],
-                            amountProduct: appController.amount.value, indexVideo: indexVideo,));
+                          videoModel: appController.videoModels[indexVideo],
+                          amountProduct: appController.amount.value,
+                          indexVideo: indexVideo,
+                        ));
                       } else {
-                        Get.to( OrderPage(indexVideo: indexVideo,));
+                        Get.to(OrderPage(
+                          indexVideo: indexVideo,
+                        ));
                       }
                     },
                     color: ColorPlate.red,

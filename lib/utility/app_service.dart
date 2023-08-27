@@ -13,17 +13,18 @@ import 'package:flutter/material.dart';
 import 'package:ftpconnect/ftpconnect.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:path/path.dart';
 import 'package:xstream/models/amphure_model.dart';
 import 'package:xstream/models/comment_model.dart';
 import 'package:xstream/models/districe_model.dart';
+import 'package:xstream/models/order_model.dart';
 import 'package:xstream/models/otp_require_thaibulk.dart';
 import 'package:xstream/models/province_model.dart';
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
 import 'package:xstream/pages/check_video.dart';
-import 'package:xstream/pages/detail_post.dart';
 import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
@@ -31,6 +32,11 @@ import 'package:xstream/utility/app_snackbar.dart';
 
 class AppService {
   AppController appController = Get.put(AppController());
+
+  String timeToString({required Timestamp timestamp}) {
+    DateFormat dateFormat = DateFormat('dd/MM HH:mm');
+    return dateFormat.format(timestamp.toDate());
+  }
 
   Future<void> processTakePhoto({required ImageSource imageSource}) async {
     var result = await ImagePicker()
@@ -500,6 +506,7 @@ class AppService {
       });
     });
   }
+
   Future<void> processDecrease({required String docIdVideo}) async {
     await FirebaseFirestore.instance
         .collection('video')
@@ -519,6 +526,29 @@ class AppService {
           .then((value) {
         print('Decrease up Success');
       });
+    });
+  }
+
+  Future<void> readAllOrder() async {
+    if (appController.orderModels.isNotEmpty) {
+      appController.orderModels.clear();
+      appController.docIdOrders.clear();
+    }
+
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(appController.currentUserModels.last.uid)
+        .collection('order')
+        .orderBy('timestamp', descending: true)
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        for (var element in value.docs) {
+          OrderModel orderModel = OrderModel.fromMap(element.data());
+          appController.orderModels.add(orderModel);
+          appController.docIdOrders.add(element.id);
+        }
+      }
     });
   }
 }
