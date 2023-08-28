@@ -1,9 +1,12 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first, sort_child_properties_last
+// ignore_for_file: public_member_api_docs, sort_constructors_first, sort_child_properties_last, avoid_print
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xstream/models/order_model.dart';
 
+import 'package:xstream/models/order_model.dart';
+import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
@@ -19,9 +22,11 @@ class OrderPage extends StatefulWidget {
   const OrderPage({
     Key? key,
     required this.indexVideo,
+    this.addAddress,
   }) : super(key: key);
 
   final int indexVideo;
+  final bool? addAddress;
 
   @override
   State<OrderPage> createState() => _OrderPageState();
@@ -142,7 +147,7 @@ class _OrderPageState extends State<OrderPage> {
                             .currentUserModels.last.mapAddress!.last,
                         mapBuyer: appController.currentUserModels.last.toMap(),
                         urlImageProduct: appController
-                            .videoModels[widget.indexVideo].urlProduct!,
+                            .videoModels[widget.indexVideo].urlProduct!, refNumber: 'ref${Random().nextInt(1000000)}',
                       );
 
                       print('orderModel ---> ${orderModel.toMap()}');
@@ -156,9 +161,10 @@ class _OrderPageState extends State<OrderPage> {
                           .set(orderModel.toMap())
                           .then((value) {
                         Get.back();
+
                         print('########### Order Success #############');
                         AppSnackBar(
-                                title: 'สั่งซื้อสำเร็จ',
+                                title: 'สั่งซื้อสินค้าสำเร็จ',
                                 message: 'ขอบคุณที่ สั่งซื้อ')
                             .normalSnackBar();
                       });
@@ -258,22 +264,26 @@ class _OrderPageState extends State<OrderPage> {
     );
   }
 
-  Column displayAddressDelivery() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        displayNamAnPhone(),
-        const SizedBox(
-          height: 8,
-        ),
-        WidgetText(
-          data:
-              '${appController.currentUserModels.last.mapAddress!.last['houseNumber']} ${appController.currentUserModels.last.mapAddress!.last['district']}\n${appController.currentUserModels.last.mapAddress!.last['amphur']} ${appController.currentUserModels.last.mapAddress!.last['province']}\n${appController.currentUserModels.last.mapAddress!.last['zipcode']}',
-          textStyle: AppConstant().bodyStyle(fontSize: 18),
-        ),
-      ],
-    );
+  Widget displayAddressDelivery() {
+    return Obx(() {
+      return appController.currentUserModels.last.mapAddress!.isEmpty
+          ? const SizedBox()
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                displayNamAnPhone(),
+                const SizedBox(
+                  height: 8,
+                ),
+                WidgetText(
+                  data:
+                      '${appController.currentUserModels.last.mapAddress!.last['houseNumber']} ${appController.currentUserModels.last.mapAddress!.last['district']}\n${appController.currentUserModels.last.mapAddress!.last['amphur']} ${appController.currentUserModels.last.mapAddress!.last['province']}\n${appController.currentUserModels.last.mapAddress!.last['zipcode']}',
+                  textStyle: AppConstant().bodyStyle(fontSize: 18),
+                ),
+              ],
+            );
+    });
   }
 
   Row displayNamAnPhone() {

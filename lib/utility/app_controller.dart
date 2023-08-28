@@ -12,9 +12,7 @@ import 'package:xstream/models/video_model.dart';
 class AppController extends GetxController {
   RxList<VideoModel> videoModels = <VideoModel>[].obs;
   RxList<String> docIdVideos = <String>[].obs;
-
   RxList<VideoModel> postVideoModels = <VideoModel>[].obs;
-
   RxList<UserModel> currentUserModels = <UserModel>[].obs;
   RxList<File> files = <File>[].obs;
   RxList<String> nameFiles = <String>[].obs;

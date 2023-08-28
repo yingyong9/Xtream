@@ -3,14 +3,21 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
+import 'package:xstream/utility/app_dialog.dart';
 import 'package:xstream/utility/app_service.dart';
+import 'package:xstream/utility/app_snackbar.dart';
 import 'package:xstream/views/widget_avatar.dart';
 import 'package:xstream/views/widget_button.dart';
+import 'package:xstream/views/widget_icon_button.dart';
+import 'package:xstream/views/widget_image.dart';
+import 'package:xstream/views/widget_image_file.dart';
 import 'package:xstream/views/widget_image_network.dart';
 import 'package:xstream/views/widget_text.dart';
+import 'package:xstream/views/widget_text_button.dart';
 
 class ListOrder extends StatefulWidget {
   const ListOrder({super.key});
@@ -40,74 +47,83 @@ class _ListOrderState extends State<ListOrder> {
               itemCount: appController.orderModels.length,
               itemBuilder: (context, index) => ExpansionTile(
                 trailing: Obx(() {
-                  return Icon(
-                    Icons.shopping_cart,
-                    color: appController.orderModels[index].status == 'start'
-                        ? Colors.red
-                        : appController.orderModels[index].status == 'order'
-                            ? Colors.purple
-                            : Colors.green,
-                  );
+                  return appController.orderModels.isEmpty
+                      ? const SizedBox()
+                      : Icon(
+                          Icons.shopping_cart,
+                          color:
+                              appController.orderModels[index].status == 'start'
+                                  ? Colors.red
+                                  : appController.orderModels[index].status ==
+                                          'order'
+                                      ? Colors.purple
+                                      : Colors.green,
+                        );
                 }),
                 title: Column(
                   children: [
-                     Obx(
-                        () {
-                         return appController.orderModels.isEmpty ?  const SizedBox() : Row(
-                          children: [
-                            // WidgetImageNetwork(urlImage: appController.orderModels[index].urlImageProduct, size: 48, boxFit: BoxFit.cover,),
-                            WidgetAvatar(
-                              urlImage: appController
-                                  .orderModels[index].mapBuyer['urlAvatar'],
-                              size: 48,
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            SizedBox(
-                              // width: 145,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
+                    Obx(() {
+                      return appController.orderModels.isEmpty
+                          ? const SizedBox()
+                          : Row(
+                              children: [
+                                // WidgetImageNetwork(urlImage: appController.orderModels[index].urlImageProduct, size: 48, boxFit: BoxFit.cover,),
+                                WidgetAvatar(
+                                  urlImage: appController
+                                      .orderModels[index].mapBuyer['urlAvatar'],
+                                  size: 48,
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                SizedBox(
+                                  // width: 145,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      WidgetText(
-                                        data: appController
-                                            .orderModels[index].mapBuyer['name'],
-                                        textStyle: AppConstant().bodyStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500),
+                                      Row(
+                                        children: [
+                                          WidgetText(
+                                            data: appController
+                                                .orderModels[index]
+                                                .mapBuyer['name'],
+                                            textStyle: AppConstant().bodyStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          const SizedBox(
+                                            width: 32,
+                                          ),
+                                          WidgetText(
+                                            data: AppService().timeToString(
+                                                timestamp: appController
+                                                    .orderModels[index]
+                                                    .timestamp),
+                                            textStyle: AppConstant()
+                                                .bodyStyle(fontSize: 16),
+                                          ),
+                                        ],
                                       ),
-                                      const SizedBox(
-                                        width: 32,
+                                      SizedBox(
+                                        width: 230,
+                                        child: WidgetText(
+                                          data: appController
+                                              .orderModels[index].nameProduct,
+                                          textStyle: AppConstant().bodyStyle(
+                                              fontSize: 16,
+                                              color: Colors.grey.shade600),
+                                        ),
                                       ),
-                                      WidgetText(
-                                        data: AppService().timeToString(
-                                            timestamp: appController
-                                                .orderModels[index].timestamp),
-                                        textStyle:
-                                            AppConstant().bodyStyle(fontSize: 16),
-                                      ),
+                                      WidgetText(data: appController.orderModels[index].refNumber),
                                     ],
                                   ),
-                                  SizedBox(
-                                    width: 230,
-                                    child: WidgetText(
-                                      data: appController
-                                          .orderModels[index].nameProduct,
-                                      textStyle: AppConstant().bodyStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey.shade600),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // const Spacer(),
-                          ],
-                    );
-                       }
-                     ),
+                                ),
+                                // const Spacer(),
+                              ],
+                            );
+                            
+                    }),
                     // const Divider(
                     //   color: Colors.white,
                     // ),
@@ -179,21 +195,98 @@ class _ListOrderState extends State<ListOrder> {
                           WidgetButton(
                             label: 'รับออเตอร์',
                             pressFunc: () {
-                              processTakeAction(index: index, status: 'order');
+                              if (appController.orderModels[index].status ==
+                                  'start') {
+                                processTakeAction(
+                                    index: index, status: 'order');
+                              } else {
+                                AppSnackBar(
+                                        title: 'สินค้าได้จัดส่งแล้ว',
+                                        message: 'ขอบคุณ')
+                                    .normalSnackBar();
+                              }
                             },
                             color: Colors.purple,
                           ),
+                          // WidgetButton(
+                          //   label: 'พิมพ์ที่อยู่',
+                          //   pressFunc: () {},
+                          // ),
+                          const SizedBox(),
                           WidgetButton(
                             label: 'ส่งสินค้า',
                             pressFunc: () {
-                              processTakeAction(
-                                  index: index, status: 'delivery');
+                              if (appController.orderModels[index].status !=
+                                  'start') {
+                                if (appController.files.isNotEmpty) {
+                                  appController.files.clear();
+                                }
+
+                                AppDialog().normalDialog(
+                                  content: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                            color: ColorPlate.gray,
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        width: 180,
+                                        height: 180,
+                                        child: Obx(() {
+                                          return appController.files.isEmpty
+                                              ? Row(
+                                                  children: [
+                                                    WidgetIconButton(
+                                                      iconData:
+                                                          Icons.camera_alt,
+                                                      pressFunc: () {
+                                                        AppService()
+                                                            .processTakePhoto(
+                                                                imageSource:
+                                                                    ImageSource
+                                                                        .camera);
+                                                      },
+                                                    ),
+                                                    const WidgetText(
+                                                        data:
+                                                            'ถ่ายรูปใบส่งสินค้า'),
+                                                  ],
+                                                )
+                                              : WidgetImageFile(
+                                                  fileImage:
+                                                      appController.files.last,
+                                                  size: 180,
+                                                );
+                                        }),
+                                      ),
+                                    ],
+                                  ),
+                                  firstAction: WidgetTextButton(
+                                    label: 'Upload',
+                                    pressFunc: () {
+                                       Get.back();
+                                    },
+                                  ),
+                                  secondAction: WidgetTextButton(
+                                    label: 'Cancel',
+                                    pressFunc: () {
+                                      Get.back();
+                                    },
+                                  ),
+                                );
+
+                                // processTakeAction(
+                                //     index: index, status: 'delivery');
+                              } else {
+                                AppSnackBar(
+                                        title: 'กรุณารับออเตอร์',
+                                        message: 'ค่อยส่งสินค้า')
+                                    .errorSnackBar();
+                              }
                             },
                             color: Colors.green,
-                          ),
-                          WidgetButton(
-                            label: 'พิมพ์บิล',
-                            pressFunc: () {},
                           ),
                         ],
                       )

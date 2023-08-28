@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_print
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -314,14 +314,7 @@ class _AddAddressDeliveryState extends State<AddAddressDelivery> {
 
                         print('addressModel ---> ${addressModel.toMap()}');
 
-                        AppDialog().normalDialog(
-                            icon: const WidgetImage(),
-                            title: const WidgetText(
-                                data: 'คุณต้องการ เก็บที่อยู่ คุณมัย'),
-                            firstAction: WidgetTextButton(
-                              label: 'ต้องการ',
-                              pressFunc: () async {
-                                Map<String, dynamic> map = appController
+                        Map<String, dynamic> map = appController
                                     .currentUserModels.last
                                     .toMap();
 
@@ -341,17 +334,9 @@ class _AddAddressDeliveryState extends State<AddAddressDelivery> {
                                       .then((value) {
                                     print('Update address Success widget.indexVideo ---> ${widget.indexVideo}');
 
-                                    Get.offAll(OrderPage(indexVideo: widget.indexVideo,));
+                                    Get.off(OrderPage(indexVideo: widget.indexVideo));
                                   });
                                 }
-                              },
-                            ),
-                            secondAction: WidgetTextButton(
-                              label: 'ไม่ต้องการ',
-                              pressFunc: () {
-                                Get.back();
-                              },
-                            ));
                       }
                     },
                     color: ColorPlate.red,

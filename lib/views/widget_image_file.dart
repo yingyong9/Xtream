@@ -7,14 +7,22 @@ class WidgetImageFile extends StatelessWidget {
   const WidgetImageFile({
     Key? key,
     required this.fileImage,
+    this.size,
   }) : super(key: key);
 
   final File fileImage;
+  final double? size;
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      child: Image.file(fileImage, fit: BoxFit.cover,),borderRadius: BorderRadius.circular(15),
+      child: Image.file(
+        fileImage,
+        fit: BoxFit.cover,
+        width: size,
+        height: size,
+      ),
+      borderRadius: BorderRadius.circular(15),
     );
   }
 }
