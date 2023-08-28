@@ -12,6 +12,7 @@ class OrderModel {
   final Map<String, dynamic> mapAddress;
   final Map<String, dynamic> mapBuyer;
   final String urlImageProduct;
+  final String refNumber;
   OrderModel({
     required this.amount,
     required this.priceProduct,
@@ -21,6 +22,7 @@ class OrderModel {
     required this.mapAddress,
     required this.mapBuyer,
     required this.urlImageProduct,
+    required this.refNumber,
   });
 
   Map<String, dynamic> toMap() {
@@ -33,6 +35,7 @@ class OrderModel {
       'mapAddress': mapAddress,
       'mapBuyer': mapBuyer,
       'urlImageProduct': urlImageProduct,
+      'refNumber': refNumber,
     };
   }
 
@@ -46,6 +49,7 @@ class OrderModel {
       mapAddress: Map<String, dynamic>.from(map['mapAddress'] ?? {}),
       mapBuyer: Map<String, dynamic>.from(map['mapBuyer'] ?? {}),
       urlImageProduct: (map['urlImageProduct'] ?? '') as String,
+      refNumber: (map['refNumber'] ?? '') as String,
     );
   }
 
