@@ -119,6 +119,19 @@ class AppService {
 
     return urlThumbnail;
   }
+  Future<String?> processUploadDelivery(
+      {required File fileDelivery, required String nameFile}) async {
+    String? urlDelivery;
+
+    FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+    Reference reference = firebaseStorage.ref().child('delivery/$nameFile');
+    UploadTask uploadTask = reference.putFile(fileDelivery);
+    await uploadTask.whenComplete(() async {
+      urlDelivery = await reference.getDownloadURL();
+    });
+
+    return urlDelivery;
+  }
 
   Future<String?> processUploadFile({required String path}) async {
     String? urlImage;
@@ -533,6 +546,7 @@ class AppService {
     if (appController.orderModels.isNotEmpty) {
       appController.orderModels.clear();
       appController.docIdOrders.clear();
+      appController.amountStart.value = 0;
     }
 
     FirebaseFirestore.instance
@@ -547,6 +561,10 @@ class AppService {
           OrderModel orderModel = OrderModel.fromMap(element.data());
           appController.orderModels.add(orderModel);
           appController.docIdOrders.add(element.id);
+          if (orderModel.status == 'start') {
+            appController.amountStart.value =
+                appController.amountStart.value + 1;
+          }
         }
       }
     });
