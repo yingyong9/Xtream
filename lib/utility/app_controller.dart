@@ -29,6 +29,9 @@ class AppController extends GetxController {
   RxInt indexVideo = 0.obs;
   RxList<CommentModel> commentModels = <CommentModel>[].obs;
   RxInt indexForm = 0.obs;
+
   RxList<OrderModel> orderModels = <OrderModel>[].obs;
+  RxInt amountStart = 0.obs;
+
   RxList<String> docIdOrders = <String>[].obs;
 }

@@ -100,12 +100,6 @@ class _UserDetailPageState extends State<UserDetailPage> {
 
                       AppService().processEditProfile(map: map);
                     });
-
-                    // Get.to(EasyEditProfile(
-                    //   title: 'ชื่อ',
-                    //   text: appController.currentUserModels.last.name,
-                    //   keyMap: 'name',
-                    // ));
                   },
                 ),
                 _UserInfoRow(
@@ -137,10 +131,10 @@ class _UserDetailPageState extends State<UserDetailPage> {
                       Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                            color: Colors.green,
+                            color: ColorPlate.red,
                             borderRadius: BorderRadius.circular(30)),
                         child: Text(
-                          appController.orderModels.length.toString(),
+                          appController.amountStart.value.toString(),
                           style: AppConstant().bodyStyle(color: Colors.white),
                         ),
                       ),

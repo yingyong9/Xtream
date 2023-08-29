@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:xstream/models/order_model.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
@@ -12,6 +13,7 @@ import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/utility/app_snackbar.dart';
 import 'package:xstream/views/widget_avatar.dart';
 import 'package:xstream/views/widget_button.dart';
+import 'package:xstream/views/widget_form.dart';
 import 'package:xstream/views/widget_icon_button.dart';
 import 'package:xstream/views/widget_image.dart';
 import 'package:xstream/views/widget_image_file.dart';
@@ -35,6 +37,61 @@ class _ListOrderState extends State<ListOrder> {
       appBar: AppBar(
         backgroundColor: ColorPlate.back1,
         elevation: 0,
+        actions: [
+          WidgetButton(
+            label: 'อัพเดทการส่งสินค้า',
+            pressFunc: () {
+              TextEditingController textEditingController =
+                  TextEditingController();
+
+              bool nonMap = true;
+
+              int index = 0;
+              int indexMap = 0;
+
+              AppDialog().normalDialog(
+                content: WidgetForm(
+                  textEditingController: textEditingController,
+                  labelWidget: WidgetText(data: 'กรอก refNo.'),
+                ),
+                firstAction: WidgetTextButton(
+                  label: 'ยืนยัน',
+                  pressFunc: () {
+                    if (textEditingController.text.isNotEmpty) {
+                      for (var element in appController.orderModels) {
+                        if (textEditingController.text == element.refNumber) {
+                          nonMap = false;
+                          indexMap = index;
+                        }
+                        index++;
+                      }
+
+                      if (nonMap) {
+                        Get.back();
+                        AppSnackBar(
+                                title: 'refNo ไม่ถูกต้อง',
+                                message: 'กรุณากรอกใหม่')
+                            .errorSnackBar();
+                      } else {
+                        Get.back();
+                        dialogTakePhoto(indexMap: indexMap);
+                      }
+                    } else {
+                      Get.back();
+                    }
+                  },
+                ),
+                secondAction: WidgetTextButton(
+                  label: 'ยกเลิก',
+                  pressFunc: () {
+                    Get.back();
+                  },
+                ),
+              );
+            },
+            color: Colors.green,
+          )
+        ],
       ),
       body: appController.orderModels.isEmpty
           ? Center(
@@ -115,14 +172,15 @@ class _ListOrderState extends State<ListOrder> {
                                               color: Colors.grey.shade600),
                                         ),
                                       ),
-                                      WidgetText(data: appController.orderModels[index].refNumber),
+                                      WidgetText(
+                                          data: appController
+                                              .orderModels[index].refNumber),
                                     ],
                                   ),
                                 ),
                                 // const Spacer(),
                               ],
                             );
-                            
                     }),
                     // const Divider(
                     //   color: Colors.white,
@@ -199,6 +257,13 @@ class _ListOrderState extends State<ListOrder> {
                                   'start') {
                                 processTakeAction(
                                     index: index, status: 'order');
+                              } else if (appController
+                                      .orderModels[index].status ==
+                                  'order') {
+                                AppSnackBar(
+                                        title: 'สินค้า Order',
+                                        message: 'โปรดเตรียมการจัดส่ง')
+                                    .errorSnackBar();
                               } else {
                                 AppSnackBar(
                                         title: 'สินค้าได้จัดส่งแล้ว',
@@ -213,81 +278,29 @@ class _ListOrderState extends State<ListOrder> {
                           //   pressFunc: () {},
                           // ),
                           const SizedBox(),
-                          WidgetButton(
-                            label: 'ส่งสินค้า',
-                            pressFunc: () {
-                              if (appController.orderModels[index].status !=
-                                  'start') {
-                                if (appController.files.isNotEmpty) {
-                                  appController.files.clear();
-                                }
+                          const SizedBox(),
+                          // WidgetButton(
+                          //   label: 'ส่งสินค้า',
+                          //   pressFunc: () {
+                          //     // if (appController.orderModels[index].status !=
+                          //     //     'start') {
+                          //     //   if (appController.files.isNotEmpty) {
+                          //     //     appController.files.clear();
+                          //     //   }
 
-                                AppDialog().normalDialog(
-                                  content: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                            color: ColorPlate.gray,
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        width: 180,
-                                        height: 180,
-                                        child: Obx(() {
-                                          return appController.files.isEmpty
-                                              ? Row(
-                                                  children: [
-                                                    WidgetIconButton(
-                                                      iconData:
-                                                          Icons.camera_alt,
-                                                      pressFunc: () {
-                                                        AppService()
-                                                            .processTakePhoto(
-                                                                imageSource:
-                                                                    ImageSource
-                                                                        .camera);
-                                                      },
-                                                    ),
-                                                    const WidgetText(
-                                                        data:
-                                                            'ถ่ายรูปใบส่งสินค้า'),
-                                                  ],
-                                                )
-                                              : WidgetImageFile(
-                                                  fileImage:
-                                                      appController.files.last,
-                                                  size: 180,
-                                                );
-                                        }),
-                                      ),
-                                    ],
-                                  ),
-                                  firstAction: WidgetTextButton(
-                                    label: 'Upload',
-                                    pressFunc: () {
-                                       Get.back();
-                                    },
-                                  ),
-                                  secondAction: WidgetTextButton(
-                                    label: 'Cancel',
-                                    pressFunc: () {
-                                      Get.back();
-                                    },
-                                  ),
-                                );
+                          //     //   // dialogTakePhoto();
 
-                                // processTakeAction(
-                                //     index: index, status: 'delivery');
-                              } else {
-                                AppSnackBar(
-                                        title: 'กรุณารับออเตอร์',
-                                        message: 'ค่อยส่งสินค้า')
-                                    .errorSnackBar();
-                              }
-                            },
-                            color: Colors.green,
-                          ),
+                          //     //   // processTakeAction(
+                          //     //   //     index: index, status: 'delivery');
+                          //     // } else {
+                          //     //   AppSnackBar(
+                          //     //           title: 'กรุณารับออเตอร์',
+                          //     //           message: 'ค่อยส่งสินค้า')
+                          //     //       .errorSnackBar();
+                          //     // }
+                          //   },
+                          //   color: Colors.green,
+                          // ),
                         ],
                       )
                     ],
@@ -295,6 +308,82 @@ class _ListOrderState extends State<ListOrder> {
                 ],
               ),
             ),
+    );
+  }
+
+  void dialogTakePhoto({required int indexMap}) {
+    AppDialog().normalDialog(
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: ColorPlate.gray,
+                borderRadius: BorderRadius.circular(10)),
+            width: 180,
+            height: 180,
+            child: Obx(() {
+              return appController.files.isEmpty
+                  ? Row(
+                      children: [
+                        WidgetIconButton(
+                          iconData: Icons.camera_alt,
+                          pressFunc: () {
+                            AppService().processTakePhoto(
+                                imageSource: ImageSource.camera);
+                          },
+                        ),
+                        const WidgetText(data: 'ถ่ายรูปใบส่งสินค้า'),
+                      ],
+                    )
+                  : WidgetImageFile(
+                      fileImage: appController.files.last,
+                      size: 180,
+                    );
+            }),
+          ),
+        ],
+      ),
+      firstAction: WidgetTextButton(
+        label: 'Upload',
+        pressFunc: () async {
+          String? urlDelivery = await AppService().processUploadDelivery(
+              fileDelivery: appController.files.last,
+              nameFile: '${appController.orderModels[indexMap].refNumber}.jpg');
+          print('urlDelivery ---> $urlDelivery');
+
+          Map<String, dynamic> map =
+              appController.orderModels[indexMap].toMap();
+
+          print('##29aug map ----> $map');
+
+          String docIdOrder = appController.docIdOrders[indexMap];
+
+          print('##29aug docIdOrder --> $docIdOrder');
+
+          map['urlDelivery'] = urlDelivery;
+          map['status'] = 'delivery';
+
+          FirebaseFirestore.instance
+              .collection('user')
+              .doc(appController.currentUserModels.last.uid)
+              .collection('order')
+              .doc(docIdOrder)
+              .update(map)
+              .then((value) {
+            AppService().readAllOrder();
+          });
+
+          Get.back();
+        },
+      ),
+      secondAction: WidgetTextButton(
+        label: 'Cancel',
+        pressFunc: () {
+          Get.back();
+        },
+      ),
     );
   }
 
