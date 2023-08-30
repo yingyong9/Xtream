@@ -14,6 +14,8 @@ class OrderModel {
   final String urlImageProduct;
   final String refNumber;
   final String? urlDelivery;
+  final Timestamp? timestampOrder;
+  final Timestamp? timestampDelivery;
   OrderModel({
     required this.amount,
     required this.priceProduct,
@@ -25,6 +27,8 @@ class OrderModel {
     required this.urlImageProduct,
     required this.refNumber,
     this.urlDelivery,
+     this.timestampOrder,
+     this.timestampDelivery,
   });
 
   Map<String, dynamic> toMap() {
@@ -39,6 +43,8 @@ class OrderModel {
       'urlImageProduct': urlImageProduct,
       'refNumber': refNumber,
       'urlDelivery': urlDelivery,
+      'timestampOrder': timestampOrder,
+      'timestampDelivery': timestampDelivery,
     };
   }
 
@@ -54,6 +60,8 @@ class OrderModel {
       urlImageProduct: (map['urlImageProduct'] ?? '') as String,
       refNumber: (map['refNumber'] ?? '') as String,
       urlDelivery: (map['urlDelivery'] ?? '') as String,
+      timestampOrder: (map['timestampOrder'] ?? Timestamp(0, 0)),
+      timestampDelivery: (map['timestampDelivery'] ?? Timestamp(0, 0)),
     );
   }
 

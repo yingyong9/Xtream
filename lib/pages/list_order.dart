@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:xstream/models/order_model.dart';
+import 'package:xstream/pages/big_image.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
@@ -15,7 +15,6 @@ import 'package:xstream/views/widget_avatar.dart';
 import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_form.dart';
 import 'package:xstream/views/widget_icon_button.dart';
-import 'package:xstream/views/widget_image.dart';
 import 'package:xstream/views/widget_image_file.dart';
 import 'package:xstream/views/widget_image_network.dart';
 import 'package:xstream/views/widget_text.dart';
@@ -52,7 +51,7 @@ class _ListOrderState extends State<ListOrder> {
               AppDialog().normalDialog(
                 content: WidgetForm(
                   textEditingController: textEditingController,
-                  labelWidget: WidgetText(data: 'กรอก refNo.'),
+                  labelWidget: const WidgetText(data: 'กรอก refNo.'),
                 ),
                 firstAction: WidgetTextButton(
                   label: 'ยืนยัน',
@@ -100,7 +99,6 @@ class _ListOrderState extends State<ListOrder> {
               textStyle: AppConstant().h1Style(context: context),
             ))
           : ListView.builder(
-              // padding: const EdgeInsets.symmetric(horizontal: 8),
               itemCount: appController.orderModels.length,
               itemBuilder: (context, index) => ExpansionTile(
                 trailing: Obx(() {
@@ -172,9 +170,20 @@ class _ListOrderState extends State<ListOrder> {
                                               color: Colors.grey.shade600),
                                         ),
                                       ),
-                                      WidgetText(
-                                          data: appController
-                                              .orderModels[index].refNumber),
+                                      Row(
+                                        children: [
+                                          WidgetText(
+                                              data: appController
+                                                  .orderModels[index]
+                                                  .refNumber),
+                                          const SizedBox(
+                                            width: 32,
+                                          ),
+                                          WidgetText(
+                                              data:
+                                                  'จำนวน ${appController.orderModels[index].amount.toString()}'),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -273,36 +282,43 @@ class _ListOrderState extends State<ListOrder> {
                             },
                             color: Colors.purple,
                           ),
-                          // WidgetButton(
-                          //   label: 'พิมพ์ที่อยู่',
-                          //   pressFunc: () {},
-                          // ),
-                          const SizedBox(),
-                          const SizedBox(),
-                          // WidgetButton(
-                          //   label: 'ส่งสินค้า',
-                          //   pressFunc: () {
-                          //     // if (appController.orderModels[index].status !=
-                          //     //     'start') {
-                          //     //   if (appController.files.isNotEmpty) {
-                          //     //     appController.files.clear();
-                          //     //   }
-
-                          //     //   // dialogTakePhoto();
-
-                          //     //   // processTakeAction(
-                          //     //   //     index: index, status: 'delivery');
-                          //     // } else {
-                          //     //   AppSnackBar(
-                          //     //           title: 'กรุณารับออเตอร์',
-                          //     //           message: 'ค่อยส่งสินค้า')
-                          //     //       .errorSnackBar();
-                          //     // }
-                          //   },
-                          //   color: Colors.green,
-                          // ),
+                          Obx(() {
+                            return appController.orderModels.isEmpty
+                                ? const SizedBox()
+                                : appController.orderModels[index].status ==
+                                        'start'
+                                    ? const SizedBox()
+                                    : appController.orderModels[index]
+                                                .timestampOrder ==
+                                            Timestamp(0, 0)
+                                        ? const SizedBox()
+                                        : WidgetText(
+                                            data: AppService().timeToString(
+                                                timestamp: appController
+                                                    .orderModels[index]
+                                                    .timestampOrder!));
+                          }),
                         ],
-                      )
+                      ),
+                      Obx(() {
+                        return appController.orderModels.isEmpty
+                            ? const SizedBox()
+                            : appController.orderModels[index].status ==
+                                    'delivery'
+                                ? Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      deliveryButton(index),
+                                      WidgetText(
+                                          data: AppService().timeToString(
+                                              timestamp: appController
+                                                  .orderModels[index]
+                                                  .timestampDelivery!)),
+                                    ],
+                                  )
+                                : const SizedBox();
+                      }),
                     ],
                   )
                 ],
@@ -311,7 +327,22 @@ class _ListOrderState extends State<ListOrder> {
     );
   }
 
+  WidgetButton deliveryButton(int index) {
+    return WidgetButton(
+      label: 'ส่งสินค้า',
+      pressFunc: () {
+        Get.to(
+            BigImage(urlImage: appController.orderModels[index].urlDelivery!));
+      },
+      color: Colors.green,
+    );
+  }
+
   void dialogTakePhoto({required int indexMap}) {
+    if (appController.files.isNotEmpty) {
+      appController.files.clear();
+    }
+
     AppDialog().normalDialog(
       content: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -351,19 +382,15 @@ class _ListOrderState extends State<ListOrder> {
           String? urlDelivery = await AppService().processUploadDelivery(
               fileDelivery: appController.files.last,
               nameFile: '${appController.orderModels[indexMap].refNumber}.jpg');
-          print('urlDelivery ---> $urlDelivery');
 
           Map<String, dynamic> map =
               appController.orderModels[indexMap].toMap();
 
-          print('##29aug map ----> $map');
-
           String docIdOrder = appController.docIdOrders[indexMap];
-
-          print('##29aug docIdOrder --> $docIdOrder');
 
           map['urlDelivery'] = urlDelivery;
           map['status'] = 'delivery';
+          map['timestampDelivery'] = Timestamp.fromDate(DateTime.now());
 
           FirebaseFirestore.instance
               .collection('user')
@@ -393,7 +420,19 @@ class _ListOrderState extends State<ListOrder> {
 
     Map<String, dynamic> map = appController.orderModels[index].toMap();
     map['status'] = status;
-    print('map -----> $map');
+
+    switch (status) {
+      case 'order':
+        map['timestampOrder'] = Timestamp.fromDate(DateTime.now());
+        break;
+      case 'delivery':
+        map['timestampDelivery'] = Timestamp.fromDate(DateTime.now());
+        break;
+      default:
+    }
+
+    print('timeOrder -----> ${map['timestampOrder']}');
+    print('timeDelivery -----> ${map['timestampDelivery']}');
 
     FirebaseFirestore.instance
         .collection('user')
