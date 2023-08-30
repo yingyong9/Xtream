@@ -135,6 +135,7 @@ class _OrderPageState extends State<OrderPage> {
                   child: WidgetButton(
                     label: 'ทำการสั่งซื้อ',
                     pressFunc: () async {
+                      
                       OrderModel orderModel = OrderModel(
                         amount: appController.amount.value,
                         priceProduct: int.parse(appController
