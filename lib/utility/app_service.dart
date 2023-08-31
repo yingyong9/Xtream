@@ -119,6 +119,7 @@ class AppService {
 
     return urlThumbnail;
   }
+
   Future<String?> processUploadDelivery(
       {required File fileDelivery, required String nameFile}) async {
     String? urlDelivery;
@@ -568,5 +569,13 @@ class AppService {
         }
       }
     });
+  }
+
+  Future<UserModel> findUserModel({required String uid}) async {
+    var result =
+        await FirebaseFirestore.instance.collection('user').doc(uid).get();
+
+    UserModel userModel = UserModel.fromMap(result.data()!);
+    return userModel;
   }
 }
