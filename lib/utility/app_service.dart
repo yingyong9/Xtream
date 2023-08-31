@@ -19,6 +19,7 @@ import 'package:path/path.dart';
 import 'package:xstream/models/amphure_model.dart';
 import 'package:xstream/models/comment_model.dart';
 import 'package:xstream/models/districe_model.dart';
+import 'package:xstream/models/invoid_model.dart';
 import 'package:xstream/models/order_model.dart';
 import 'package:xstream/models/otp_require_thaibulk.dart';
 import 'package:xstream/models/province_model.dart';
@@ -540,6 +541,27 @@ class AppService {
           .then((value) {
         print('Decrease up Success');
       });
+    });
+  }
+
+  Future<void> readAllInvoid() async {
+    if (appController.invoidModels.isNotEmpty) {
+      appController.invoidModels.clear();
+    }
+
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(appController.currentUserModels.last.uid)
+        .collection('invoid')
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        for (var element in value.docs) {
+          InvoidModel invoidModel = InvoidModel.fromMap(element.data());
+          appController.invoidModels.add(invoidModel);
+          appController.docIdInvoids.add(element.id);
+        }
+      }
     });
   }
 

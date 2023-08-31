@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tapped/tapped.dart';
 
 import 'package:xstream/pages/easy_edit_profile.dart';
+import 'package:xstream/pages/list_invoid.dart';
 import 'package:xstream/pages/list_order.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
@@ -26,6 +27,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
   void initState() {
     super.initState();
     AppService().readAllOrder();
+    AppService().readAllInvoid();
   }
 
   @override
@@ -151,8 +153,8 @@ class _UserDetailPageState extends State<UserDetailPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        decoration: BoxDecoration(),
-                        child: Text(
+                        decoration: const BoxDecoration(),
+                        child: const Text(
                           '',
                           style: StandardTextStyle.small,
                         ),
@@ -160,7 +162,9 @@ class _UserDetailPageState extends State<UserDetailPage> {
                       const Icon(Icons.arrow_forward_ios),
                     ],
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(const ListInvoid());
+                  },
                 ),
                 _UserInfoRow(
                   title: 'สินค้าของฉัน',
