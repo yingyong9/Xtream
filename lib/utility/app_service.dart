@@ -19,6 +19,7 @@ import 'package:path/path.dart';
 import 'package:xstream/models/amphure_model.dart';
 import 'package:xstream/models/comment_model.dart';
 import 'package:xstream/models/districe_model.dart';
+import 'package:xstream/models/invoid_model.dart';
 import 'package:xstream/models/order_model.dart';
 import 'package:xstream/models/otp_require_thaibulk.dart';
 import 'package:xstream/models/province_model.dart';
@@ -119,6 +120,7 @@ class AppService {
 
     return urlThumbnail;
   }
+
   Future<String?> processUploadDelivery(
       {required File fileDelivery, required String nameFile}) async {
     String? urlDelivery;
@@ -542,6 +544,27 @@ class AppService {
     });
   }
 
+  Future<void> readAllInvoid() async {
+    if (appController.invoidModels.isNotEmpty) {
+      appController.invoidModels.clear();
+    }
+
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(appController.currentUserModels.last.uid)
+        .collection('invoid')
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        for (var element in value.docs) {
+          InvoidModel invoidModel = InvoidModel.fromMap(element.data());
+          appController.invoidModels.add(invoidModel);
+          appController.docIdInvoids.add(element.id);
+        }
+      }
+    });
+  }
+
   Future<void> readAllOrder() async {
     if (appController.orderModels.isNotEmpty) {
       appController.orderModels.clear();
@@ -568,5 +591,13 @@ class AppService {
         }
       }
     });
+  }
+
+  Future<UserModel> findUserModel({required String uid}) async {
+    var result =
+        await FirebaseFirestore.instance.collection('user').doc(uid).get();
+
+    UserModel userModel = UserModel.fromMap(result.data()!);
+    return userModel;
   }
 }

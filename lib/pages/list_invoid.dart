@@ -13,119 +13,59 @@ import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/utility/app_snackbar.dart';
 import 'package:xstream/views/widget_avatar.dart';
 import 'package:xstream/views/widget_button.dart';
-import 'package:xstream/views/widget_form.dart';
 import 'package:xstream/views/widget_icon_button.dart';
 import 'package:xstream/views/widget_image_file.dart';
 import 'package:xstream/views/widget_image_network.dart';
 import 'package:xstream/views/widget_text.dart';
 import 'package:xstream/views/widget_text_button.dart';
 
-class ListOrder extends StatefulWidget {
-  const ListOrder({super.key});
+class ListInvoid extends StatefulWidget {
+  const ListInvoid({super.key});
 
   @override
-  State<ListOrder> createState() => _ListOrderState();
+  State<ListInvoid> createState() => _ListInvoidState();
 }
 
-class _ListOrderState extends State<ListOrder> {
+class _ListInvoidState extends State<ListInvoid> {
   AppController appController = Get.put(AppController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ColorPlate.back1,
-        elevation: 0,
-        actions: [
-          WidgetButton(
-            label: 'อัพเดทการส่งสินค้า',
-            pressFunc: () {
-              TextEditingController textEditingController =
-                  TextEditingController();
-
-              bool nonMap = true;
-
-              int index = 0;
-              int indexMap = 0;
-
-              AppDialog().normalDialog(
-                content: WidgetForm(
-                  textEditingController: textEditingController,
-                  labelWidget: const WidgetText(data: 'กรอก refNo.'),
-                ),
-                firstAction: WidgetTextButton(
-                  label: 'ยืนยัน',
-                  pressFunc: () {
-                    if (textEditingController.text.isNotEmpty) {
-                      for (var element in appController.orderModels) {
-                        if (textEditingController.text == element.refNumber) {
-                          nonMap = false;
-                          indexMap = index;
-                        }
-                        index++;
-                      }
-
-                      if (nonMap) {
-                        Get.back();
-                        AppSnackBar(
-                                title: 'refNo ไม่ถูกต้อง',
-                                message: 'กรุณากรอกใหม่')
-                            .errorSnackBar();
-                      } else {
-                        Get.back();
-                        dialogTakePhoto(indexMap: indexMap);
-                      }
-                    } else {
-                      Get.back();
-                    }
-                  },
-                ),
-                secondAction: WidgetTextButton(
-                  label: 'ยกเลิก',
-                  pressFunc: () {
-                    Get.back();
-                  },
-                ),
-              );
-            },
-            color: Colors.green,
-          )
-        ],
-      ),
-      body: appController.orderModels.isEmpty
+      appBar: mainAppBar(),
+      body: appController.invoidModels.isEmpty
           ? Center(
               child: WidgetText(
-              data: 'ไม่มี Order',
+              data: 'ไม่มี คำสั่งซื่อ',
               textStyle: AppConstant().h1Style(context: context),
             ))
           : ListView.builder(
-              itemCount: appController.orderModels.length,
+              itemCount: appController.invoidModels.length,
               itemBuilder: (context, index) => ExpansionTile(
                 trailing: Obx(() {
-                  return appController.orderModels.isEmpty
+                  return appController.invoidModels.isEmpty
                       ? const SizedBox()
                       : Icon(
                           Icons.shopping_cart,
-                          color:
-                              appController.orderModels[index].status == 'start'
-                                  ? Colors.red
-                                  : appController.orderModels[index].status ==
-                                          'order'
-                                      ? Colors.purple
-                                      : Colors.green,
+                          color: appController.invoidModels[index].status ==
+                                  'start'
+                              ? Colors.red
+                              : appController.invoidModels[index].status ==
+                                      'order'
+                                  ? Colors.purple
+                                  : Colors.green,
                         );
                 }),
                 title: Column(
                   children: [
                     Obx(() {
-                      return appController.orderModels.isEmpty
+                      return appController.invoidModels.isEmpty
                           ? const SizedBox()
                           : Row(
                               children: [
-                                // WidgetImageNetwork(urlImage: appController.orderModels[index].urlImageProduct, size: 48, boxFit: BoxFit.cover,),
                                 WidgetAvatar(
                                   urlImage: appController
-                                      .orderModels[index].mapBuyer['urlAvatar'],
+                                      .invoidModels[index].mapShop['urlAvatar'],
                                   size: 48,
                                 ),
                                 const SizedBox(
@@ -141,8 +81,8 @@ class _ListOrderState extends State<ListOrder> {
                                         children: [
                                           WidgetText(
                                             data: appController
-                                                .orderModels[index]
-                                                .mapBuyer['name'],
+                                                .invoidModels[index]
+                                                .mapShop['name'],
                                             textStyle: AppConstant().bodyStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w500),
@@ -153,7 +93,7 @@ class _ListOrderState extends State<ListOrder> {
                                           WidgetText(
                                             data: AppService().timeToString(
                                                 timestamp: appController
-                                                    .orderModels[index]
+                                                    .invoidModels[index]
                                                     .timestamp),
                                             textStyle: AppConstant()
                                                 .bodyStyle(fontSize: 16),
@@ -164,7 +104,7 @@ class _ListOrderState extends State<ListOrder> {
                                         width: 230,
                                         child: WidgetText(
                                           data: appController
-                                              .orderModels[index].nameProduct,
+                                              .invoidModels[index].nameProduct,
                                           textStyle: AppConstant().bodyStyle(
                                               fontSize: 16,
                                               color: Colors.grey.shade600),
@@ -174,24 +114,22 @@ class _ListOrderState extends State<ListOrder> {
                                         children: [
                                           WidgetText(
                                               data: appController
-                                                  .orderModels[index]
+                                                  .invoidModels[index]
                                                   .refNumber),
                                           const SizedBox(
                                             width: 32,
                                           ),
                                           WidgetText(
                                               data:
-                                                  'จำนวน ${appController.orderModels[index].amount.toString()}'),
+                                                  'จำนวน ${appController.invoidModels[index].amount.toString()}'),
                                         ],
                                       ),
                                     ],
                                   ),
                                 ),
-                             
                               ],
                             );
                     }),
-                  
                   ],
                 ),
                 children: [
@@ -213,7 +151,7 @@ class _ListOrderState extends State<ListOrder> {
                             padding: const EdgeInsets.all(8.0),
                             child: WidgetImageNetwork(
                               urlImage: appController
-                                  .orderModels[index].urlImageProduct,
+                                  .invoidModels[index].urlImageProduct,
                               size: 80,
                               boxFit: BoxFit.cover,
                             ),
@@ -226,7 +164,7 @@ class _ListOrderState extends State<ListOrder> {
                                 child: WidgetText(
                                   maxLines: 2,
                                   data: appController
-                                      .orderModels[index].nameProduct,
+                                      .invoidModels[index].nameProduct,
                                   textStyle: AppConstant().bodyStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 16),
@@ -236,16 +174,16 @@ class _ListOrderState extends State<ListOrder> {
                                 children: [
                                   WidgetText(
                                       data:
-                                          'ราคา ${appController.orderModels[index].priceProduct}'),
+                                          'ราคา ${appController.invoidModels[index].priceProduct}'),
                                   const WidgetText(data: ' X '),
                                   WidgetText(
                                       data:
-                                          'จำนวน ${appController.orderModels[index].amount}'),
+                                          'จำนวน ${appController.invoidModels[index].amount}'),
                                 ],
                               ),
                               WidgetText(
                                 data:
-                                    'รวมเงิน ${appController.orderModels[index].priceProduct * appController.orderModels[index].amount} THB',
+                                    'รวมเงิน ${appController.invoidModels[index].priceProduct * appController.invoidModels[index].amount} THB',
                                 textStyle: AppConstant().bodyStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
@@ -259,48 +197,32 @@ class _ListOrderState extends State<ListOrder> {
                           WidgetButton(
                             label: 'รับออเตอร์',
                             pressFunc: () {
-                              if (appController.orderModels[index].status ==
-                                  'start') {
-                                processTakeAction(
-                                    index: index, status: 'order');
-                              } else if (appController
-                                      .orderModels[index].status ==
-                                  'order') {
-                                AppSnackBar(
-                                        title: 'สินค้า Order',
-                                        message: 'โปรดเตรียมการจัดส่ง')
-                                    .errorSnackBar();
-                              } else {
-                                AppSnackBar(
-                                        title: 'สินค้าได้จัดส่งแล้ว',
-                                        message: 'ขอบคุณ')
-                                    .normalSnackBar();
-                              }
+                             
                             },
                             color: Colors.purple,
                           ),
                           Obx(() {
-                            return appController.orderModels.isEmpty
+                            return appController.invoidModels.isEmpty
                                 ? const SizedBox()
-                                : appController.orderModels[index].status ==
+                                : appController.invoidModels[index].status ==
                                         'start'
                                     ? const SizedBox()
-                                    : appController.orderModels[index]
+                                    : appController.invoidModels[index]
                                                 .timestampOrder ==
                                             Timestamp(0, 0)
                                         ? const SizedBox()
                                         : WidgetText(
                                             data: AppService().timeToString(
                                                 timestamp: appController
-                                                    .orderModels[index]
+                                                    .invoidModels[index]
                                                     .timestampOrder!));
                           }),
                         ],
                       ),
                       Obx(() {
-                        return appController.orderModels.isEmpty
+                        return appController.invoidModels.isEmpty
                             ? const SizedBox()
-                            : appController.orderModels[index].status ==
+                            : appController.invoidModels[index].status ==
                                     'delivery'
                                 ? Row(
                                     mainAxisAlignment:
@@ -310,7 +232,7 @@ class _ListOrderState extends State<ListOrder> {
                                       WidgetText(
                                           data: AppService().timeToString(
                                               timestamp: appController
-                                                  .orderModels[index]
+                                                  .invoidModels[index]
                                                   .timestampDelivery!)),
                                     ],
                                   )
@@ -324,12 +246,20 @@ class _ListOrderState extends State<ListOrder> {
     );
   }
 
+  AppBar mainAppBar() {
+    return AppBar(
+      backgroundColor: ColorPlate.back1,
+      elevation: 0,
+      title: const WidgetText(data: 'คำสั่งซื้อของฉัน'),
+    );
+  }
+
   WidgetButton deliveryButton(int index) {
     return WidgetButton(
       label: 'ส่งสินค้า',
       pressFunc: () {
         Get.to(
-            BigImage(urlImage: appController.orderModels[index].urlDelivery!));
+            BigImage(urlImage: appController.invoidModels[index].urlDelivery!));
       },
       color: Colors.green,
     );
@@ -378,10 +308,11 @@ class _ListOrderState extends State<ListOrder> {
         pressFunc: () async {
           String? urlDelivery = await AppService().processUploadDelivery(
               fileDelivery: appController.files.last,
-              nameFile: '${appController.orderModels[indexMap].refNumber}.jpg');
+              nameFile:
+                  '${appController.invoidModels[indexMap].refNumber}.jpg');
 
           Map<String, dynamic> map =
-              appController.orderModels[indexMap].toMap();
+              appController.invoidModels[indexMap].toMap();
 
           String docIdOrder = appController.docIdOrders[indexMap];
 
@@ -415,7 +346,7 @@ class _ListOrderState extends State<ListOrder> {
       {required int index, required String status}) async {
     print('docIdorder ----> ${appController.docIdOrders[index]}');
 
-    Map<String, dynamic> map = appController.orderModels[index].toMap();
+    Map<String, dynamic> map = appController.invoidModels[index].toMap();
     map['status'] = status;
 
     switch (status) {

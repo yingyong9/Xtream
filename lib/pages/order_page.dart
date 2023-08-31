@@ -4,8 +4,10 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xstream/models/invoid_model.dart';
 
 import 'package:xstream/models/order_model.dart';
+import 'package:xstream/models/user_model.dart';
 import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
@@ -135,7 +137,8 @@ class _OrderPageState extends State<OrderPage> {
                   child: WidgetButton(
                     label: 'ทำการสั่งซื้อ',
                     pressFunc: () async {
-                      
+                      String refNumber = 'ref${Random().nextInt(1000000)}';
+
                       OrderModel orderModel = OrderModel(
                         amount: appController.amount.value,
                         priceProduct: int.parse(appController
@@ -148,26 +151,52 @@ class _OrderPageState extends State<OrderPage> {
                             .currentUserModels.last.mapAddress!.last,
                         mapBuyer: appController.currentUserModels.last.toMap(),
                         urlImageProduct: appController
-                            .videoModels[widget.indexVideo].urlProduct!, refNumber: 'ref${Random().nextInt(1000000)}',
+                            .videoModels[widget.indexVideo].urlProduct!,
+                        refNumber: refNumber,
                       );
 
-                      print('orderModel ---> ${orderModel.toMap()}');
+                      UserModel shopUserModel = await AppService()
+                          .findUserModel(
+                              uid: appController
+                                  .videoModels[widget.indexVideo].uidPost);
+
+                      InvoidModel invoidModel = InvoidModel(
+                        amount: appController.amount.value,
+                        priceProduct: int.parse(appController
+                            .videoModels[widget.indexVideo].priceProduct!),
+                        nameProduct: appController
+                            .videoModels[widget.indexVideo].nameProduct!,
+                        status: 'start',
+                        timestamp: Timestamp.fromDate(DateTime.now()),
+                        mapAddress: appController
+                            .currentUserModels.last.mapAddress!.last,
+                        mapShop: shopUserModel.toMap(),
+                        urlImageProduct: appController
+                            .videoModels[widget.indexVideo].urlProduct!,
+                        refNumber: refNumber,
+                      );
 
                       FirebaseFirestore.instance
                           .collection('user')
-                          .doc(appController
-                              .videoModels[widget.indexVideo].uidPost)
-                          .collection('order')
+                          .doc(appController.currentUserModels.last.uid)
+                          .collection('invoid')
                           .doc()
-                          .set(orderModel.toMap())
-                          .then((value) {
-                        Get.back();
-
-                        print('########### Order Success #############');
-                        AppSnackBar(
-                                title: 'สั่งซื้อสินค้าสำเร็จ',
-                                message: 'ขอบคุณที่ สั่งซื้อ')
-                            .normalSnackBar();
+                          .set(invoidModel.toMap())
+                          .then((value) async {
+                        FirebaseFirestore.instance
+                            .collection('user')
+                            .doc(appController
+                                .videoModels[widget.indexVideo].uidPost)
+                            .collection('order')
+                            .doc()
+                            .set(orderModel.toMap())
+                            .then((value) {
+                          Get.back();
+                          AppSnackBar(
+                                  title: 'สั่งซื้อสินค้าสำเร็จ',
+                                  message: 'ขอบคุณที่ สั่งซื้อ')
+                              .normalSnackBar();
+                        });
                       });
                     },
                     color: ColorPlate.red,

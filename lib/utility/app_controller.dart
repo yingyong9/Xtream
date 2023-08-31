@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:xstream/models/amphure_model.dart';
 import 'package:xstream/models/comment_model.dart';
 import 'package:xstream/models/districe_model.dart';
+import 'package:xstream/models/invoid_model.dart';
 import 'package:xstream/models/order_model.dart';
 import 'package:xstream/models/province_model.dart';
 import 'package:xstream/models/user_model.dart';
@@ -31,7 +32,9 @@ class AppController extends GetxController {
   RxInt indexForm = 0.obs;
 
   RxList<OrderModel> orderModels = <OrderModel>[].obs;
+  RxList<String> docIdOrders = <String>[].obs;
   RxInt amountStart = 0.obs;
 
-  RxList<String> docIdOrders = <String>[].obs;
+  RxList<InvoidModel> invoidModels = <InvoidModel>[].obs;
+  RxList<String> docIdInvoids =<String>[].obs;
 }
