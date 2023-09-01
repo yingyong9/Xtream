@@ -2,7 +2,10 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
+
 import 'package:xstream/models/video_model.dart';
+import 'package:xstream/pages/display_profile_tap_icon.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/views/tikTokVideoGesture.dart';
@@ -42,7 +45,7 @@ class TikTokVideoPage extends StatelessWidget {
 
     Widget userInfo = userInfoWidget ??
         VideoUserInfo(
-          bottomPadding: bottomPadding,
+          bottomPadding: bottomPadding, tapProfileFunction: () {  },
         );
 
     Widget videoContainer = Stack(
@@ -154,9 +157,11 @@ class VideoUserInfo extends StatelessWidget {
     this.desc,
     this.videoModel,
     required this.bottomPadding,
+    required this.tapProfileFunction,
   }) : super(key: key);
 
   final double bottomPadding;
+  final Function() tapProfileFunction;
 
   @override
   Widget build(BuildContext context) {
@@ -172,21 +177,25 @@ class VideoUserInfo extends StatelessWidget {
         children: <Widget>[
           Row(
             children: [
-              // const WidgetImage(
-              //   path: 'images/redbottom.png',
-              //   size: 30,
-              // ),
-              WidgetAvatar(
-                urlImage: videoModel!.mapUserModel['urlAvatar'],
-                size: 48,
-              ),
-              Text(
-                videoModel == null
-                    ? ''
-                    : ' @${videoModel!.mapUserModel["name"]}',
-                style: AppConstant().bodyStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+              InkWell(
+                onTap: tapProfileFunction,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    WidgetAvatar(
+                      urlImage: videoModel!.mapUserModel['urlAvatar'],
+                      size: 48,
+                    ),
+                    Text(
+                      videoModel == null
+                          ? ''
+                          : ' @${videoModel!.mapUserModel["name"]}',
+                      style: AppConstant().bodyStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -203,7 +212,8 @@ class VideoUserInfo extends StatelessWidget {
                 color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
             collapseText: 'ซ่อน',
             maxLines: 3,
-            style: AppConstant().bodyStyle(fontWeight: FontWeight.bold, fontSize: SysSize.big),
+            style: AppConstant()
+                .bodyStyle(fontWeight: FontWeight.bold, fontSize: SysSize.big),
           ),
           Container(height: 6),
           // const Row(

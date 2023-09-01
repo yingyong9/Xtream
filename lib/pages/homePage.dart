@@ -10,6 +10,7 @@ import 'package:xstream/models/video_model.dart';
 
 import 'package:xstream/other/bottomSheet.dart' as CustomBottomSheet;
 import 'package:xstream/pages/authen.dart';
+import 'package:xstream/pages/display_profile_tap_icon.dart';
 import 'package:xstream/pages/searchPage.dart';
 import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/style/physics.dart';
@@ -112,8 +113,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    // Widget? currentPage;
-
     switch (tabBarType) {
       case TikTokPageTag.home:
         break;
@@ -306,6 +305,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           videoModel: i < appController.videoModels.length
                               ? appController.videoModels[i]
                               : appController.videoModels.last,
+                          tapProfileFunction: () {
+                            print('you tab -->');
+                            player.pause();
+                            Get.to(DisplayProfileTapIcon());
+                          },
                         ),
                         onSingleTap: () async {
                           if (player.controller.value.isPlaying) {

@@ -15,12 +15,12 @@ import 'package:xstream/views/tilTokAppBar.dart';
 import 'package:xstream/views/widget_image.dart';
 import 'package:xstream/views/widget_image_network.dart';
 
-class UserDetailPage extends StatefulWidget {
+class DisplayProfileTapIcon extends StatefulWidget {
   @override
-  _UserDetailPageState createState() => _UserDetailPageState();
+  _DisplayProfileTapIconState createState() => _DisplayProfileTapIconState();
 }
 
-class _UserDetailPageState extends State<UserDetailPage> {
+class _DisplayProfileTapIconState extends State<DisplayProfileTapIcon> {
   AppController appController = Get.put(AppController());
 
   @override
