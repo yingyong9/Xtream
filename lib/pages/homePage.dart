@@ -308,7 +308,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           tapProfileFunction: () {
                             print('you tab -->');
                             player.pause();
-                            Get.to(DisplayProfileTapIcon());
+                            Get.to(DisplayProfileTapIcon(videoModel: appController.videoModels[i],));
                           },
                         ),
                         onSingleTap: () async {

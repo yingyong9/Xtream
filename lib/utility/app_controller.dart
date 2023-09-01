@@ -14,7 +14,13 @@ class AppController extends GetxController {
   RxList<VideoModel> videoModels = <VideoModel>[].obs;
   RxList<String> docIdVideos = <String>[].obs;
   RxList<VideoModel> postVideoModels = <VideoModel>[].obs;
+
   RxList<UserModel> currentUserModels = <UserModel>[].obs;
+  RxList<UserModel> profileTabUserModels = <UserModel>[].obs;
+
+
+
+
   RxList<File> files = <File>[].obs;
   RxList<String> nameFiles = <String>[].obs;
   RxList<File> productFiles = <File>[].obs;

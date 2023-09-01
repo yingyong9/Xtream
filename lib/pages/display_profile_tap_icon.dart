@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tapped/tapped.dart';
 
+import 'package:xstream/models/video_model.dart';
 import 'package:xstream/pages/easy_edit_profile.dart';
 import 'package:xstream/pages/list_invoid.dart';
 import 'package:xstream/pages/list_order.dart';
@@ -18,6 +19,12 @@ import 'package:xstream/views/widget_image_network.dart';
 class DisplayProfileTapIcon extends StatefulWidget {
   @override
   _DisplayProfileTapIconState createState() => _DisplayProfileTapIconState();
+
+  final VideoModel videoModel;
+  const DisplayProfileTapIcon({
+    Key? key,
+    required this.videoModel,
+  }) : super(key: key);
 }
 
 class _DisplayProfileTapIconState extends State<DisplayProfileTapIcon> {
@@ -32,13 +39,10 @@ class _DisplayProfileTapIconState extends State<DisplayProfileTapIcon> {
 
   @override
   Widget build(BuildContext context) {
-    Widget head = Obx(() {
-      return appController.currentUserModels.isEmpty
-          ? const SizedBox()
-          : TikTokAppbar(
-              title: appController.currentUserModels.last.name,
-            );
-    });
+    Widget head = TikTokAppbar(
+      title: widget.videoModel.mapUserModel['name'],
+    );
+
     var userHead = Row(
       children: <Widget>[
         Expanded(
@@ -50,20 +54,6 @@ class _DisplayProfileTapIconState extends State<DisplayProfileTapIcon> {
             ),
           ),
         ),
-        InkWell(
-          onTap: () {
-            // Get.to(EditProfile());
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            child: Text(
-              'แก้ไข',
-              style: StandardTextStyle.smallWithOpacity.apply(
-                color: ColorPlate.orange,
-              ),
-            ),
-          ),
-        )
       ],
     );
     Widget body = Obx(() {
@@ -77,78 +67,40 @@ class _DisplayProfileTapIconState extends State<DisplayProfileTapIcon> {
                 userHead,
                 _UserInfoRow(
                   icon: WidgetImageNetwork(
-                      urlImage: appController.currentUserModels.last.urlAvatar),
-                  rightIcon: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'เปลี่ยนรูปโปรไฟล์',
-                        style: StandardTextStyle.small,
-                      ),
-                      Icon(Icons.arrow_forward_ios),
-                    ],
+                      urlImage: widget.videoModel.mapUserModel['urlAvatar']),
+                  rightIcon: const Text(
+                    'รูปโปรไฟร์',
+                    style: StandardTextStyle.small,
                   ),
-                  onTap: () async {
-                    AppService()
-                        .processTakePhoto(imageSource: ImageSource.gallery)
-                        .then((value) async {
-                      String? urlAvatar =
-                          await AppService().processUploadFile(path: 'profile');
-                      print('##8aug urlAvatar ---> $urlAvatar');
-
-                      Map<String, dynamic> map =
-                          appController.currentUserModels.last.toMap();
-                      map['urlAvatar'] = urlAvatar;
-
-                      AppService().processEditProfile(map: map);
-                    });
-                  },
                 ),
                 _UserInfoRow(
                   title: 'ชื่อ',
-                  rightIcon: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        appController.currentUserModels.last.name,
-                        style: StandardTextStyle.small,
-                      ),
-                      const Icon(Icons.arrow_forward_ios),
-                    ],
+                  rightIcon: Text(
+                    widget.videoModel.mapUserModel['name'],
+                    style: StandardTextStyle.normal,
                   ),
-                  onTap: () {
-                    Get.to(EasyEditProfile(
-                      title: 'ชื่อ',
-                      text: appController.currentUserModels.last.name,
-                      keyMap: 'name',
-                    ));
-                  },
                 ),
-                _UserInfoRow(
-                  title: 'Order',
-                  opacity: 1.0,
-                  rightIcon: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                            color: ColorPlate.red,
-                            borderRadius: BorderRadius.circular(30)),
-                        child: Text(
-                          appController.amountStart.value.toString(),
-                          style: AppConstant().bodyStyle(color: Colors.white),
+                widget.videoModel.priceProduct!.isEmpty
+                    ? const SizedBox()
+                    : _UserInfoRow(
+                        title: 'Comment ร้านค้า',
+                        rightIcon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(),
+                              child: const Text(
+                                '',
+                                style: StandardTextStyle.small,
+                              ),
+                            ),
+                            const Icon(Icons.arrow_forward_ios),
+                          ],
                         ),
+                        onTap: () {},
                       ),
-                      const Icon(Icons.arrow_forward_ios),
-                    ],
-                  ),
-                  onTap: () {
-                    Get.to(const ListOrder());
-                  },
-                ),
                 _UserInfoRow(
-                  title: 'คำสั่งซื้อของฉัน',
+                  title: 'แซต',
                   rightIcon: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -162,17 +114,15 @@ class _DisplayProfileTapIconState extends State<DisplayProfileTapIcon> {
                       const Icon(Icons.arrow_forward_ios),
                     ],
                   ),
-                  onTap: () {
-                    Get.to(const ListInvoid());
-                  },
+                  onTap: () {},
                 ),
                 _UserInfoRow(
-                  title: 'สินค้าของฉัน',
+                  title: 'วีดีโอทั้งหมด',
                   rightIcon: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        decoration: BoxDecoration(),
+                        decoration: const BoxDecoration(),
                         child: const Text(
                           '',
                           style: StandardTextStyle.small,
@@ -183,136 +133,38 @@ class _DisplayProfileTapIconState extends State<DisplayProfileTapIcon> {
                   ),
                   onTap: () {},
                 ),
-                _UserInfoRow(
-                  title: 'Comment ร้านค้า',
-                  rightIcon: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(),
-                        child: const Text(
-                          '',
+                widget.videoModel.mapUserModel['email'].isEmpty
+                    ? const SizedBox()
+                    : _UserInfoRow(
+                        title: 'Email',
+                        rightIcon: Text(
+                          widget.videoModel.mapUserModel['email'],
                           style: StandardTextStyle.small,
                         ),
                       ),
-                      const Icon(Icons.arrow_forward_ios),
-                    ],
-                  ),
-                  onTap: () {},
-                ),
-                _UserInfoRow(
-                  title: 'Comment การซื้อ',
-                  rightIcon: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(),
-                        child: const Text(
-                          '',
+                widget.videoModel.mapUserModel['phoneContact'].isEmpty
+                    ? const SizedBox()
+                    : _UserInfoRow(
+                        icon: const WidgetImage(
+                          path: 'images/call.png',
+                          size: 24,
+                        ),
+                        rightIcon: Text(
+                          appController.currentUserModels.last.phoneContact ??
+                              '',
                           style: StandardTextStyle.small,
                         ),
                       ),
-                      const Icon(Icons.arrow_forward_ios),
-                    ],
-                  ),
-                  onTap: () {},
-                ),
-                _UserInfoRow(
-                  title: 'แซต',
-                  rightIcon: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(),
-                        child: Text(
-                          '',
-                          style: StandardTextStyle.small,
-                        ),
-                      ),
-                      const Icon(Icons.arrow_forward_ios),
-                    ],
-                  ),
-                  onTap: () {},
-                ),
-                _UserInfoRow(
-                  title: 'วีดีโอของฉัน',
-                  rightIcon: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(),
-                        child: Text(
-                          '',
-                          style: StandardTextStyle.small,
-                        ),
-                      ),
-                      const Icon(Icons.arrow_forward_ios),
-                    ],
-                  ),
-                  onTap: () {},
-                ),
-                _UserInfoRow(
-                  title: 'Email',
-                  rightIcon: Row(
-                    children: [
-                      Text(
-                        appController.currentUserModels.last.email!,
-                        style: StandardTextStyle.small,
-                      ),
-                      Icon(Icons.arrow_forward_ios),
-                    ],
-                  ),
-                  onTap: () {
-                    Get.to(EasyEditProfile(
-                      title: 'Email',
-                      text: appController.currentUserModels.last.email ?? '',
-                      keyMap: 'email',
-                    ));
-                  },
-                ),
-                _UserInfoRow(
-                  icon: const WidgetImage(
-                    path: 'images/call.png',
-                    size: 24,
-                  ),
-                  rightIcon: Row(
-                    children: [
-                      Text(
-                        appController.currentUserModels.last.phoneContact ?? '',
-                        style: StandardTextStyle.small,
-                      ),
-                      Icon(Icons.arrow_forward_ios),
-                    ],
-                  ),
-                  onTap: () {
-                    Get.to(EasyEditProfile(
-                      title: 'เบอร์โทร',
-                      text: appController.currentUserModels.last.phoneContact!,
-                      keyMap: 'phoneContact',
-                    ));
-                  },
-                ),
-                _UserInfoRow(
+                widget.videoModel.mapUserModel['linkLine'].isEmpty ? const SizedBox() : _UserInfoRow(
                   icon: const WidgetImage(
                     path: 'images/line.png',
                     size: 24,
                   ),
-                  rightIcon: Row(
-                    children: [
-                      Text(
-                        appController.currentUserModels.last.linkLine ?? '',
-                        style: StandardTextStyle.small,
-                      ),
-                      Icon(Icons.arrow_forward_ios),
-                    ],
+                  rightIcon: Text(
+                    widget.videoModel.mapUserModel['linkLine'],
+                    style: StandardTextStyle.small,
                   ),
-                  onTap: () {
-                    Get.to(EasyEditProfile(
-                      title: 'ID Line',
-                      text: appController.currentUserModels.last.linkLine!,
-                      keyMap: 'linkLine',
-                    ));
-                  },
+                 
                 ),
                 _UserInfoRow(
                   icon: WidgetImage(
