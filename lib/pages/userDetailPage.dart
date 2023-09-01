@@ -173,7 +173,41 @@ class _UserDetailPageState extends State<UserDetailPage> {
                     children: [
                       Container(
                         decoration: BoxDecoration(),
-                        child: Text(
+                        child: const Text(
+                          '',
+                          style: StandardTextStyle.small,
+                        ),
+                      ),
+                      const Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () {},
+                ),
+                _UserInfoRow(
+                  title: 'Comment ร้านค้า',
+                  rightIcon: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(),
+                        child: const Text(
+                          '',
+                          style: StandardTextStyle.small,
+                        ),
+                      ),
+                      const Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                  onTap: () {},
+                ),
+                _UserInfoRow(
+                  title: 'Comment การซื้อ',
+                  rightIcon: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(),
+                        child: const Text(
                           '',
                           style: StandardTextStyle.small,
                         ),
