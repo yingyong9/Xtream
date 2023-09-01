@@ -55,8 +55,8 @@ def keystoreProperties = new Properties()
         applicationId "com.yingyong.xstream"
         minSdkVersion 24
         targetSdkVersion 33
-        versionCode 45
-        versionName '1.0.45'
+        versionCode 46
+        versionName '1.0.46'
     }
 
        signingConfigs {
