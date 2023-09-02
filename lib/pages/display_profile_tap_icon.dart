@@ -12,6 +12,7 @@ import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
+import 'package:xstream/views/commentShopBottomSheet.dart';
 import 'package:xstream/views/tikTokCommentBottomSheet.dart';
 import 'package:xstream/views/tilTokAppBar.dart';
 import 'package:xstream/views/widget_image.dart';
@@ -84,7 +85,7 @@ class _DisplayProfileTapIconState extends State<DisplayProfileTapIcon> {
                 widget.videoModel.priceProduct!.isEmpty
                     ? const SizedBox()
                     : _UserInfoRow(
-                        title: 'Comment ร้านค้า',
+                        title: 'คะแนน ร้านค้า',
                         rightIcon: const Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -104,12 +105,9 @@ class _DisplayProfileTapIconState extends State<DisplayProfileTapIcon> {
                           ],
                         ),
                         onTap: () {
-                          // Get.bottomSheet(
-                          //   TikTokCommentBottomSheet(
-                          //     docIdVideo: 'zHWMClBIeOfyjbCXENeS',
-                          //     indexVideo: 3,
-                          //   ),
-                          // );
+                          Get.bottomSheet(
+                           CommentShopBottomSheet()
+                          );
                         },
                       ),
                 _UserInfoRow(

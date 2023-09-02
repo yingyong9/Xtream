@@ -4,11 +4,13 @@ import 'package:xstream/pages/authen.dart';
 import 'package:xstream/pages/userDetailPage.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
+import 'package:xstream/views/commentShopBottomSheet.dart';
+import 'package:xstream/views/remarkBottomSheet.dart';
 import 'package:xstream/views/selectText.dart';
 
 enum TikTokPageTag {
   home,
-  follow,
+  remark,
   msg,
   me,
 }
@@ -43,15 +45,19 @@ class TikTokTabBar extends StatelessWidget {
             onTap: () => onTabSwitch?.call(TikTokPageTag.home),
           ),
         ),
-        // Expanded(
-        //   child: GestureDetector(
-        //     child: SelectText(
-        //       isSelect: current == TikTokPageTag.follow,
-        //       title: 'Follow',
-        //     ),
-        //     onTap: () => onTabSwitch?.call(TikTokPageTag.follow),
-        //   ),
-        // ),
+        Expanded(
+          child: GestureDetector(
+            child: SelectText(
+              isSelect: current == TikTokPageTag.remark,
+              title: 'เสนอแนะ',
+            ),
+            onTap: () {
+              Get.bottomSheet(RemarkBottomSheet());
+
+              // onTabSwitch?.call(TikTokPageTag.follow);
+            },
+          ),
+        ),
         Expanded(
           child: GestureDetector(
             child: const Icon(
@@ -64,15 +70,17 @@ class TikTokTabBar extends StatelessWidget {
             },
           ),
         ),
-        // Expanded(
-        //   child: GestureDetector(
-        //     child: SelectText(
-        //       isSelect: current == TikTokPageTag.msg,
-        //       title: 'Message',
-        //     ),
-        //     onTap: () => onTabSwitch?.call(TikTokPageTag.msg),
-        //   ),
-        // ),
+        Expanded(
+          child: GestureDetector(
+            child: SelectText(
+              isSelect: current == TikTokPageTag.msg,
+              title: 'สินค้า',
+            ),
+            onTap: () {
+              // onTabSwitch?.call(TikTokPageTag.msg);
+            },
+          ),
+        ),
         Expanded(
           child: GestureDetector(
             child: SelectText(
@@ -85,7 +93,7 @@ class TikTokTabBar extends StatelessWidget {
               if (appController.currentUserModels.isNotEmpty) {
                 Get.to(UserDetailPage());
               } else {
-                // Get.to(Authen());
+                Get.to(const Authen());
               }
             },
           ),

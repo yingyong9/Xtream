@@ -23,6 +23,7 @@ import 'package:xstream/models/invoid_model.dart';
 import 'package:xstream/models/order_model.dart';
 import 'package:xstream/models/otp_require_thaibulk.dart';
 import 'package:xstream/models/province_model.dart';
+import 'package:xstream/models/remark_model.dart';
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
 import 'package:xstream/pages/check_video.dart';
@@ -599,5 +600,18 @@ class AppService {
 
     UserModel userModel = UserModel.fromMap(result.data()!);
     return userModel;
+  }
+
+  Future<void> readAllRemark() async {
+    FirebaseFirestore.instance.collection('remark').get().then((value) {
+      if (appController.remarkModels.isNotEmpty) {
+        appController.remarkModels.clear();
+      }
+
+      for (var element in value.docs) {
+        RemarkModel remarkModel = RemarkModel.fromMap(element.data());
+        appController.remarkModels.add(remarkModel);
+      }
+    });
   }
 }
