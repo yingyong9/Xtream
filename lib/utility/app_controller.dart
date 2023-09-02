@@ -7,6 +7,7 @@ import 'package:xstream/models/districe_model.dart';
 import 'package:xstream/models/invoid_model.dart';
 import 'package:xstream/models/order_model.dart';
 import 'package:xstream/models/province_model.dart';
+import 'package:xstream/models/remark_model.dart';
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
 
@@ -14,13 +15,8 @@ class AppController extends GetxController {
   RxList<VideoModel> videoModels = <VideoModel>[].obs;
   RxList<String> docIdVideos = <String>[].obs;
   RxList<VideoModel> postVideoModels = <VideoModel>[].obs;
-
   RxList<UserModel> currentUserModels = <UserModel>[].obs;
   RxList<UserModel> profileTabUserModels = <UserModel>[].obs;
-
-
-
-
   RxList<File> files = <File>[].obs;
   RxList<String> nameFiles = <String>[].obs;
   RxList<File> productFiles = <File>[].obs;
@@ -36,11 +32,11 @@ class AppController extends GetxController {
   RxInt indexVideo = 0.obs;
   RxList<CommentModel> commentModels = <CommentModel>[].obs;
   RxInt indexForm = 0.obs;
-
   RxList<OrderModel> orderModels = <OrderModel>[].obs;
   RxList<String> docIdOrders = <String>[].obs;
   RxInt amountStart = 0.obs;
-
   RxList<InvoidModel> invoidModels = <InvoidModel>[].obs;
-  RxList<String> docIdInvoids =<String>[].obs;
+  RxList<String> docIdInvoids = <String>[].obs;
+
+  RxList<RemarkModel> remarkModels = <RemarkModel>[].obs;
 }

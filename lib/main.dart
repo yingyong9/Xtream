@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Xtream',
+      title: 'WeHappy',
       theme: ThemeData(
         brightness: Brightness.dark,
         hintColor: Colors.white,

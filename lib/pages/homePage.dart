@@ -11,6 +11,7 @@ import 'package:xstream/models/video_model.dart';
 import 'package:xstream/other/bottomSheet.dart' as CustomBottomSheet;
 import 'package:xstream/pages/authen.dart';
 import 'package:xstream/pages/display_profile_tap_icon.dart';
+import 'package:xstream/pages/followPage.dart';
 import 'package:xstream/pages/searchPage.dart';
 import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/style/physics.dart';
@@ -113,11 +114,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+     Widget? currentPage;
+
+
     switch (tabBarType) {
       case TikTokPageTag.home:
         break;
-      // case TikTokPageTag.follow:
-      //   currentPage = FollowPage();
+      // case TikTokPageTag.remark:
+      //   // currentPage = FollowPage();
       //   break;
       // case TikTokPageTag.msg:
       //   currentPage = MsgPage();
