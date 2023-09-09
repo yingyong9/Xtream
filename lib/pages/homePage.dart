@@ -17,7 +17,9 @@ import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/style/physics.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
+import 'package:xstream/views/add_bottom_sheet.dart';
 import 'package:xstream/views/product_bottomSheet.dart';
+import 'package:xstream/views/remarkBottomSheet.dart';
 import 'package:xstream/views/tikTokCommentBottomSheet.dart';
 import 'package:xstream/views/tikTokHeader.dart';
 import 'package:xstream/views/tikTokScaffold.dart';
@@ -114,8 +116,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-     Widget? currentPage;
-
+    Widget? currentPage;
 
     switch (tabBarType) {
       case TikTokPageTag.home:
@@ -163,7 +164,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         if (appController.currentUserModels.isEmpty) {
           Get.to(const Authen());
         } else {
-          AppService().processUploadVideoFromGallery();
+          Get.bottomSheet(const AddBottomSheet());
+
+          //ไปเปิด state เลือกวีดีโอ
+          // AppService().processUploadVideoFromGallery();
         }
       },
     );
@@ -312,7 +316,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           tapProfileFunction: () {
                             print('you tab -->');
                             player.pause();
-                            Get.to(DisplayProfileTapIcon(videoModel: appController.videoModels[i],));
+                            Get.to(DisplayProfileTapIcon(
+                              videoModel: appController.videoModels[i],
+                            ));
                           },
                         ),
                         onSingleTap: () async {

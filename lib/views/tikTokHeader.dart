@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tapped/tapped.dart';
+import 'package:xstream/style/style.dart';
+import 'package:xstream/utility/app_constant.dart';
+import 'package:xstream/views/widget_text.dart';
 
 import 'selectText.dart';
 
@@ -73,11 +76,14 @@ class _TikTokHeaderState extends State<TikTokHeader> {
             child: Tapped(
               child: Container(
                 color: Colors.black.withOpacity(0),
-                padding: EdgeInsets.all(4),
+                padding: const EdgeInsets.all(4),
                 alignment: Alignment.centerRight,
-                child: Icon(
-                  Icons.tv,
-                  color: Colors.white.withOpacity(0.66),
+                child: WidgetText(
+                  data: 'Live',
+                  textStyle: AppConstant().bodyStyle(
+                      color: ColorPlate.red,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ),
