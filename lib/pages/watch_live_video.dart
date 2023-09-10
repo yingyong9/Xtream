@@ -18,6 +18,10 @@ class WatchLiveVideo extends StatefulWidget {
 class _WatchLiveVideoState extends State<WatchLiveVideo> {
   WebViewController? webViewController;
 
+   String urlVideo = 'https://webrtc.livestreaming.in.th/wehappy/play.html?name=wehappy&playOrder=webrtc&autoplay=true';   // New
+
+  // String urlVideo = 'https://html.login.in.th/webrtc/player.php?dir=d2VoYXBweQ%3D%3D&id=d2VoYXBweQ%3D%3D&showview=1';   // Old
+
   @override
   void initState() {
     super.initState();
@@ -36,8 +40,7 @@ class _WatchLiveVideoState extends State<WatchLiveVideo> {
           return NavigationDecision.navigate;
         },
       ))
-      ..loadRequest(Uri.parse(
-          'https://html.login.in.th/webrtc/player.php?dir=d2VoYXBweQ%3D%3D&id=d2VoYXBweQ%3D%3D&showview=1'));
+      ..loadRequest(Uri.parse(urlVideo));
   }
 
   @override
@@ -81,7 +84,8 @@ class _WatchLiveVideoState extends State<WatchLiveVideo> {
                             await LaunchApp.openApp(
                               androidPackageName: 'com.prism.live',
                               iosUrlScheme: '',
-                              appStoreLink: 'https://apps.apple.com/app/id1319056339',
+                              appStoreLink:
+                                  'https://apps.apple.com/app/id1319056339',
                             ).catchError((onError) {
                               print(onError.toString());
                             });

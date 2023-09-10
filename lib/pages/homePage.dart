@@ -11,7 +11,7 @@ import 'package:xstream/models/video_model.dart';
 import 'package:xstream/other/bottomSheet.dart' as CustomBottomSheet;
 import 'package:xstream/pages/authen.dart';
 import 'package:xstream/pages/display_profile_tap_icon.dart';
-import 'package:xstream/pages/followPage.dart';
+import 'package:xstream/pages/list_live.dart';
 import 'package:xstream/pages/searchPage.dart';
 import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/style/physics.dart';
@@ -19,7 +19,6 @@ import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/add_bottom_sheet.dart';
 import 'package:xstream/views/product_bottomSheet.dart';
-import 'package:xstream/views/remarkBottomSheet.dart';
 import 'package:xstream/views/tikTokCommentBottomSheet.dart';
 import 'package:xstream/views/tikTokHeader.dart';
 import 'package:xstream/views/tikTokScaffold.dart';
@@ -141,6 +140,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     if (hasBottomPadding) {
       hasBackground = true;
     }
+
+    //ส่วนของ Bottom Navigator
     Widget tikTokTabBar = TikTokTabBar(
       hasBackground: hasBackground,
       current: tabBarType,
@@ -187,6 +188,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         ? TikTokHeader(
             onSearch: () {
               tkController.animateToLeft();
+            },
+            onLive: () {
+              _videoListController.currentPlayer.pause();
+              Get.to(const ListLive())!.then((value) {
+                _videoListController.currentPlayer.play();
+              });
             },
           )
         : Container();

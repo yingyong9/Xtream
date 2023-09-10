@@ -1,5 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:tapped/tapped.dart';
+
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/views/widget_text.dart';
@@ -8,9 +10,11 @@ import 'selectText.dart';
 
 class TikTokHeader extends StatefulWidget {
   final Function? onSearch;
+  final Function? onLive;
   const TikTokHeader({
     Key? key,
     this.onSearch,
+    this.onLive,
   }) : super(key: key);
 
   @override
@@ -74,6 +78,7 @@ class _TikTokHeaderState extends State<TikTokHeader> {
           ),
           Expanded(
             child: Tapped(
+              onTap: widget.onLive,
               child: Container(
                 color: Colors.black.withOpacity(0),
                 padding: const EdgeInsets.all(4),
