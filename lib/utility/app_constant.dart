@@ -13,6 +13,8 @@ class AppConstant {
   static String urlAccount =
       'https://firebasestorage.googleapis.com/v0/b/xstream-c6c77.appspot.com/o/profile%2F285655_user_icon.png?alt=media&token=681e8b4e-0a7b-4435-b088-476f679f7343';
 
+      
+
   TextStyle? h1Style({required BuildContext context, double? size}) {
     return Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: size);
   }

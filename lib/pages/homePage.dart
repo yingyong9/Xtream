@@ -8,7 +8,7 @@ import 'package:xstream/controller/tikTokVideoListController.dart';
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
 
-import 'package:xstream/other/bottomSheet.dart' as CustomBottomSheet;
+// import 'package:xstream/other/bottomSheet.dart' as CustomBottomSheet;
 import 'package:xstream/pages/authen.dart';
 import 'package:xstream/pages/display_profile_tap_icon.dart';
 import 'package:xstream/pages/list_live.dart';
@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   TikTokScaffoldController tkController = TikTokScaffoldController();
 
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
 
   TikTokVideoListController _videoListController = TikTokVideoListController();
 
@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    Widget? currentPage;
+    // Widget? currentPage;
 
     switch (tabBarType) {
       case TikTokPageTag.home:
@@ -247,8 +247,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         onDisplayImageProduct: () {
                           _videoListController.currentPlayer.pause();
 
-                          UserModel ownerVideoUserModel = UserModel.fromMap(
-                              appController.videoModels[i].mapUserModel);
+                          // UserModel ownerVideoUserModel = UserModel.fromMap(
+                          //     appController.videoModels[i].mapUserModel);
 
                           if (appController.currentUserModels.isEmpty) {
                             Get.to(const Authen());

@@ -614,4 +614,17 @@ class AppService {
       }
     });
   }
+
+  Future<void> readGeneralUserModel() async {
+    FirebaseFirestore.instance.collection('user').get().then((value) {
+      if (appController.generalUserModels.isNotEmpty) {
+        appController.generalUserModels.clear();
+      }
+
+      for (var element in value.docs) {
+        UserModel userModel = UserModel.fromMap(element.data());
+        appController.generalUserModels.add(userModel);
+      }
+    });
+  }
 }

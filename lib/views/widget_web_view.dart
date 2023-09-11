@@ -1,27 +1,31 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
 import 'package:xstream/style/style.dart';
-import 'package:xstream/utility/app_controller.dart';
-import 'package:xstream/utility/app_dialog.dart';
 import 'package:xstream/views/widget_back_button.dart';
 import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_form.dart';
 import 'package:xstream/views/widget_image.dart';
 import 'package:xstream/views/widget_text.dart';
 
-class WatchLiveVideo extends StatefulWidget {
-  const WatchLiveVideo({super.key});
+class WidgetWebView extends StatefulWidget {
+  const WidgetWebView({
+    Key? key,
+    required this.streamKey,
+  }) : super(key: key);
+
+  final String streamKey;
 
   @override
-  State<WatchLiveVideo> createState() => _WatchLiveVideoState();
+  State<WidgetWebView> createState() => _WidgetWebViewState();
 }
 
-class _WatchLiveVideoState extends State<WatchLiveVideo> {
+class _WidgetWebViewState extends State<WidgetWebView> {
   WebViewController? webViewController;
 
-  AppController appController = Get.put(AppController());
+  
 
   // String urlVideo = 'https://html.login.in.th/webrtc/player.php?dir=d2VoYXBweQ%3D%3D&id=d2VoYXBweQ%3D%3D&showview=1';   // Old
 
@@ -30,7 +34,8 @@ class _WatchLiveVideoState extends State<WatchLiveVideo> {
     super.initState();
 
     String urlVideo =
-        'https://webrtc.livestreaming.in.th/wehappy/play.html?name=${appController.currentUserModels.last.uid.substring(0, 6)}&playOrder=webrtc&autoplay=true'; // New
+      'https://webrtc.livestreaming.in.th/wehappy/play.html?name=${widget.streamKey}&playOrder=webrtc&autoplay=true'; // New
+
 
     webViewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -82,17 +87,8 @@ class _WatchLiveVideoState extends State<WatchLiveVideo> {
                           child: WidgetForm(),
                         ),
                         WidgetButton(
-                          label: 'KeyStream',
-                          pressFunc: () {
-                            AppDialog().normalDialog(
-                              content: Column(mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  WidgetText(data: 'Server : rmpt://aaaa'),
-                                  WidgetText(data: 'StreamKey : ${appController.currentUserModels.last.uid.substring(0,6)}'),
-                                ],
-                              ),
-                            );
-                          },
+                          label: 'เลือกช่อง',
+                          pressFunc: () {},
                         ),
                         WidgetButton(
                           label: 'Live',
