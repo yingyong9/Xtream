@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+
 import 'package:upgrader/upgrader.dart';
 import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/style/style.dart';
@@ -15,13 +16,15 @@ Future<void> main() async {
   HttpOverrides.global = MyHttpOverride();
 
   WidgetsFlutterBinding.ensureInitialized();
+
+  
+
   await Firebase.initializeApp().then((value) {
     FirebaseAuth.instance.authStateChanges().listen((event) {
       if (event != null) {
         AppService().findCurrentUserModel().then((value) {
-         runApp(MyApp());
+          runApp(MyApp());
         });
-        
       } else {
         runApp(MyApp());
       }
@@ -49,7 +52,9 @@ class MyApp extends StatelessWidget {
           bodyText1: StandardTextStyle.normal,
         ),
       ),
-      home: UpgradeAlert(child: const HomePage(),),
+      home: UpgradeAlert(
+        child: const HomePage(),
+      ),
       // home: CameraPage(),
     );
   }

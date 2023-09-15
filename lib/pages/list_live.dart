@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
+import 'package:xstream/views/widget_playter_video.dart';
 import 'package:xstream/views/widget_text.dart';
 import 'package:xstream/views/widget_web_view.dart';
 
@@ -30,13 +31,14 @@ class _ListLiveState extends State<ListLive> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Obx(
-           () {
-            return appController.generalUserModels.isEmpty ? const SizedBox() : WidgetText(
-                data: appController
-                    .generalUserModels[appController.indexListLive.value].name);
-          }
-        ),
+        title: Obx(() {
+          return appController.generalUserModels.isEmpty
+              ? const SizedBox()
+              : WidgetText(
+                  data: appController
+                      .generalUserModels[appController.indexListLive.value]
+                      .name);
+        }),
       ),
       body: Obx(() {
         return SafeArea(
@@ -44,8 +46,11 @@ class _ListLiveState extends State<ListLive> {
             scrollDirection: Axis.vertical,
             controller: pageController,
             children: appController.generalUserModels
-                .map((element) =>
-                    WidgetWebView(streamKey: element.uid.substring(0, 6)))
+                .map(
+                  (element) => WidgetWebView(
+                    streamKey: element.uid.substring(0, 6),
+                  ),
+                )
                 .toList(),
             onPageChanged: (value) {
               appController.indexListLive.value = value;

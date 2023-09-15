@@ -9,7 +9,6 @@ import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_dialog.dart';
 import 'package:xstream/utility/app_service.dart';
-import 'package:xstream/utility/app_snackbar.dart';
 import 'package:xstream/views/widget_back_button.dart';
 import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_form.dart';
@@ -17,6 +16,7 @@ import 'package:xstream/views/widget_form_multiline.dart';
 import 'package:xstream/views/widget_icon_button.dart';
 import 'package:xstream/views/widget_image_file.dart';
 import 'package:xstream/views/widget_text.dart';
+import 'package:xstream/views/widget_text_button.dart';
 
 class DetailPost extends StatefulWidget {
   const DetailPost({
@@ -48,11 +48,16 @@ class _DetailPostState extends State<DetailPost> {
   TextEditingController linkLineController = TextEditingController();
   TextEditingController linkMessageController = TextEditingController();
 
+  TextEditingController liveController = TextEditingController();
+
   var widgetForms = <Widget>[];
 
   @override
   void initState() {
     super.initState();
+
+    appController.liveBool.value = false;
+
     if (appController.currentUserModels.isNotEmpty) {
       phoneContactController.text =
           appController.currentUserModels.last.phoneContact ?? '';
@@ -138,6 +143,7 @@ class _DetailPostState extends State<DetailPost> {
                     color: ColorPlate.gray,
                   ),
                   displayImageFile(boxConstraints),
+                  displayLive(boxConstraints: boxConstraints),
                 ],
               ),
             ),
@@ -145,7 +151,7 @@ class _DetailPostState extends State<DetailPost> {
         }),
       ),
       bottomSheet: Container(
-        decoration: BoxDecoration(color: ColorPlate.back1),
+        decoration: const BoxDecoration(color: ColorPlate.back1),
         padding: const EdgeInsets.symmetric(horizontal: 8),
         width: double.infinity,
         child: WidgetButton(
@@ -198,6 +204,40 @@ class _DetailPostState extends State<DetailPost> {
     );
   }
 
+  Obx displayLive({required BoxConstraints boxConstraints}) {
+    return Obx(() {
+      return appController.liveBool.value
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: boxConstraints.maxWidth * 0.65,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      WidgetForm(
+                        textEditingController: liveController,
+                        labelWidget: const WidgetText(data: 'ข้อความ'),
+                      ),
+                      const WidgetText(data: '* คุณมีเวลา Live 2 ชัวโมง *')
+                    ],
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: ColorPlate.gray,
+                      borderRadius: BorderRadius.circular(10)),
+                  alignment: Alignment.center,
+                  width: boxConstraints.maxWidth * 0.25,
+                  height: boxConstraints.maxWidth * 0.35,
+                  child: WidgetText(data: 'Add Image'),
+                ),
+              ],
+            )
+          : const SizedBox();
+    });
+  }
+
   Obx displayImageFile(BoxConstraints boxConstraints) {
     return Obx(() {
       return appController.files.isEmpty
@@ -238,10 +278,11 @@ class _DetailPostState extends State<DetailPost> {
   Row displayIcon2() {
     return Row(
       children: [
-        WidgetIconButton(
-          iconData: Icons.tag,
-          pressFunc: () {},
-          size: 24,
+        WidgetTextButton(
+          label: 'Live',
+          pressFunc: () {
+            appController.liveBool.value = true;
+          },
         ),
       ],
     );
