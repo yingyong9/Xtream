@@ -16,9 +16,7 @@ class AppController extends GetxController {
   RxList<String> docIdVideos = <String>[].obs;
   RxList<VideoModel> postVideoModels = <VideoModel>[].obs;
   RxList<UserModel> currentUserModels = <UserModel>[].obs;
-  
   RxList<UserModel> generalUserModels = <UserModel>[].obs;
-
   RxList<UserModel> profileTabUserModels = <UserModel>[].obs;
   RxList<File> files = <File>[].obs;
   RxList<String> nameFiles = <String>[].obs;
@@ -41,6 +39,7 @@ class AppController extends GetxController {
   RxList<InvoidModel> invoidModels = <InvoidModel>[].obs;
   RxList<String> docIdInvoids = <String>[].obs;
   RxList<RemarkModel> remarkModels = <RemarkModel>[].obs;
-
   RxInt indexListLive = 0.obs;
+
+  RxBool liveBool = false.obs;
 }

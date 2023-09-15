@@ -1,17 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:video_player/video_player.dart';
 
-import 'package:xstream/style/style.dart';
 import 'package:xstream/views/widget_back_button.dart';
 import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_form.dart';
 import 'package:xstream/views/widget_image.dart';
 import 'package:xstream/views/widget_text.dart';
 
-class WidgetMediaKit extends StatefulWidget {
-  const WidgetMediaKit({
+class WidgetPlayerVideo extends StatefulWidget {
+  const WidgetPlayerVideo({
     Key? key,
     required this.streamKey,
   }) : super(key: key);
@@ -19,25 +18,23 @@ class WidgetMediaKit extends StatefulWidget {
   final String streamKey;
 
   @override
-  State<WidgetMediaKit> createState() => _WidgetMediaKitState();
+  State<WidgetPlayerVideo> createState() => _WidgetPlayerVideoState();
 }
 
-class _WidgetMediaKitState extends State<WidgetMediaKit> {
- 
-
-  
-
-  // String urlVideo = 'https://html.login.in.th/webrtc/player.php?dir=d2VoYXBweQ%3D%3D&id=d2VoYXBweQ%3D%3D&showview=1';   // Old
+class _WidgetPlayerVideoState extends State<WidgetPlayerVideo> {
+  VideoPlayerController? videoPlayerController;
 
   @override
   void initState() {
     super.initState();
 
     String urlVideo =
-      'https://webrtc.livestreaming.in.th/wehappy/play.html?name=${widget.streamKey}&playOrder=webrtc&autoplay=true'; // New
+        'https://webrtc.livestreaming.in.th/wehappy/play.html?name=${widget.streamKey}&playOrder=webrtc&autoplay=true'; // New
 
-
-    
+    videoPlayerController =
+        VideoPlayerController.networkUrl(Uri.parse(urlVideo))
+          ..initialize()
+          ..play();
   }
 
   @override
@@ -50,7 +47,7 @@ class _WidgetMediaKitState extends State<WidgetMediaKit> {
             height: boxConstraints.maxHeight,
             child: Stack(
               children: [
-                WidgetText(data: 'This is Media Kit --> ${widget.streamKey}'),
+                VideoPlayer(videoPlayerController!),
                 const Positioned(
                   top: 32,
                   left: 16,

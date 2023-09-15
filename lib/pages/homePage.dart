@@ -25,6 +25,7 @@ import 'package:xstream/views/tikTokScaffold.dart';
 import 'package:xstream/views/tikTokVideo.dart';
 import 'package:xstream/views/tikTokVideoButtonColumn.dart';
 import 'package:xstream/views/tiktokTabBar.dart';
+
 import 'package:xstream/views/widget_progress.dart';
 
 class HomePage extends StatefulWidget {
@@ -162,13 +163,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       },
       onAddButton: () {
         _videoListController.currentPlayer.pause();
+
         if (appController.currentUserModels.isEmpty) {
           Get.to(const Authen());
         } else {
-          Get.bottomSheet(const AddBottomSheet());
+
+          // Get.bottomSheet(const AddBottomSheet());
 
           //ไปเปิด state เลือกวีดีโอ
-          // AppService().processUploadVideoFromGallery();
+          AppService().processUploadVideoFromGallery();
         }
       },
     );
@@ -184,6 +187,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       onPop: tkController.animateToMiddle,
     );
 
+    //ส่วนของหัวด้านบน
     var header = tabBarType == TikTokPageTag.home
         ? TikTokHeader(
             onSearch: () {
@@ -194,6 +198,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               Get.to(const ListLive())!.then((value) {
                 _videoListController.currentPlayer.play();
               });
+             
             },
           )
         : Container();

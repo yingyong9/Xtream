@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
-import 'package:xstream/views/widget_media_kit.dart';
+import 'package:xstream/views/widget_playter_video.dart';
 import 'package:xstream/views/widget_text.dart';
 import 'package:xstream/views/widget_web_view.dart';
 
@@ -47,7 +47,7 @@ class _ListLiveState extends State<ListLive> {
             controller: pageController,
             children: appController.generalUserModels
                 .map(
-                  (element) => WidgetMediaKit(
+                  (element) => WidgetWebView(
                     streamKey: element.uid.substring(0, 6),
                   ),
                 )
