@@ -186,6 +186,32 @@ class TikTokButtonColumn extends StatelessWidget {
           ),
           displayImageProduct(appController,
               context: context, onTap: onDisplayImageProduct ?? () {}),
+          videoModel.urlImageLive!.isEmpty
+              ? const SizedBox()
+              : Container(
+                  margin: const EdgeInsets.only(right: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  width: 110,
+                  height: 170,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      WidgetImageNetwork(
+                        urlImage: videoModel.urlImageLive!,
+                        size: 100,
+                        boxFit: BoxFit.cover,
+                      ),
+                      WidgetText(
+                        data: AppService().checkTimeLive(startLive: videoModel.startLive!) ? 'Live สดขณะนี้' : 'Live สิ้นสุดแล้ว',
+                        textStyle: AppConstant().bodyStyle(color: Colors.black),
+                      ),
+                    ],
+                  ),
+                  decoration: const BoxDecoration(color: ColorPlate.white),
+                ),
           Container(
             width: SysSize.avatar,
             height: SysSize.avatar,
@@ -251,7 +277,7 @@ class TikTokButtonColumn extends StatelessWidget {
                         ),
                 ],
               ),
-              decoration: BoxDecoration(color: ColorPlate.white),
+              decoration: const BoxDecoration(color: ColorPlate.white),
             ),
           );
   }
@@ -323,8 +349,10 @@ class TikTokButtonColumn extends StatelessWidget {
             pressFunc: () {
               Get.back();
               Get.to(AddAddressDelivery(
-                  videoModel: videoModel,
-                  amountProduct: appController.amount.value, indexVideo: indexVideo,));
+                videoModel: videoModel,
+                amountProduct: appController.amount.value,
+                indexVideo: indexVideo,
+              ));
             },
           ),
         ));
