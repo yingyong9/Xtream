@@ -51,6 +51,17 @@ class AppService {
     }
   }
 
+  Future<void> processTakePhotoLive({required ImageSource imageSource}) async {
+    var result = await ImagePicker()
+        .pickImage(source: imageSource, maxWidth: 800, maxHeight: 800);
+    if (result != null) {
+      File file = File(result.path);
+      appController.liveFiles.add(file);
+      String nameFile = basename(file.path);
+      appController.liveNameFiles.add(nameFile);
+    }
+  }
+
   Future<void> processFtpUploadAndInsertDataVideo({
     required File fileVideo,
     required String nameFileVideo,
@@ -64,6 +75,9 @@ class AppService {
     String? phoneContact,
     String? linkLine,
     String? linkMessaging,
+    String? urlImagelive,
+    String? liveTitle,
+    Timestamp? startLive,
   }) async {
     //  Get.offAll(HomePage());
 
@@ -91,7 +105,13 @@ class AppService {
         affiliateProduct: affiliateProduct ?? '',
         urlProduct: urlProduct ?? '',
         uidPost: appController.currentUserModels.last.uid,
+        urlImageLive: urlImagelive ?? '',
+        startLive: startLive ?? Timestamp(0, 0),
+        liveTitle: liveTitle ?? '',
       );
+
+      print('videoModel ---> ${videoModel.toMap()}');
+
       FirebaseFirestore.instance
           .collection('video')
           .doc()
@@ -101,7 +121,7 @@ class AppService {
         if (appController.files.isNotEmpty) {
           appController.files.clear();
         }
-        Get.offAll(HomePage());
+        Get.offAll(const HomePage());
         AppSnackBar(title: 'Upload Video Success', message: 'Thankyou')
             .normalSnackBar();
       });
@@ -143,6 +163,21 @@ class AppService {
     Reference reference =
         firebaseStorage.ref().child('$path/${appController.nameFiles.last}');
     UploadTask uploadTask = reference.putFile(appController.files.last);
+    await uploadTask.whenComplete(() async {
+      urlImage = await reference.getDownloadURL();
+    });
+
+    return urlImage;
+  }
+
+  Future<String?> processUploadFileImageLive({required String path}) async {
+    String? urlImage;
+
+    FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+    Reference reference = firebaseStorage
+        .ref()
+        .child('$path/${appController.liveNameFiles.last}');
+    UploadTask uploadTask = reference.putFile(appController.liveFiles.last);
     await uploadTask.whenComplete(() async {
       urlImage = await reference.getDownloadURL();
     });
@@ -626,5 +661,16 @@ class AppService {
         appController.generalUserModels.add(userModel);
       }
     });
+  }
+
+  bool checkTimeLive({required Timestamp startLive}) {
+    DateTime startLiveDateTime = startLive.toDate();
+    // startLiveDateTime = startLiveDateTime.add(const Duration(hours: 2));
+    startLiveDateTime = startLiveDateTime.add(Duration(minutes: 5));
+
+    bool result = startLiveDateTime.isAfter(DateTime.now());
+    print('###### result ----> $result');
+
+    return result;
   }
 }

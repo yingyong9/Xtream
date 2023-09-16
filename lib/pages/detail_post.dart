@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -90,66 +91,56 @@ class _DetailPostState extends State<DetailPost> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ColorPlate.back1,
-        leading: WidgetBackButton(
-          pressFunc: () {
-            Get.offAll(const HomePage());
-          },
-        ),
-        elevation: 0,
-      ),
-      body: SafeArea(
-        child: LayoutBuilder(builder: (context, BoxConstraints boxConstraints) {
-          return GestureDetector(
-            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-            child: SizedBox(
-              width: boxConstraints.maxWidth,
-              height: boxConstraints.maxHeight,
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: boxConstraints.maxWidth * 0.75 - 16,
-                            child: WidgetFormMultiLine(
-                              textEditingController: detailController,
-                              hint: 'กรอกข้อความ',
-                              maxLines: 5,
-                            ),
+      appBar: mainAppbar(),
+      body: LayoutBuilder(builder: (context, BoxConstraints boxConstraints) {
+        return GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: SizedBox(
+            width: boxConstraints.maxWidth,
+            height: boxConstraints.maxHeight,
+            child: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: boxConstraints.maxWidth * 0.75 - 16,
+                          child: WidgetFormMultiLine(
+                            textEditingController: detailController,
+                            hint: 'กรอกข้อความ',
+                            maxLines: 5,
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              displayIcon(),
-                              displayIcon2(),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: boxConstraints.maxWidth * 0.25,
-                        height: boxConstraints.maxWidth * 0.35 + 36,
-                        child: WidgetImageFile(fileImage: widget.fileThumbnail),
-                      ),
-                    ],
-                  ),
-                  const Divider(
-                    color: ColorPlate.gray,
-                  ),
-                  displayImageFile(boxConstraints),
-                  displayLive(boxConstraints: boxConstraints),
-                ],
-              ),
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            displayIcon(),
+                            displayIcon2(),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: boxConstraints.maxWidth * 0.25,
+                      height: boxConstraints.maxWidth * 0.35 + 36,
+                      child: WidgetImageFile(fileImage: widget.fileThumbnail),
+                    ),
+                  ],
+                ),
+                const Divider(
+                  color: ColorPlate.gray,
+                ),
+                displayImageFile(boxConstraints),
+                displayLive(boxConstraints: boxConstraints),
+              ],
             ),
-          );
-        }),
-      ),
+          ),
+        );
+      }),
       bottomSheet: Container(
         decoration: const BoxDecoration(color: ColorPlate.back1),
         padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -160,7 +151,26 @@ class _DetailPostState extends State<DetailPost> {
           pressFunc: () async {
             AppDialog().dialogProgress();
 
-            if (appController.files.isEmpty) {
+            if (appController.liveBool.value) {
+              String? urlImageLive =
+                  await AppService().processUploadFileImageLive(path: 'live');
+
+              String? urlImage = await AppService().processUploadThumbnailVideo(
+                  fileThumbnail: widget.fileThumbnail,
+                  nameFile: widget.nameFileImage);
+
+              AppService()
+                  .processFtpUploadAndInsertDataVideo(
+                    fileVideo: widget.fileVideo,
+                    nameFileVideo: widget.nameFileVideo,
+                    urlThumbnail: urlImage!,
+                    detail: '',
+                    urlImagelive: urlImageLive,
+                    liveTitle: liveController.text,
+                    startLive: Timestamp.fromDate(DateTime.now()),
+                  )
+                  .then((value) => Get.back());
+            } else if (appController.files.isEmpty) {
               // Video Only
 
               String? urlImage = await AppService().processUploadThumbnailVideo(
@@ -204,6 +214,18 @@ class _DetailPostState extends State<DetailPost> {
     );
   }
 
+  AppBar mainAppbar() {
+    return AppBar(
+      backgroundColor: ColorPlate.back1,
+      leading: WidgetBackButton(
+        pressFunc: () {
+          Get.offAll(const HomePage());
+        },
+      ),
+      elevation: 0,
+    );
+  }
+
   Obx displayLive({required BoxConstraints boxConstraints}) {
     return Obx(() {
       return appController.liveBool.value
@@ -219,18 +241,27 @@ class _DetailPostState extends State<DetailPost> {
                         textEditingController: liveController,
                         labelWidget: const WidgetText(data: 'ข้อความ'),
                       ),
-                      const WidgetText(data: '* คุณมีเวลา Live 2 ชัวโมง *')
+                      const WidgetText(data: '* คุณมีเวลา Live 2 ชัวโมง *'),
                     ],
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                      color: ColorPlate.gray,
-                      borderRadius: BorderRadius.circular(10)),
-                  alignment: Alignment.center,
-                  width: boxConstraints.maxWidth * 0.25,
-                  height: boxConstraints.maxWidth * 0.35,
-                  child: WidgetText(data: 'Add Image'),
+                InkWell(
+                  onTap: () {
+                    AppService()
+                        .processTakePhotoLive(imageSource: ImageSource.gallery);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: ColorPlate.gray,
+                        borderRadius: BorderRadius.circular(10)),
+                    alignment: Alignment.center,
+                    width: boxConstraints.maxWidth * 0.25,
+                    height: boxConstraints.maxWidth * 0.35,
+                    child: appController.liveFiles.isEmpty
+                        ? const WidgetText(data: 'Add Image')
+                        : WidgetImageFile(
+                            fileImage: appController.liveFiles.last),
+                  ),
                 ),
               ],
             )

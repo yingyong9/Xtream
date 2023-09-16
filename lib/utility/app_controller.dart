@@ -18,8 +18,14 @@ class AppController extends GetxController {
   RxList<UserModel> currentUserModels = <UserModel>[].obs;
   RxList<UserModel> generalUserModels = <UserModel>[].obs;
   RxList<UserModel> profileTabUserModels = <UserModel>[].obs;
+
   RxList<File> files = <File>[].obs;
   RxList<String> nameFiles = <String>[].obs;
+
+  RxList<File> liveFiles = <File>[].obs;
+  RxList<String> liveNameFiles = <String>[].obs;
+
+
   RxList<File> productFiles = <File>[].obs;
   RxList<String> productNameFiles = <String>[].obs;
   RxInt amount = 1.obs;

@@ -19,6 +19,9 @@ class VideoModel {
   final int? up;
   final int? down;
   final int? comment;
+  final String? urlImageLive;
+  final Timestamp? startLive;
+  final String? liveTitle;
 
   VideoModel({
     required this.url,
@@ -36,6 +39,9 @@ class VideoModel {
     this.up,
     this.down,
     this.comment,
+    this.urlImageLive,
+    this.startLive,
+    this.liveTitle,
   });
 
   Map<String, dynamic> toMap() {
@@ -55,12 +61,15 @@ class VideoModel {
       'up': up,
       'down': down,
       'comment': comment,
+      'urlImageLive': urlImageLive,
+      'startLive': startLive,
+      'liveTitle': liveTitle,
     };
   }
 
   factory VideoModel.fromMap(Map<String, dynamic> map) {
     return VideoModel(
-      url: (map['url'] ?? '') as String,
+       url: (map['url'] ?? '') as String,
       image: (map['image'] ?? '') as String,
       desc: map['desc'] ?? '',
       timestamp: map['timestamp'] ?? Timestamp(0, 0),
@@ -75,6 +84,9 @@ class VideoModel {
       up: (map['up'] ?? 0) as int,
       down: (map['down'] ?? 0) as int,
       comment: (map['comment'] ?? 0) as int,
+      urlImageLive: map['urlImageLive'] ?? '',
+      startLive: map['startLive'] ?? Timestamp(0, 0),
+      liveTitle: map['liveTitle'] ?? '',
     );
   }
 
