@@ -29,6 +29,7 @@ class TikTokButtonColumn extends StatelessWidget {
   final Function? onShare;
   final Function? onAvatar;
   final Function()? onDisplayImageProduct;
+  final Function()? onTapImageLive;
   final Function()? onAddButton;
   final VideoModel videoModel;
   final String docIdVideo;
@@ -43,6 +44,7 @@ class TikTokButtonColumn extends StatelessWidget {
     this.onShare,
     this.onAvatar,
     this.onDisplayImageProduct,
+    this.onTapImageLive,
     this.onAddButton,
     required this.videoModel,
     required this.docIdVideo,
@@ -188,30 +190,32 @@ class TikTokButtonColumn extends StatelessWidget {
               context: context, onTap: onDisplayImageProduct ?? () {}),
           videoModel.urlImageLive!.isEmpty
               ? const SizedBox()
-              : Container(
-                  margin: const EdgeInsets.only(right: 12),
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  width: 110,
-                  height: 170,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      WidgetImageNetwork(
-                        urlImage: videoModel.urlImageLive!,
-                        size: 100,
-                        boxFit: BoxFit.cover,
-                      ),
-                      WidgetText(
-                        data: AppService().checkTimeLive(startLive: videoModel.startLive!) ? 'Live สดขณะนี้' : 'Live สิ้นสุดแล้ว',
-                        textStyle: AppConstant().bodyStyle(color: Colors.black),
-                      ),
-                    ],
+              : InkWell(onTap: onTapImageLive,
+                child: Container(
+                    margin: const EdgeInsets.only(right: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    width: 110,
+                    height: 170,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        WidgetImageNetwork(
+                          urlImage: videoModel.urlImageLive!,
+                          size: 100,
+                          boxFit: BoxFit.cover,
+                        ),
+                        WidgetText(
+                          data: AppService().checkTimeLive(startLive: videoModel.startLive!) ? 'Live สดขณะนี้' : 'Live สิ้นสุดแล้ว',
+                          textStyle: AppConstant().bodyStyle(color: Colors.black),
+                        ),
+                      ],
+                    ),
+                    decoration: const BoxDecoration(color: ColorPlate.white),
                   ),
-                  decoration: const BoxDecoration(color: ColorPlate.white),
-                ),
+              ),
           Container(
             width: SysSize.avatar,
             height: SysSize.avatar,

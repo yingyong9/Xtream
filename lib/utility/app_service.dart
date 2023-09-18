@@ -6,6 +6,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -672,5 +673,13 @@ class AppService {
     print('###### result ----> $result');
 
     return result;
+  }
+
+  Future<void> processLaunchPrismLive() async {
+    await LaunchApp.openApp(
+      androidPackageName: 'com.prism.live',
+      iosUrlScheme: '',
+      appStoreLink: 'https://apps.apple.com/app/id1319056339',
+    );
   }
 }
