@@ -17,6 +17,7 @@ import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/style/physics.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
+import 'package:xstream/utility/app_snackbar.dart';
 import 'package:xstream/views/add_bottom_sheet.dart';
 import 'package:xstream/views/product_bottomSheet.dart';
 import 'package:xstream/views/tikTokCommentBottomSheet.dart';
@@ -27,6 +28,7 @@ import 'package:xstream/views/tikTokVideoButtonColumn.dart';
 import 'package:xstream/views/tiktokTabBar.dart';
 
 import 'package:xstream/views/widget_progress.dart';
+import 'package:xstream/views/widget_web_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -167,7 +169,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         if (appController.currentUserModels.isEmpty) {
           Get.to(const Authen());
         } else {
-
           // Get.bottomSheet(const AddBottomSheet());
 
           //ไปเปิด state เลือกวีดีโอ
@@ -198,7 +199,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               Get.to(const ListLive())!.then((value) {
                 _videoListController.currentPlayer.play();
               });
-             
             },
           )
         : Container();
@@ -233,6 +233,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       var player = _videoListController.playerOfIndex(i)!;
                       var data = player.videoInfo!;
 
+                      //ส่วนของ Button ด้านข้าง
                       Widget buttons = TikTokButtonColumn(
                         isFavorite: isF,
                         onAvatar: () {
@@ -272,6 +273,28 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                 indexVideo: i,
                               ));
                             }
+                          }
+                        },
+                        onTapImageLive: () {
+                          print('You tap Imagd Live');
+
+                          if (AppService().checkTimeLive(
+                              startLive: appController
+                                  .videoModels[appController.indexVideo.value]
+                                  .startLive!)) {
+                            //Live
+
+                            _videoListController.currentPlayer.pause();
+
+                            Get.to(WidgetWebView(streamKey: appController.videoModels[appController.indexVideo.value].uidPost.substring(0,6)))!
+                                .then((value) {
+                              _videoListController.currentPlayer.play();
+                            });
+                          } else {
+                            AppSnackBar(
+                                    title: 'Live สิ้นสุดแล้ว',
+                                    message: 'ขออภัย Live สิ้นสุดแล้ว')
+                                .errorSnackBar();
                           }
                         },
                         onFavorite: () {

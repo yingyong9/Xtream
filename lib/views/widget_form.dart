@@ -13,6 +13,7 @@ class WidgetForm extends StatelessWidget {
     this.prefixWidget,
     this.suffixWidget,
     this.changeFunc,
+    this.fillColor,
   }) : super(key: key);
 
   final TextEditingController? textEditingController;
@@ -22,6 +23,7 @@ class WidgetForm extends StatelessWidget {
   final Widget? prefixWidget;
   final Widget? suffixWidget;
   final Function(String)? changeFunc;
+  final Color? fillColor;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class WidgetForm extends StatelessWidget {
         hintText: hint,
         hintStyle: StandardTextStyle.normalWithOpacity,
         filled: true,
+        fillColor: fillColor,
         border: InputBorder.none,
       ),
       controller: textEditingController,

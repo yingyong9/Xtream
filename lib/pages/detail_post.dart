@@ -161,15 +161,19 @@ class _DetailPostState extends State<DetailPost> {
 
               AppService()
                   .processFtpUploadAndInsertDataVideo(
-                    fileVideo: widget.fileVideo,
-                    nameFileVideo: widget.nameFileVideo,
-                    urlThumbnail: urlImage!,
-                    detail: '',
-                    urlImagelive: urlImageLive,
-                    liveTitle: liveController.text,
-                    startLive: Timestamp.fromDate(DateTime.now()),
-                  )
-                  .then((value) => Get.back());
+                fileVideo: widget.fileVideo,
+                nameFileVideo: widget.nameFileVideo,
+                urlThumbnail: urlImage!,
+                detail: '',
+                urlImagelive: urlImageLive,
+                liveTitle: liveController.text,
+                startLive: Timestamp.fromDate(DateTime.now()),
+              )
+                  .then((value) {
+                // Get.back();
+
+                AppService().processLaunchPrismLive();
+              });
             } else if (appController.files.isEmpty) {
               // Video Only
 
