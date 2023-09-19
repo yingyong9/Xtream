@@ -18,6 +18,7 @@ class UserModel {
   final String? twitter;
   final List<String>? friends;
   final List<Map<String, dynamic>>? mapAddress;
+  final String? token;
   UserModel({
     required this.name,
     required this.uid,
@@ -35,6 +36,7 @@ class UserModel {
     this.twitter,
     this.friends,
     this.mapAddress,
+    this.token,
   });
 
   Map<String, dynamic> toMap() {
@@ -55,6 +57,7 @@ class UserModel {
       'twitter': twitter,
       'friends': friends,
       'mapAddress': mapAddress,
+      'token': token,
     };
   }
 
@@ -78,6 +81,7 @@ class UserModel {
       mapAddress: List<Map<String, dynamic>>.from(
         (map['mapAddress'] ?? []),
       ),
+      token: (map['token'] ?? '') as String,
     );
   }
 

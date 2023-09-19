@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -88,7 +89,7 @@ class AppService {
     bool response = await ftpConnect.uploadFileWithRetry(fileVideo,
         pRemoteName: nameFileVideo);
     await ftpConnect.disconnect();
-    print('response upload ---> $response');
+
     if (response) {
       VideoModel videoModel = VideoModel(
         url:
@@ -111,17 +112,22 @@ class AppService {
         liveTitle: liveTitle ?? '',
       );
 
-      print('videoModel ---> ${videoModel.toMap()}');
-
       FirebaseFirestore.instance
           .collection('video')
           .doc()
           .set(videoModel.toMap())
           .then((value) {
-        print('Insert Data Video Success');
+        //Sent Noti All User
+        processSentAllNoti(title: 'วีดีโอใหม่', body: detail);
+
         if (appController.files.isNotEmpty) {
           appController.files.clear();
         }
+
+        if (appController.liveFiles.isNotEmpty) {
+          appController.liveFiles.clear();
+        }
+
         Get.offAll(const HomePage());
         AppSnackBar(title: 'Upload Video Success', message: 'Thankyou')
             .normalSnackBar();
@@ -667,7 +673,7 @@ class AppService {
   bool checkTimeLive({required Timestamp startLive}) {
     DateTime startLiveDateTime = startLive.toDate();
     // startLiveDateTime = startLiveDateTime.add(const Duration(hours: 2));
-    startLiveDateTime = startLiveDateTime.add(Duration(minutes: 5));
+    startLiveDateTime = startLiveDateTime.add(Duration(hours: 1));
 
     bool result = startLiveDateTime.isAfter(DateTime.now());
     print('###### result ----> $result');
@@ -681,5 +687,50 @@ class AppService {
       iosUrlScheme: '',
       appStoreLink: 'https://apps.apple.com/app/id1319056339',
     );
+  }
+
+  Future<void> aboutNoti() async {
+    FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+    String? token = await firebaseMessaging.getToken();
+
+    print('token ---> $token');
+
+    Map<String, dynamic> map = appController.currentUserModels.last.toMap();
+    print('map ------> $map');
+
+    map['token'] = token;
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(appController.currentUserModels.last.uid)
+        .update(map);
+
+    FirebaseMessaging.onMessage.listen((event) {
+      displayNoti(
+          title: event.notification!.title!, body: event.notification!.body!);
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      displayNoti(
+          title: event.notification!.title!, body: event.notification!.body!);
+    });
+  }
+
+  void displayNoti({required String title, required String body}) {
+    AppSnackBar(title: title, message: body).normalSnackBar();
+  }
+
+  Future<void> processSentAllNoti(
+      {required String title, required String body}) async {
+    FirebaseFirestore.instance.collection('user').get().then((value) async {
+      for (var element in value.docs) {
+        UserModel userModel = UserModel.fromMap(element.data());
+        if ((userModel.uid != appController.currentUserModels.last.uid) &&
+            (userModel.token!.isNotEmpty)) {
+          String urlApi =
+              'https://www.androidthai.in.th/fluttertraining/noti/weHappyNoti.php?isAdd=true&token=${userModel.token}&title=$title&body=$body';
+          await Dio().get(urlApi);
+        }
+      }
+    });
   }
 }

@@ -18,7 +18,6 @@ import 'package:xstream/style/physics.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/utility/app_snackbar.dart';
-import 'package:xstream/views/add_bottom_sheet.dart';
 import 'package:xstream/views/product_bottomSheet.dart';
 import 'package:xstream/views/tikTokCommentBottomSheet.dart';
 import 'package:xstream/views/tikTokHeader.dart';
@@ -68,7 +67,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    AppService().findCurrentUserModel();
+    AppService().findCurrentUserModel().then((value) => AppService().aboutNoti());
+
+    
 
     homePageLoadVideo();
 
@@ -286,7 +287,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
                             _videoListController.currentPlayer.pause();
 
-                            Get.to(WidgetWebView(streamKey: appController.videoModels[appController.indexVideo.value].uidPost.substring(0,6)))!
+                            Get.to(WidgetWebView(
+                                    streamKey: appController
+                                        .videoModels[
+                                            appController.indexVideo.value]
+                                        .uidPost
+                                        .substring(0, 6)))!
                                 .then((value) {
                               _videoListController.currentPlayer.play();
                             });
