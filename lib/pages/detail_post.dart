@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:xstream/pages/homePage.dart';
@@ -234,39 +235,130 @@ class _DetailPostState extends State<DetailPost> {
   Obx displayLive({required BoxConstraints boxConstraints}) {
     return Obx(() {
       return appController.liveBool.value
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          ? Column(
               children: [
-                SizedBox(
-                  width: boxConstraints.maxWidth * 0.65,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      WidgetForm(
-                        textEditingController: liveController,
-                        labelWidget: const WidgetText(data: 'ข้อความ'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: boxConstraints.maxWidth * 0.65,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          WidgetForm(
+                            textEditingController: liveController,
+                            labelWidget: const WidgetText(data: 'ข้อความ'),
+                          ),
+                          const WidgetText(data: '* คุณมีเวลา Live 2 ชัวโมง *'),
+                        ],
                       ),
-                      const WidgetText(data: '* คุณมีเวลา Live 2 ชัวโมง *'),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        AppService().processTakePhotoLive(
+                            imageSource: ImageSource.gallery);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: ColorPlate.gray,
+                            borderRadius: BorderRadius.circular(10)),
+                        alignment: Alignment.center,
+                        width: boxConstraints.maxWidth * 0.25,
+                        height: boxConstraints.maxWidth * 0.35,
+                        child: appController.liveFiles.isEmpty
+                            ? const WidgetText(data: 'Add Image')
+                            : WidgetImageFile(
+                                fileImage: appController.liveFiles.last),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    WidgetText(
+                      data: 'ค่า RTMP ของคุณ',
+                      textStyle: AppConstant().bodyStyle(fontSize: 20),
+                    ),
+                  ],
+                ),
+                ListTile(
+                  title: WidgetText(
+                    data: 'Stream name',
+                    textStyle: AppConstant().bodyStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                  subtitle: WidgetText(
+                    data: 'WeHappy',
+                    textStyle: AppConstant().bodyStyle(fontSize: 18),
+                  ),
+                  trailing: WidgetIconButton(
+                    iconData: Icons.copy,
+                    pressFunc: () {
+                      Clipboard.setData(const ClipboardData(text: 'WeHappy'));
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          WidgetText(
+                            data: 'Stream URL',
+                            textStyle: AppConstant().bodyStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 250,
+                            child: WidgetText(
+                              maxLines: 2,
+                              data:
+                                  'rtmp://wehappy.webrtc.livestreaming.in.th/wehappy/',
+                              textStyle: AppConstant().bodyStyle(fontSize: 18),
+                            ),
+                          ),
+                        ],
+                      ),
+                      WidgetIconButton(
+                        iconData: Icons.copy,
+                        pressFunc: () {
+                          Clipboard.setData(const ClipboardData(
+                              text:
+                                  'rtmp://wehappy.webrtc.livestreaming.in.th/wehappy/'));
+                        },
+                      ),
                     ],
                   ),
                 ),
-                InkWell(
-                  onTap: () {
-                    AppService()
-                        .processTakePhotoLive(imageSource: ImageSource.gallery);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: ColorPlate.gray,
-                        borderRadius: BorderRadius.circular(10)),
-                    alignment: Alignment.center,
-                    width: boxConstraints.maxWidth * 0.25,
-                    height: boxConstraints.maxWidth * 0.35,
-                    child: appController.liveFiles.isEmpty
-                        ? const WidgetText(data: 'Add Image')
-                        : WidgetImageFile(
-                            fileImage: appController.liveFiles.last),
+                ListTile(
+                  title: WidgetText(
+                    data: 'Stream key',
+                    textStyle: AppConstant().bodyStyle(
+                      fontSize: 14,
+                    ),
                   ),
+                  subtitle: WidgetText(
+                    data: appController.currentUserModels.last.uid
+                        .substring(0, 6),
+                    textStyle: AppConstant().bodyStyle(fontSize: 18),
+                  ),
+                  trailing: WidgetIconButton(
+                    iconData: Icons.copy,
+                    pressFunc: () {
+                      Clipboard.setData(ClipboardData(
+                          text: appController.currentUserModels.last.uid
+                              .substring(0, 6)
+                              .toString()));
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 100,
                 ),
               ],
             )
@@ -315,7 +407,9 @@ class _DetailPostState extends State<DetailPost> {
     return Row(
       children: [
         WidgetTextButton(
-          label: 'Live',textStyle: AppConstant().bodyStyle(color: ColorPlate.red, fontSize: 20, fontWeight: FontWeight.w700),
+          label: 'Live',
+          textStyle: AppConstant().bodyStyle(
+              color: ColorPlate.red, fontSize: 20, fontWeight: FontWeight.w700),
           pressFunc: () {
             appController.liveBool.value = true;
           },
