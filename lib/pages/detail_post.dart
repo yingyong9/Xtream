@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/style/style.dart';
+import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_dialog.dart';
 import 'package:xstream/utility/app_service.dart';
@@ -299,7 +300,7 @@ class _DetailPostState extends State<DetailPost> {
     return Row(
       children: [
         WidgetIconButton(
-          iconData: Icons.attach_file,
+          iconData: Icons.shopping_basket,
           pressFunc: () {
             AppService().processTakePhoto(imageSource: ImageSource.gallery);
             appController.indexForm.value = 3;
@@ -314,7 +315,7 @@ class _DetailPostState extends State<DetailPost> {
     return Row(
       children: [
         WidgetTextButton(
-          label: 'Live',
+          label: 'Live',textStyle: AppConstant().bodyStyle(color: ColorPlate.red, fontSize: 20, fontWeight: FontWeight.w700),
           pressFunc: () {
             appController.liveBool.value = true;
           },
