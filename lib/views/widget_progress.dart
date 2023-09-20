@@ -7,7 +7,9 @@ class WidgetProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: LoadingAnimationWidget.flickr(
-            leftDotColor: Colors.pink, rightDotColor: Colors.white, size: 60));
+        // child: LoadingAnimationWidget.flickr(
+        //     leftDotColor: Colors.pink, rightDotColor: Colors.white, size: 60));
+        child: LoadingAnimationWidget.discreteCircle(
+            color: Colors.white, size: 100));
   }
 }

@@ -59,6 +59,24 @@ dependencies:
   photo_view: ^0.14.0
   webview_flutter: ^4.2.4
   external_app_launcher: ^3.1.0
+  restart_app: ^1.2.1
+  flutter_native_splash: ^2.3.2
+
+flutter_native_splash:
+  color: "#000000"
+  # image: images/logo2.png
+  # branding: assets/branding-development.png
+  color_dark: "#121212"
+  # image_dark: images/logo2.png
+  # branding_dark: assets/branding-development.png
+
+  android_12:
+    # image: images/logo2.png
+    icon_background_color: "#000000"
+    # image_dark: images/logo2.png
+    icon_background_color_dark: "#121212"
+
+  web: false  
   
   
 
