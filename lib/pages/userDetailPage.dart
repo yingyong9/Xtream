@@ -14,6 +14,7 @@ import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/tilTokAppBar.dart';
 import 'package:xstream/views/widget_image.dart';
 import 'package:xstream/views/widget_image_network.dart';
+import 'package:xstream/views/widget_web_view.dart';
 
 class UserDetailPage extends StatefulWidget {
   @override
@@ -145,6 +146,29 @@ class _UserDetailPageState extends State<UserDetailPage> {
                   ),
                   onTap: () {
                     Get.to(const ListOrder());
+                  },
+                ),
+                _UserInfoRow(
+                  title: 'ห้องไลด์สดของฉัน',
+                  opacity: 1.0,
+                  // rightIcon: Row(
+                  //   mainAxisSize: MainAxisSize.min,
+                  //   children: [
+                  //     Container(
+                  //       padding: const EdgeInsets.all(8),
+                  //       decoration: BoxDecoration(
+                  //           color: ColorPlate.red,
+                  //           borderRadius: BorderRadius.circular(30)),
+                  //       child: Text(
+                  //         appController.amountStart.value.toString(),
+                  //         style: AppConstant().bodyStyle(color: Colors.white),
+                  //       ),
+                  //     ),
+                  //     const Icon(Icons.arrow_forward_ios),
+                  //   ],
+                  // ),
+                  onTap: () {
+                    Get.to(WidgetWebView(streamKey: appController.currentUserModels.last.uid.substring(0,6)));
                   },
                 ),
                 _UserInfoRow(
