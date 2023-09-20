@@ -119,7 +119,7 @@ class _TikTokScaffoldState extends State<TikTokScaffold>
   @override
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
-    // 先定义正常结构
+    
     Widget body = Stack(
       children: <Widget>[
         _LeftPageTransform(

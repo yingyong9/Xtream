@@ -1,7 +1,10 @@
 // ignore_for_file: avoid_print
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:safemap/safemap.dart';
 import 'package:video_player/video_player.dart';
 import 'package:xstream/controller/tikTokVideoListController.dart';
@@ -67,9 +70,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    AppService().findCurrentUserModel().then((value) => AppService().aboutNoti());
-
-    
+    AppService()
+        .findCurrentUserModel()
+        .then((value) => AppService().aboutNoti());
 
     homePageLoadVideo();
 
@@ -77,8 +80,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   void homePageLoadVideo() {
+    if (videoDataList.isNotEmpty) {
+      videoDataList.clear();
+    }
+
     AppService().readAllVideo().then((value) {
-      videoDataList = appController.videoModels;
+      // videoDataList = appController.videoModels;
+      videoDataList.addAll(appController.videoModels);
+
       WidgetsBinding.instance.addObserver(this);
       _videoListController.init(
         pageController: _pageController,
@@ -382,6 +391,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     },
                     onPageChanged: (value) {
                       print('##4aug value =======> $value');
+
+                      if (value == 0) {
+                        print('##4aug homePageVideo work');
+
+                        if (Platform.isAndroid) {
+                          Restart.restartApp();
+                        }
+
+                        // homePageLoadVideo();
+                        // Get.offAll(HomePage());
+                      }
+
                       if (value < appController.videoModels.length) {
                         appController.indexVideo.value = value;
                       } else {}
