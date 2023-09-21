@@ -12,6 +12,7 @@ import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_dialog.dart';
 import 'package:xstream/utility/app_service.dart';
+import 'package:xstream/views/option_product.dart';
 import 'package:xstream/views/widget_back_button.dart';
 import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_form.dart';
@@ -449,59 +450,15 @@ class _DetailPostState extends State<DetailPost> {
         const SizedBox(
           height: 8,
         ),
-        // WidgetForm(
-        //   textEditingController:
-        //       phoneContactController,
-        //   hint: 'phone',
-        //   prefixWidget: const Column(
-        //     mainAxisAlignment:
-        //         MainAxisAlignment.center,
-        //     children: [
-        //       WidgetImage(
-        //         path: 'images/call.png',
-        //         size: 36,
-        //       ),
-        //     ],
-        //   ),
-        // ),
-        // const SizedBox(
-        //   height: 8,
-        // ),
-        // WidgetForm(
-        //   textEditingController: linkLineController,
-        //   hint: 'LinkLine',
-        //   prefixWidget: const Column(
-        //     mainAxisAlignment:
-        //         MainAxisAlignment.center,
-        //     children: [
-        //       WidgetImage(
-        //         path: 'images/line.png',
-        //         size: 36,
-        //       ),
-        //     ],
-        //   ),
-        // ),
-        // const SizedBox(
-        //   height: 8,
-        // ),
-        // WidgetForm(
-        //   textEditingController:
-        //       linkMessageController,
-        //   hint: 'LinkMessaging',
-        //   prefixWidget: Column(
-        //     mainAxisAlignment:
-        //         MainAxisAlignment.center,
-        //     children: [
-        //       WidgetImage(
-        //         path: 'images/messaging.png',
-        //         size: 36,
-        //       ),
-        //     ],
-        //   ),
-        // ),
-        // const SizedBox(
-        //   height: 8,
-        // ),
+        WidgetTextButton(
+          label: 'เพิ่มตัวเลือก',
+          pressFunc: () {
+            Get.bottomSheet(
+              OptionProduct(),
+              isScrollControlled: true,
+            );
+          },
+        ),
         const SizedBox(
           height: 64,
         )

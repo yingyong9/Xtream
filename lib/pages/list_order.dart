@@ -36,61 +36,71 @@ class _ListOrderState extends State<ListOrder> {
       appBar: AppBar(
         backgroundColor: ColorPlate.back1,
         elevation: 0,
+        title: WidgetForm(
+          prefixWidget: Icon(Icons.search),
+          suffixWidget: Icon(Icons.qr_code_2),
+        ),
         actions: [
-          WidgetButton(
-            label: 'อัพเดทการส่งสินค้า',
-            pressFunc: () {
-              TextEditingController textEditingController =
-                  TextEditingController();
-
-              bool nonMap = true;
-
-              int index = 0;
-              int indexMap = 0;
-
-              AppDialog().normalDialog(
-                content: WidgetForm(
-                  textEditingController: textEditingController,
-                  labelWidget: const WidgetText(data: 'กรอก refNo.'),
-                ),
-                firstAction: WidgetTextButton(
-                  label: 'ยืนยัน',
-                  pressFunc: () {
-                    if (textEditingController.text.isNotEmpty) {
-                      for (var element in appController.orderModels) {
-                        if (textEditingController.text == element.refNumber) {
-                          nonMap = false;
-                          indexMap = index;
-                        }
-                        index++;
-                      }
-
-                      if (nonMap) {
-                        Get.back();
-                        AppSnackBar(
-                                title: 'refNo ไม่ถูกต้อง',
-                                message: 'กรุณากรอกใหม่')
-                            .errorSnackBar();
-                      } else {
-                        Get.back();
-                        dialogTakePhoto(indexMap: indexMap);
-                      }
-                    } else {
-                      Get.back();
-                    }
-                  },
-                ),
-                secondAction: WidgetTextButton(
-                  label: 'ยกเลิก',
-                  pressFunc: () {
-                    Get.back();
-                  },
-                ),
-              );
-            },
-            color: Colors.green,
+          WidgetIconButton(
+            iconData: Icons.add,
+            pressFunc: () {},
           )
         ],
+        // actions: [
+        //   WidgetButton(
+        //     label: 'อัพเดทการส่งสินค้า',
+        //     pressFunc: () {
+        //       TextEditingController textEditingController =
+        //           TextEditingController();
+
+        //       bool nonMap = true;
+
+        //       int index = 0;
+        //       int indexMap = 0;
+
+        //       AppDialog().normalDialog(
+        //         content: WidgetForm(
+        //           textEditingController: textEditingController,
+        //           labelWidget: const WidgetText(data: 'กรอก refNo.'),
+        //         ),
+        //         firstAction: WidgetTextButton(
+        //           label: 'ยืนยัน',
+        //           pressFunc: () {
+        //             if (textEditingController.text.isNotEmpty) {
+        //               for (var element in appController.orderModels) {
+        //                 if (textEditingController.text == element.refNumber) {
+        //                   nonMap = false;
+        //                   indexMap = index;
+        //                 }
+        //                 index++;
+        //               }
+
+        //               if (nonMap) {
+        //                 Get.back();
+        //                 AppSnackBar(
+        //                         title: 'refNo ไม่ถูกต้อง',
+        //                         message: 'กรุณากรอกใหม่')
+        //                     .errorSnackBar();
+        //               } else {
+        //                 Get.back();
+        //                 dialogTakePhoto(indexMap: indexMap);
+        //               }
+        //             } else {
+        //               Get.back();
+        //             }
+        //           },
+        //         ),
+        //         secondAction: WidgetTextButton(
+        //           label: 'ยกเลิก',
+        //           pressFunc: () {
+        //             Get.back();
+        //           },
+        //         ),
+        //       );
+        //     },
+        //     color: Colors.green,
+        //   ),
+        // ],
       ),
       body: appController.orderModels.isEmpty
           ? Center(
@@ -122,10 +132,9 @@ class _ListOrderState extends State<ListOrder> {
                           ? const SizedBox()
                           : Row(
                               children: [
-                                // WidgetImageNetwork(urlImage: appController.orderModels[index].urlImageProduct, size: 48, boxFit: BoxFit.cover,),
-                                WidgetAvatar(
+                                WidgetImageNetwork(
                                   urlImage: appController
-                                      .orderModels[index].mapBuyer['urlAvatar'],
+                                      .orderModels[index].urlImageProduct,
                                   size: 48,
                                 ),
                                 const SizedBox(
@@ -140,13 +149,9 @@ class _ListOrderState extends State<ListOrder> {
                                       Row(
                                         children: [
                                           WidgetText(
-                                            data: appController
-                                                .orderModels[index]
-                                                .mapBuyer['name'],
-                                            textStyle: AppConstant().bodyStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500),
-                                          ),
+                                              data: appController
+                                                  .orderModels[index]
+                                                  .refNumber),
                                           const SizedBox(
                                             width: 32,
                                           ),
@@ -166,39 +171,25 @@ class _ListOrderState extends State<ListOrder> {
                                           data: appController
                                               .orderModels[index].nameProduct,
                                           textStyle: AppConstant().bodyStyle(
-                                              fontSize: 16,
-                                              color: Colors.grey.shade600),
+                                            fontSize: 16,
+                                          ),
                                         ),
                                       ),
-                                      Row(
-                                        children: [
-                                          WidgetText(
-                                              data: appController
-                                                  .orderModels[index]
-                                                  .refNumber),
-                                          const SizedBox(
-                                            width: 32,
-                                          ),
-                                          WidgetText(
-                                              data:
-                                                  'จำนวน ${appController.orderModels[index].amount.toString()}'),
-                                        ],
-                                      ),
+                                      WidgetText(
+                                          data:
+                                              'จำนวน ${appController.orderModels[index].amount.toString()}'),
                                     ],
                                   ),
                                 ),
-                             
                               ],
                             );
                     }),
-                  
                   ],
                 ),
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                     
                       WidgetText(
                           data: appController
                               .currentUserModels.last.mapAddress!.last['name']),
@@ -256,8 +247,8 @@ class _ListOrderState extends State<ListOrder> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          WidgetButton(
-                            label: 'รับออเตอร์',
+                          WidgetTextButton(
+                            label: 'พิมพ์บิล',
                             pressFunc: () {
                               if (appController.orderModels[index].status ==
                                   'start') {
@@ -277,8 +268,17 @@ class _ListOrderState extends State<ListOrder> {
                                     .normalSnackBar();
                               }
                             },
-                            color: Colors.purple,
                           ),
+                          WidgetTextButton(
+                            label: 'พิมพ์ใบปะหน้า',
+                            pressFunc: () {},
+                          ),
+                          WidgetTextButton(
+                            label: 'จองขนส่ง',
+                            pressFunc: () {},
+                          ),
+
+                          
                           Obx(() {
                             return appController.orderModels.isEmpty
                                 ? const SizedBox()
