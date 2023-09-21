@@ -63,10 +63,10 @@ class _ListInvoidState extends State<ListInvoid> {
                           ? const SizedBox()
                           : Row(
                               children: [
-                                WidgetAvatar(
+                                WidgetImageNetwork(
                                   urlImage: appController
-                                      .invoidModels[index].mapShop['urlAvatar'],
-                                  size: 48,
+                                      .invoidModels[index].urlImageProduct,
+                                  size: 50,
                                 ),
                                 const SizedBox(
                                   width: 8,
@@ -80,13 +80,9 @@ class _ListInvoidState extends State<ListInvoid> {
                                       Row(
                                         children: [
                                           WidgetText(
-                                            data: appController
-                                                .invoidModels[index]
-                                                .mapShop['name'],
-                                            textStyle: AppConstant().bodyStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500),
-                                          ),
+                                              data: appController
+                                                  .invoidModels[index]
+                                                  .refNumber),
                                           const SizedBox(
                                             width: 32,
                                           ),
@@ -106,24 +102,13 @@ class _ListInvoidState extends State<ListInvoid> {
                                           data: appController
                                               .invoidModels[index].nameProduct,
                                           textStyle: AppConstant().bodyStyle(
-                                              fontSize: 16,
-                                              color: Colors.grey.shade600),
+                                            fontSize: 16,
+                                          ),
                                         ),
                                       ),
-                                      Row(
-                                        children: [
-                                          WidgetText(
-                                              data: appController
-                                                  .invoidModels[index]
-                                                  .refNumber),
-                                          const SizedBox(
-                                            width: 32,
-                                          ),
-                                          WidgetText(
-                                              data:
-                                                  'จำนวน ${appController.invoidModels[index].amount.toString()}'),
-                                        ],
-                                      ),
+                                      WidgetText(
+                                          data:
+                                              'จำนวน ${appController.invoidModels[index].amount.toString()}'),
                                     ],
                                   ),
                                 ),
@@ -136,7 +121,6 @@ class _ListInvoidState extends State<ListInvoid> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                     
                       WidgetText(
                           data: appController
                               .currentUserModels.last.mapAddress!.last['name']),
@@ -196,9 +180,7 @@ class _ListInvoidState extends State<ListInvoid> {
                         children: [
                           WidgetButton(
                             label: 'รับออเตอร์',
-                            pressFunc: () {
-                             
-                            },
+                            pressFunc: () {},
                             color: Colors.purple,
                           ),
                           Obx(() {
