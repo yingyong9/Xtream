@@ -247,8 +247,8 @@ class _ListOrderState extends State<ListOrder> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          WidgetButton(
-                            label: 'รับออเตอร์',
+                          WidgetTextButton(
+                            label: 'พิมพ์บิล',
                             pressFunc: () {
                               if (appController.orderModels[index].status ==
                                   'start') {
@@ -268,8 +268,17 @@ class _ListOrderState extends State<ListOrder> {
                                     .normalSnackBar();
                               }
                             },
-                            color: Colors.purple,
                           ),
+                          WidgetTextButton(
+                            label: 'พิมพ์ใบปะหน้า',
+                            pressFunc: () {},
+                          ),
+                          WidgetTextButton(
+                            label: 'จองขนส่ง',
+                            pressFunc: () {},
+                          ),
+
+                          
                           Obx(() {
                             return appController.orderModels.isEmpty
                                 ? const SizedBox()

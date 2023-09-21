@@ -48,4 +48,6 @@ class AppController extends GetxController {
   RxInt indexListLive = 0.obs;
 
   RxBool liveBool = false.obs;
+
+  
 }

@@ -178,27 +178,15 @@ class _ListInvoidState extends State<ListInvoid> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          WidgetButton(
-                            label: 'รับออเตอร์',
+                          WidgetTextButton(
+                            label: 'ตรวจสอบสถาณะสินค้า',
                             pressFunc: () {},
-                            color: Colors.purple,
                           ),
-                          Obx(() {
-                            return appController.invoidModels.isEmpty
-                                ? const SizedBox()
-                                : appController.invoidModels[index].status ==
-                                        'start'
-                                    ? const SizedBox()
-                                    : appController.invoidModels[index]
-                                                .timestampOrder ==
-                                            Timestamp(0, 0)
-                                        ? const SizedBox()
-                                        : WidgetText(
-                                            data: AppService().timeToString(
-                                                timestamp: appController
-                                                    .invoidModels[index]
-                                                    .timestampOrder!));
-                          }),
+                          WidgetTextButton(
+                            label: 'สอบถาม',
+                            pressFunc: () {},
+                          ),
+                         
                         ],
                       ),
                       Obx(() {
