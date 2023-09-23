@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:xstream/pages/add_option_product.dart';
 import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
@@ -453,10 +454,12 @@ class _DetailPostState extends State<DetailPost> {
         WidgetTextButton(
           label: 'เพิ่มตัวเลือก',
           pressFunc: () {
-            Get.bottomSheet(
-              OptionProduct(),
-              isScrollControlled: true,
-            );
+            Get.to(const AddOptionProduct());
+
+            // Get.bottomSheet(
+            //   OptionProduct(),
+            //   isScrollControlled: true,
+            // );
           },
         ),
         const SizedBox(
