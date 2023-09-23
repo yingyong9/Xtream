@@ -5,6 +5,7 @@ import 'package:xstream/models/amphure_model.dart';
 import 'package:xstream/models/comment_model.dart';
 import 'package:xstream/models/districe_model.dart';
 import 'package:xstream/models/invoid_model.dart';
+import 'package:xstream/models/option_model.dart';
 import 'package:xstream/models/order_model.dart';
 import 'package:xstream/models/province_model.dart';
 import 'package:xstream/models/remark_model.dart';
@@ -24,7 +25,6 @@ class AppController extends GetxController {
 
   RxList<File> liveFiles = <File>[].obs;
   RxList<String> liveNameFiles = <String>[].obs;
-
 
   RxList<File> productFiles = <File>[].obs;
   RxList<String> productNameFiles = <String>[].obs;
@@ -49,5 +49,6 @@ class AppController extends GetxController {
 
   RxBool liveBool = false.obs;
 
-  
+  RxList<OptionModel> optionModels = <OptionModel>[].obs;
+  RxBool displaySave = false.obs;
 }

@@ -454,6 +454,10 @@ class _DetailPostState extends State<DetailPost> {
         WidgetTextButton(
           label: 'เพิ่มตัวเลือก',
           pressFunc: () {
+            if (appController.optionModels.isNotEmpty) {
+              appController.optionModels.clear();
+            }
+
             Get.to(const AddOptionProduct());
 
             // Get.bottomSheet(
