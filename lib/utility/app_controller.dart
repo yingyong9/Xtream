@@ -51,4 +51,6 @@ class AppController extends GetxController {
 
   RxList<OptionModel> optionModels = <OptionModel>[].obs;
   RxBool displaySave = false.obs;
+
+  RxList<String> subOptions = <String>[].obs;
 }

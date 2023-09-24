@@ -31,7 +31,6 @@ class _AddOptionProductState extends State<AddOptionProduct> {
         centerTitle: true,
       ),
       body: ListView(
-        // padding: const EdgeInsets.symmetric(horizontal: 4),
         children: [
           Obx(() {
             return appController.optionModels.isEmpty
@@ -59,10 +58,15 @@ class _AddOptionProductState extends State<AddOptionProduct> {
                               )
                             ],
                           ),
+                          Obx(() {
+                            return WidgetText(
+                                data:
+                                    '${appController.optionModels[index].subOptions}');
+                          }),
                           GFButton(
                             onPressed: () {
                               Get.to(AddSubOptionForm(
-                                optionModel: appController.optionModels[index],
+                                indexOptionModel: index,
                               ));
                             },
                             text: '+ เพิ่ม',
@@ -88,9 +92,15 @@ class _AddOptionProductState extends State<AddOptionProduct> {
             fullWidthButton: true,
             text: '+ เพิ่มชื่อตัวเลือก',
             type: GFButtonType.outline2x,
-            textStyle: AppConstant().bodyStyle(color: GFColors.PRIMARY, fontWeight: FontWeight.w700, fontSize: 16),
+            textStyle: AppConstant().bodyStyle(
+                color: GFColors.PRIMARY,
+                fontWeight: FontWeight.w700,
+                fontSize: 16),
           ),
         ],
+      ),
+      bottomSheet: GFButton(
+        onPressed: () {},text: 'กำหนดราคา และ สต๊อก',fullWidthButton: true,
       ),
     );
   }
