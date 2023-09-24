@@ -7,7 +7,7 @@ class OptionProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FractionallySizedBox(heightFactor: 1,
+    return FractionallySizedBox(heightFactor: 0.75,
       child: Container(
         padding: const EdgeInsets.all(32),
         decoration: BoxDecoration(color: Colors.black),

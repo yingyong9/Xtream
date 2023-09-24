@@ -62,6 +62,7 @@ dependencies:
   restart_app: ^1.2.1
   flutter_native_splash: ^2.3.2
   dropdown_button2: ^2.3.9
+  getwidget: ^4.0.0
 
 flutter_native_splash:
   color: "#000000"
