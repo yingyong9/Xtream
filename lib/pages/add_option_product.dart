@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:xstream/pages/add_option_product_form.dart';
 import 'package:xstream/pages/add_sub_option_form.dart';
+import 'package:xstream/pages/assign_price_stock.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
@@ -77,30 +78,38 @@ class _AddOptionProductState extends State<AddOptionProduct> {
                     ),
                   );
           }),
-          GFButton(
-            onPressed: () {
-              if (appController.optionModels.isEmpty) {
-                Get.to(const AddOptionProductForm());
-              } else if (appController
-                  .optionModels.last.subOptions.isNotEmpty) {
-                Get.to(const AddOptionProductForm());
-              } else {
-                AppSnackBar(title: 'เพิ่ม', message: 'เพิ่ม SubOption')
-                    .errorSnackBar();
-              }
-            },
-            fullWidthButton: true,
-            text: '+ เพิ่มชื่อตัวเลือก',
-            type: GFButtonType.outline2x,
-            textStyle: AppConstant().bodyStyle(
-                color: GFColors.PRIMARY,
-                fontWeight: FontWeight.w700,
-                fontSize: 16),
-          ),
+          Obx(() {
+            return appController.optionModels.length < 2
+                ? GFButton(
+                    onPressed: () {
+                      if (appController.optionModels.isEmpty) {
+                        Get.to(const AddOptionProductForm());
+                      } else if (appController
+                          .optionModels.last.subOptions.isNotEmpty) {
+                        Get.to(const AddOptionProductForm());
+                      } else {
+                        AppSnackBar(title: 'เพิ่ม', message: 'เพิ่ม SubOption')
+                            .errorSnackBar();
+                      }
+                    },
+                    fullWidthButton: true,
+                    text: '+ เพิ่มชื่อตัวเลือก',
+                    type: GFButtonType.outline2x,
+                    textStyle: AppConstant().bodyStyle(
+                        color: GFColors.PRIMARY,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16),
+                  )
+                : const SizedBox();
+          }),
         ],
       ),
       bottomSheet: GFButton(
-        onPressed: () {},text: 'กำหนดราคา และ สต๊อก',fullWidthButton: true,
+        onPressed: () {
+          Get.to(const AssignPriceStock());
+        },
+        text: 'กำหนดราคา และ สต๊อก',
+        fullWidthButton: true,
       ),
     );
   }
