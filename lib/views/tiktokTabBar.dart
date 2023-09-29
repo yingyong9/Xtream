@@ -4,9 +4,11 @@ import 'package:xstream/pages/authen.dart';
 import 'package:xstream/pages/userDetailPage.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
+import 'package:xstream/views/chat_comment_bottomsheet.dart';
 import 'package:xstream/views/commentShopBottomSheet.dart';
 import 'package:xstream/views/remarkBottomSheet.dart';
 import 'package:xstream/views/selectText.dart';
+import 'package:xstream/views/widget_button.dart';
 
 enum TikTokPageTag {
   home,
@@ -104,8 +106,22 @@ class TikTokTabBar extends StatelessWidget {
       color: hasBackground ? ColorPlate.back2 : ColorPlate.back2.withOpacity(0),
       child: Container(
         padding: EdgeInsets.only(bottom: padding.bottom),
-        height: 50 + padding.bottom,
-        child: row,
+        height: 150 + padding.bottom,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Container(margin: const EdgeInsets.only(left: 20),
+              child: WidgetButton(
+                label: 'แสดงความคิดเห็น ...',
+                pressFunc: () {
+                  Get.bottomSheet(ChatCommentBottomSheet());
+                },
+                color: ColorPlate.back1.withOpacity(0.5),
+              ),
+            ),
+            row,
+          ],
+        ),
       ),
     );
   }

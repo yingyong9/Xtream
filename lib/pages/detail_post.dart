@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:xstream/pages/add_option_product.dart';
 import 'package:xstream/pages/homePage.dart';
+import 'package:xstream/pages/manage_product.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
@@ -396,8 +397,10 @@ class _DetailPostState extends State<DetailPost> {
         WidgetIconButton(
           iconData: Icons.shopping_basket,
           pressFunc: () {
-            AppService().processTakePhoto(imageSource: ImageSource.gallery);
-            appController.indexForm.value = 3;
+            Get.to(const ManageProduct());
+
+            // AppService().processTakePhoto(imageSource: ImageSource.gallery);
+            // appController.indexForm.value = 3;
           },
           size: 24,
         ),
