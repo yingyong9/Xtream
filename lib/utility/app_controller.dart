@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:xstream/models/amphure_model.dart';
+import 'package:xstream/models/chat_comment_model.dart';
 import 'package:xstream/models/comment_model.dart';
 import 'package:xstream/models/districe_model.dart';
 import 'package:xstream/models/invoid_model.dart';
@@ -19,13 +20,10 @@ class AppController extends GetxController {
   RxList<UserModel> currentUserModels = <UserModel>[].obs;
   RxList<UserModel> generalUserModels = <UserModel>[].obs;
   RxList<UserModel> profileTabUserModels = <UserModel>[].obs;
-
   RxList<File> files = <File>[].obs;
   RxList<String> nameFiles = <String>[].obs;
-
   RxList<File> liveFiles = <File>[].obs;
   RxList<String> liveNameFiles = <String>[].obs;
-
   RxList<File> productFiles = <File>[].obs;
   RxList<String> productNameFiles = <String>[].obs;
   RxInt amount = 1.obs;
@@ -46,11 +44,10 @@ class AppController extends GetxController {
   RxList<String> docIdInvoids = <String>[].obs;
   RxList<RemarkModel> remarkModels = <RemarkModel>[].obs;
   RxInt indexListLive = 0.obs;
-
   RxBool liveBool = false.obs;
-
   RxList<OptionModel> optionModels = <OptionModel>[].obs;
   RxBool displaySave = false.obs;
-
   RxList<String> subOptions = <String>[].obs;
+
+  RxList<ChatCommentModel> chatCommentModels = <ChatCommentModel>[].obs;
 }

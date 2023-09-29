@@ -19,6 +19,7 @@ import 'package:intl/intl.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:path/path.dart';
 import 'package:xstream/models/amphure_model.dart';
+import 'package:xstream/models/chat_comment_model.dart';
 import 'package:xstream/models/comment_model.dart';
 import 'package:xstream/models/districe_model.dart';
 import 'package:xstream/models/invoid_model.dart';
@@ -286,21 +287,16 @@ class AppService {
   }
 
   Future<void> readAllVideo() async {
-
     if (appController.videoModels.isNotEmpty) {
-        appController.videoModels.clear();
-        appController.docIdVideos.clear();
-      }
-
-
+      appController.videoModels.clear();
+      appController.docIdVideos.clear();
+    }
 
     await FirebaseFirestore.instance
         .collection('video')
         .orderBy('timestamp', descending: true)
         .get()
         .then((value) async {
-      
-
       for (var element in value.docs) {
         VideoModel videoModel = VideoModel.fromMap(element.data());
         appController.videoModels.add(videoModel);
@@ -734,6 +730,29 @@ class AppService {
           String urlApi =
               'https://www.androidthai.in.th/fluttertraining/noti/weHappyNoti.php?isAdd=true&token=${userModel.token}&title=$title&body=$body';
           await Dio().get(urlApi);
+        }
+      }
+    });
+  }
+
+  Future<void> listenChatComment({required String docIdVideo}) async {
+    print('##29sep docIdVideo ที่ listenChatComment ---> $docIdVideo');
+    FirebaseFirestore.instance
+        .collection('video')
+        .doc(docIdVideo)
+        .collection('comment')
+        .orderBy('timestamp')
+        .snapshots()
+        .listen((event) {
+      if (event.docs.isNotEmpty) {
+        if (appController.chatCommentModels.isNotEmpty) {
+          appController.chatCommentModels.clear();
+        }
+
+        for (var element in event.docs) {
+          ChatCommentModel chatCommentModel =
+              ChatCommentModel.fromMap(element.data());
+          appController.chatCommentModels.add(chatCommentModel);
         }
       }
     });

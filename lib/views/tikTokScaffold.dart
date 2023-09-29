@@ -1,8 +1,12 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
 import 'package:xstream/style/style.dart';
+import 'package:xstream/utility/app_constant.dart';
+import 'package:xstream/views/widget_text.dart';
 
 const double scrollSpeed = 300;
 
@@ -39,19 +43,16 @@ class TikTokScaffoldController extends ValueNotifier<TikTokPagePositon> {
 class TikTokScaffold extends StatefulWidget {
   final TikTokScaffoldController? controller;
 
-  /// 首页的顶部
   final Widget? header;
 
-  /// 底部导航
   final Widget? tabBar;
 
-  /// 左滑页面
   final Widget? leftPage;
 
-  /// 右滑页面
   final Widget? rightPage;
 
-  /// 视频序号
+  final Widget? commentPage;
+
   final int currentIndex;
 
   final bool hasBottomPadding;
@@ -63,16 +64,17 @@ class TikTokScaffold extends StatefulWidget {
 
   const TikTokScaffold({
     Key? key,
+    this.controller,
     this.header,
     this.tabBar,
     this.leftPage,
     this.rightPage,
-    this.hasBottomPadding = false,
-    this.page,
+    this.commentPage,
     this.currentIndex = 0,
+    this.hasBottomPadding = false,
     this.enableGesture,
+    this.page,
     this.onPullDownRefresh,
-    this.controller,
   }) : super(key: key);
 
   @override
@@ -119,7 +121,7 @@ class _TikTokScaffoldState extends State<TikTokScaffold>
   @override
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
-    
+
     Widget body = Stack(
       children: <Widget>[
         _LeftPageTransform(
@@ -144,9 +146,15 @@ class _TikTokScaffoldState extends State<TikTokScaffold>
           offsetY: offsetY,
           content: widget.rightPage,
         ),
+        widget.commentPage == null
+            ? const SizedBox()
+            : Positioned(
+                top: 300,
+                child: widget.commentPage!,
+              ),
       ],
     );
-    
+
     body = GestureDetector(
       onVerticalDragUpdate: calculateOffsetY,
       onVerticalDragEnd: (_) async {
@@ -162,7 +170,6 @@ class _TikTokScaffoldState extends State<TikTokScaffold>
         details,
         screenWidth,
       ),
-     
       onHorizontalDragStart: (_) {
         if (!widget.enableGesture!) return;
         animationControllerX?.stop();
@@ -192,10 +199,9 @@ class _TikTokScaffoldState extends State<TikTokScaffold>
     return body;
   }
 
- 
   void onHorizontalDragUpdate(details, screenWidth) {
     if (!widget.enableGesture!) return;
-   
+
     if (offsetX + details.delta.dx >= screenWidth) {
       setState(() {
         offsetX = screenWidth;
@@ -211,38 +217,30 @@ class _TikTokScaffoldState extends State<TikTokScaffold>
     }
   }
 
-  
   onHorizontalDragEnd(details, screenWidth) {
     if (!widget.enableGesture!) return;
     print('velocity:${details.velocity}');
     var vOffset = details.velocity.pixelsPerSecond.dx;
 
-   
     if (vOffset > scrollSpeed && inMiddle == 0) {
-      
       return animateToPage(TikTokPagePositon.left);
     } else if (vOffset < -scrollSpeed && inMiddle == 0) {
-    
       return animateToPage(TikTokPagePositon.right);
     } else if (inMiddle > 0 && vOffset < -scrollSpeed) {
       return animateToPage(TikTokPagePositon.middle);
     } else if (inMiddle < 0 && vOffset > scrollSpeed) {
       return animateToPage(TikTokPagePositon.middle);
     }
-   
+
     if (offsetX.abs() < screenWidth * 0.5) {
-     
       return animateToPage(TikTokPagePositon.middle);
     } else if (offsetX > 0) {
-     
       return animateToPage(TikTokPagePositon.left);
     } else {
-      
       return animateToPage(TikTokPagePositon.right);
     }
   }
 
-  
   /// [offsetY] to 0.0
   Future animateToTop() {
     animationControllerY = AnimationController(
@@ -285,7 +283,7 @@ class _TikTokScaffoldState extends State<TikTokScaffold>
   /// 计算[offsetY]
   ///
   /// 手指上滑,[absorbing]为false，不阻止事件，事件交给底层PageView处理
-  
+
   void calculateOffsetY(DragUpdateDetails details) {
     if (!widget.enableGesture!) return;
     if (inMiddle != 0) {

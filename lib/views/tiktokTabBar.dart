@@ -9,6 +9,7 @@ import 'package:xstream/views/commentShopBottomSheet.dart';
 import 'package:xstream/views/remarkBottomSheet.dart';
 import 'package:xstream/views/selectText.dart';
 import 'package:xstream/views/widget_button.dart';
+import 'package:xstream/views/widget_icon_button_gf.dart';
 
 enum TikTokPageTag {
   home,
@@ -107,16 +108,34 @@ class TikTokTabBar extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.only(bottom: padding.bottom),
         height: 150 + padding.bottom,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Container(margin: const EdgeInsets.only(left: 20),
-              child: WidgetButton(
-                label: 'แสดงความคิดเห็น ...',
-                pressFunc: () {
-                  Get.bottomSheet(ChatCommentBottomSheet());
-                },
-                color: ColorPlate.back1.withOpacity(0.5),
+            Container(
+              margin: const EdgeInsets.only(left: 20),
+              child: Row(
+                children: [
+                  WidgetButton(
+                    label: 'แสดงความคิดเห็น ...',
+                    pressFunc: () {
+                      Get.bottomSheet(ChatCommentBottomSheet());
+                    },
+                    color: ColorPlate.back1.withOpacity(0.5),
+                  ),
+                  WidgetIconButtonGF(
+                    iconData: Icons.android,
+                    pressFunc: () {},color: Colors.red,
+                  ),
+                  WidgetIconButtonGF(
+                    iconData: Icons.badge,
+                    pressFunc: () {},color: Colors.green,
+                  ),
+                  WidgetIconButtonGF(
+                    iconData: Icons.email,
+                    pressFunc: () {},color: Colors.orange,
+                  ),
+                ],
               ),
             ),
             row,

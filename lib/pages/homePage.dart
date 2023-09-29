@@ -18,6 +18,7 @@ import 'package:xstream/pages/list_live.dart';
 import 'package:xstream/pages/searchPage.dart';
 import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/style/physics.dart';
+import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/utility/app_snackbar.dart';
@@ -28,8 +29,10 @@ import 'package:xstream/views/tikTokScaffold.dart';
 import 'package:xstream/views/tikTokVideo.dart';
 import 'package:xstream/views/tikTokVideoButtonColumn.dart';
 import 'package:xstream/views/tiktokTabBar.dart';
+import 'package:xstream/views/widget_avatar.dart';
 
 import 'package:xstream/views/widget_progress.dart';
+import 'package:xstream/views/widget_text.dart';
 import 'package:xstream/views/widget_web_view.dart';
 
 class HomePage extends StatefulWidget {
@@ -87,6 +90,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     AppService().readAllVideo().then((value) {
       // videoDataList = appController.videoModels;
       videoDataList.addAll(appController.videoModels);
+
+      AppService().listenChatComment(docIdVideo: appController.docIdVideos[0]);
 
       WidgetsBinding.instance.addObserver(this);
       _videoListController.init(
@@ -222,6 +227,28 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               tabBar: tikTokTabBar,
               header: header,
               leftPage: searchPage,
+              commentPage: appController.chatCommentModels.isEmpty
+                  ? const SizedBox()
+                  : Container(
+                      padding: const EdgeInsets.all(16),
+                      constraints: BoxConstraints(maxWidth: 250, maxHeight: 200), 
+                      
+                      child: ListView.builder(
+                        itemCount: appController.chatCommentModels.length,
+                        physics: const ScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) => Container(decoration:  BoxDecoration(color: Colors.black.withOpacity(0.6)),
+                          child: Row(mainAxisSize: MainAxisSize.min,
+                            children: [
+                              WidgetAvatar(urlImage: appController.chatCommentModels[index].mapComment['urlAvatar'], size: 36,),
+                              WidgetText(
+                                  data:
+                                      appController.chatCommentModels[index].comment),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
               rightPage: UserDetailOwnerVideo(
                 ownerVideoUserModel: UserModel.fromMap(appController
                     .videoModels[appController.indexVideo.value].mapUserModel),
@@ -390,7 +417,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       return currentVideo;
                     },
                     onPageChanged: (value) {
-                      print('##4aug value =======> $value');
+                      print('##29sep value =======> $value');
+
+                      if (appController.chatCommentModels.isNotEmpty) {
+                        appController.chatCommentModels.clear();
+                      }
+
+                      AppService().listenChatComment(
+                          docIdVideo: appController
+                              .docIdVideos[value]);
 
                       if (value == 0) {
                         print('##4aug homePageVideo work');
@@ -398,9 +433,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         if (Platform.isAndroid) {
                           Restart.restartApp();
                         }
-
-                        // homePageLoadVideo();
-                        // Get.offAll(HomePage());
                       }
 
                       if (value < appController.videoModels.length) {
