@@ -14,6 +14,7 @@ class WidgetForm extends StatelessWidget {
     this.suffixWidget,
     this.changeFunc,
     this.fillColor,
+    this.autofocus,
   }) : super(key: key);
 
   final TextEditingController? textEditingController;
@@ -24,13 +25,16 @@ class WidgetForm extends StatelessWidget {
   final Widget? suffixWidget;
   final Function(String)? changeFunc;
   final Color? fillColor;
+  final bool? autofocus;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofocus: autofocus ?? false,
       onChanged: changeFunc,
       keyboardType: textInputType ?? TextInputType.text,
-      decoration: InputDecoration(suffixIcon: suffixWidget,
+      decoration: InputDecoration(
+        suffixIcon: suffixWidget,
         prefixIcon: prefixWidget,
         label: labelWidget,
         hintText: hint,

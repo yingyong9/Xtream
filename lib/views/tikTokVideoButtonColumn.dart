@@ -66,13 +66,13 @@ class TikTokButtonColumn extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          // Tapped(
-          //   child: TikTokAvatar(
-          //     videoModel: videoModel,
-          //     onAddButton: onAddButton,
-          //   ),
-          //   onTap: onAvatar,
-          // ),
+          Tapped(
+            child: TikTokAvatar(
+              videoModel: videoModel,
+              onAddButton: onAddButton,
+            ),
+            onTap: onAvatar,
+          ),
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.end,
           //   children: [
@@ -125,6 +125,7 @@ class TikTokButtonColumn extends StatelessWidget {
             children: [
               Column(
                 children: [
+                  
                   WidgetImage(
                     path: 'images/arrowdown2.png',
                     size: 36,

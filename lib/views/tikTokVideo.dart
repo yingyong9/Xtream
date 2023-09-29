@@ -2,15 +2,12 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:get/get.dart';
 
 import 'package:xstream/models/video_model.dart';
-import 'package:xstream/pages/display_profile_tap_icon.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/views/tikTokVideoGesture.dart';
 import 'package:xstream/views/widget_avatar.dart';
-import 'package:xstream/views/widget_image.dart';
 
 ///
 class TikTokVideoPage extends StatelessWidget {
@@ -175,31 +172,31 @@ class VideoUserInfo extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
-            children: [
-              InkWell(
-                onTap: tapProfileFunction,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    WidgetAvatar(
-                      urlImage: videoModel!.mapUserModel['urlAvatar'],
-                      size: 48,
-                    ),
-                    Text(
-                      videoModel == null
-                          ? ''
-                          : ' @${videoModel!.mapUserModel["name"]}',
-                      style: AppConstant().bodyStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     InkWell(
+          //       onTap: tapProfileFunction,
+          //       child: Row(
+          //         mainAxisSize: MainAxisSize.min,
+          //         children: [
+          //           // WidgetAvatar(
+          //           //   urlImage: videoModel!.mapUserModel['urlAvatar'],
+          //           //   size: 48,
+          //           // ),
+          //           // Text(
+          //           //   videoModel == null
+          //           //       ? ''
+          //           //       : ' @${videoModel!.mapUserModel["name"]}',
+          //           //   style: AppConstant().bodyStyle(
+          //           //     fontWeight: FontWeight.bold,
+          //           //     fontSize: 20,
+          //           //   ),
+          //           // ),
+          //         ],
+          //       ),
+          //     ),
+          //   ],
+          // ),
           Container(height: 6),
           // Text(
           //   desc ?? '',
