@@ -44,21 +44,16 @@ class TikTokScaffold extends StatefulWidget {
   final TikTokScaffoldController? controller;
 
   final Widget? header;
-
   final Widget? tabBar;
-
   final Widget? leftPage;
-
   final Widget? rightPage;
-
   final Widget? commentPage;
+  final Widget? page;
+  final Widget commentForm;
 
   final int currentIndex;
-
   final bool hasBottomPadding;
   final bool? enableGesture;
-
-  final Widget? page;
 
   final Function()? onPullDownRefresh;
 
@@ -70,10 +65,11 @@ class TikTokScaffold extends StatefulWidget {
     this.leftPage,
     this.rightPage,
     this.commentPage,
+    this.page,
+    required this.commentForm,
     this.currentIndex = 0,
     this.hasBottomPadding = false,
     this.enableGesture,
-    this.page,
     this.onPullDownRefresh,
   }) : super(key: key);
 
@@ -116,11 +112,14 @@ class _TikTokScaffoldState extends State<TikTokScaffold>
     widget.controller!.value = p;
   }
 
-  double? screenWidth;
+  double? screenWidth, screenHeight;
 
   @override
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
+    screenHeight = MediaQuery.of(context).size.height;
+
+    // print('##30sep screenHeight ----. $screenHeight');
 
     Widget body = Stack(
       children: <Widget>[
@@ -149,9 +148,13 @@ class _TikTokScaffoldState extends State<TikTokScaffold>
         widget.commentPage == null
             ? const SizedBox()
             : Positioned(
-                top: 300,
+                bottom: screenHeight! > 800 ? screenHeight!*0.15 : 70,
                 child: widget.commentPage!,
               ),
+        Positioned(
+          bottom: screenHeight! > 800 ? screenHeight!*0.15 : 40,
+          child: widget.commentForm,
+        ),
       ],
     );
 

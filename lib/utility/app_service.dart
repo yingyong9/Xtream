@@ -741,7 +741,7 @@ class AppService {
         .collection('video')
         .doc(docIdVideo)
         .collection('comment')
-        .orderBy('timestamp')
+        .orderBy('timestamp', descending: true)
         .snapshots()
         .listen((event) {
       if (event.docs.isNotEmpty) {

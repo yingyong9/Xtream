@@ -103,45 +103,16 @@ class TikTokTabBar extends StatelessWidget {
         ),
       ],
     );
+   
     return Container(
       color: hasBackground ? ColorPlate.back2 : ColorPlate.back2.withOpacity(0),
       child: Container(
         padding: EdgeInsets.only(bottom: padding.bottom),
-        height: 150 + padding.bottom,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 20),
-              child: Row(
-                children: [
-                  WidgetButton(
-                    label: 'แสดงความคิดเห็น ...',
-                    pressFunc: () {
-                      Get.bottomSheet(ChatCommentBottomSheet());
-                    },
-                    color: ColorPlate.back1.withOpacity(0.5),
-                  ),
-                  WidgetIconButtonGF(
-                    iconData: Icons.android,
-                    pressFunc: () {},color: Colors.red,
-                  ),
-                  WidgetIconButtonGF(
-                    iconData: Icons.badge,
-                    pressFunc: () {},color: Colors.green,
-                  ),
-                  WidgetIconButtonGF(
-                    iconData: Icons.email,
-                    pressFunc: () {},color: Colors.orange,
-                  ),
-                ],
-              ),
-            ),
-            row,
-          ],
-        ),
+        height: 50 + padding.bottom,
+        child: row,
       ),
     );
+
+
   }
 }
