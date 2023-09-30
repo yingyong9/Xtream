@@ -18,10 +18,12 @@ import 'package:xstream/pages/list_live.dart';
 import 'package:xstream/pages/searchPage.dart';
 import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/style/physics.dart';
+import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/utility/app_snackbar.dart';
+import 'package:xstream/views/chat_comment_bottomsheet.dart';
 import 'package:xstream/views/product_bottomSheet.dart';
 import 'package:xstream/views/tikTokCommentBottomSheet.dart';
 import 'package:xstream/views/tikTokHeader.dart';
@@ -30,6 +32,8 @@ import 'package:xstream/views/tikTokVideo.dart';
 import 'package:xstream/views/tikTokVideoButtonColumn.dart';
 import 'package:xstream/views/tiktokTabBar.dart';
 import 'package:xstream/views/widget_avatar.dart';
+import 'package:xstream/views/widget_button.dart';
+import 'package:xstream/views/widget_icon_button_gf.dart';
 
 import 'package:xstream/views/widget_progress.dart';
 import 'package:xstream/views/widget_text.dart';
@@ -227,23 +231,60 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               tabBar: tikTokTabBar,
               header: header,
               leftPage: searchPage,
+              commentForm: Container(
+                margin: const EdgeInsets.only(left: 20),
+                child: Row(
+                  children: [
+                    WidgetButton(
+                      label: 'แสดงความคิดเห็น ...',
+                      pressFunc: () {
+                        Get.bottomSheet(ChatCommentBottomSheet());
+                      },
+                      color: ColorPlate.back1.withOpacity(0.5),
+                    ),
+                    WidgetIconButtonGF(
+                      iconData: Icons.android,
+                      pressFunc: () {},
+                      color: Colors.red,
+                    ),
+                    WidgetIconButtonGF(
+                      iconData: Icons.badge,
+                      pressFunc: () {},
+                      color: Colors.green,
+                    ),
+                    WidgetIconButtonGF(
+                      iconData: Icons.email,
+                      pressFunc: () {},
+                      color: Colors.orange,
+                    ),
+                  ],
+                ),
+              ),
               commentPage: appController.chatCommentModels.isEmpty
                   ? const SizedBox()
                   : Container(
                       padding: const EdgeInsets.all(16),
-                      constraints: BoxConstraints(maxWidth: 250, maxHeight: 200), 
-                      
+                      constraints:
+                          const BoxConstraints(maxWidth: 250, maxHeight: 200),
                       child: ListView.builder(
+                        reverse: true,
                         itemCount: appController.chatCommentModels.length,
                         physics: const ScrollPhysics(),
                         shrinkWrap: true,
-                        itemBuilder: (context, index) => Container(decoration:  BoxDecoration(color: Colors.black.withOpacity(0.6)),
-                          child: Row(mainAxisSize: MainAxisSize.min,
+                        itemBuilder: (context, index) => Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.6)),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              WidgetAvatar(urlImage: appController.chatCommentModels[index].mapComment['urlAvatar'], size: 36,),
+                              WidgetAvatar(
+                                urlImage: appController.chatCommentModels[index]
+                                    .mapComment['urlAvatar'],
+                                size: 36,
+                              ),
                               WidgetText(
-                                  data:
-                                      appController.chatCommentModels[index].comment),
+                                  data: appController
+                                      .chatCommentModels[index].comment),
                             ],
                           ),
                         ),
@@ -424,8 +465,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       }
 
                       AppService().listenChatComment(
-                          docIdVideo: appController
-                              .docIdVideos[value]);
+                          docIdVideo: appController.docIdVideos[value]);
 
                       if (value == 0) {
                         print('##4aug homePageVideo work');
