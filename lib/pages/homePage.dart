@@ -270,8 +270,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       padding: const EdgeInsets.all(16),
                       constraints: BoxConstraints(
                         maxWidth: 250,
-                        minWidth: 100,
-                        maxHeight: screenHeight!*0.3,
+                        maxHeight: screenHeight! * 0.3,
                       ),
                       child: ListView.builder(
                         reverse: true,
