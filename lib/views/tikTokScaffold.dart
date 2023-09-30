@@ -119,7 +119,7 @@ class _TikTokScaffoldState extends State<TikTokScaffold>
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
 
-    print('##30sep screenHeight ----. $screenHeight');
+    // print('##30sep screenHeight ----. $screenHeight');
 
     Widget body = Stack(
       children: <Widget>[
@@ -148,7 +148,7 @@ class _TikTokScaffoldState extends State<TikTokScaffold>
         widget.commentPage == null
             ? const SizedBox()
             : Positioned(
-                bottom: screenHeight! > 800 ? screenHeight!*0.15 + 15 : 80,
+                bottom: screenHeight! > 800 ? screenHeight!*0.15 : 70,
                 child: widget.commentPage!,
               ),
         Positioned(

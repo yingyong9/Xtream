@@ -61,6 +61,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   AppController appController = Get.put(AppController());
 
+  double? screenHeight;
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state != AppLifecycleState.resumed) {
@@ -137,6 +139,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    screenHeight = MediaQuery.of(context).size.height;
+
     // Widget? currentPage;
 
     switch (tabBarType) {
@@ -264,16 +268,22 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   ? const SizedBox()
                   : Container(
                       padding: const EdgeInsets.all(16),
-                      constraints:
-                          const BoxConstraints(maxWidth: 250, maxHeight: 200),
+                      constraints: BoxConstraints(
+                        maxWidth: 250,
+                        minWidth: 100,
+                        maxHeight: screenHeight!*0.3,
+                      ),
                       child: ListView.builder(
                         reverse: true,
                         itemCount: appController.chatCommentModels.length,
                         physics: const ScrollPhysics(),
                         shrinkWrap: true,
                         itemBuilder: (context, index) => Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          margin: const EdgeInsets.only(bottom: 8),
                           decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.6)),
+                              color: Colors.black.withOpacity(0.4),
+                              borderRadius: BorderRadius.circular(6)),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -282,9 +292,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                     .mapComment['urlAvatar'],
                                 size: 36,
                               ),
-                              WidgetText(
-                                  data: appController
-                                      .chatCommentModels[index].comment),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  WidgetText(
+                                      data: appController
+                                          .chatCommentModels[index]
+                                          .mapComment['name']),
+                                  WidgetText(
+                                      data: appController
+                                          .chatCommentModels[index].comment),
+                                ],
+                              ),
                             ],
                           ),
                         ),
