@@ -31,12 +31,10 @@ import 'package:xstream/views/tikTokScaffold.dart';
 import 'package:xstream/views/tikTokVideo.dart';
 import 'package:xstream/views/tikTokVideoButtonColumn.dart';
 import 'package:xstream/views/tiktokTabBar.dart';
-import 'package:xstream/views/widget_avatar.dart';
 import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_icon_button_gf.dart';
 
 import 'package:xstream/views/widget_progress.dart';
-import 'package:xstream/views/widget_text.dart';
 import 'package:xstream/views/widget_web_view.dart';
 
 class HomePage extends StatefulWidget {
@@ -242,7 +240,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     WidgetButton(
                       label: 'แสดงความคิดเห็น ...',
                       pressFunc: () {
-                        Get.bottomSheet(ChatCommentBottomSheet());
+                        // Get.bottomSheet(ChatCommentBottomSheet());
+
+                         Get.bottomSheet(
+                            TikTokCommentBottomSheet(
+                              docIdVideo: appController.docIdVideos[appController.indexVideo.value],
+                              indexVideo: appController.indexVideo.value,
+                            ),
+                          );
                       },
                       color: ColorPlate.back1.withOpacity(0.5),
                     ),
@@ -264,50 +269,53 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   ],
                 ),
               ),
-              commentPage: appController.chatCommentModels.isEmpty
-                  ? const SizedBox()
-                  : Container(
-                      padding: const EdgeInsets.all(16),
-                      constraints: BoxConstraints(
-                        maxWidth: 250,
-                        maxHeight: screenHeight! * 0.3,
-                      ),
-                      child: ListView.builder(
-                        reverse: true,
-                        itemCount: appController.chatCommentModels.length,
-                        physics: const ScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) => Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          margin: const EdgeInsets.only(bottom: 8),
-                          decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.4),
-                              borderRadius: BorderRadius.circular(6)),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              WidgetAvatar(
-                                urlImage: appController.chatCommentModels[index]
-                                    .mapComment['urlAvatar'],
-                                size: 36,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  WidgetText(
-                                      data: appController
-                                          .chatCommentModels[index]
-                                          .mapComment['name']),
-                                  WidgetText(
-                                      data: appController
-                                          .chatCommentModels[index].comment),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+
+              // commentPage: appController.chatCommentModels.isEmpty
+              //     ? const SizedBox()
+              //     : Container(
+              //         padding: const EdgeInsets.all(16),
+              //         constraints: BoxConstraints(
+              //           maxWidth: 250,
+              //           maxHeight: screenHeight! * 0.3,
+              //         ),
+              //         child: ListView.builder(
+              //           reverse: true,
+              //           itemCount: appController.chatCommentModels.length,
+              //           physics: const ScrollPhysics(),
+              //           shrinkWrap: true,
+              //           itemBuilder: (context, index) => Container(
+              //             padding: const EdgeInsets.symmetric(horizontal: 8),
+              //             margin: const EdgeInsets.only(bottom: 8),
+              //             decoration: BoxDecoration(
+              //                 color: Colors.black.withOpacity(0.4),
+              //                 borderRadius: BorderRadius.circular(6)),
+              //             child: Row(
+              //               mainAxisSize: MainAxisSize.min,
+              //               children: [
+              //                 WidgetAvatar(
+              //                   urlImage: appController.chatCommentModels[index]
+              //                       .mapComment['urlAvatar'],
+              //                   size: 36,
+              //                 ),
+              //                 Column(
+              //                   crossAxisAlignment: CrossAxisAlignment.start,
+              //                   children: [
+              //                     WidgetText(
+              //                         data: appController
+              //                             .chatCommentModels[index]
+              //                             .mapComment['name']),
+              //                     WidgetText(
+              //                         data: appController
+              //                             .chatCommentModels[index].comment),
+              //                   ],
+              //                 ),
+              //               ],
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+
+
               rightPage: UserDetailOwnerVideo(
                 ownerVideoUserModel: UserModel.fromMap(appController
                     .videoModels[appController.indexVideo.value].mapUserModel),
