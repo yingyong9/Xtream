@@ -50,4 +50,6 @@ class AppController extends GetxController {
   RxList<String> subOptions = <String>[].obs;
 
   RxList<ChatCommentModel> chatCommentModels = <ChatCommentModel>[].obs;
+
+  RxList<double> screenHeights = <double>[].obs;
 }

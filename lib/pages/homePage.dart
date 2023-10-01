@@ -61,6 +61,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   double? screenHeight;
 
+  bool first = true;
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state != AppLifecycleState.resumed) {
@@ -138,8 +140,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
-
-    // Widget? currentPage;
+    print('#### screenHeight --> $screenHeight');
+    if (first) {
+      first = false;
+      appController.screenHeights.add(screenHeight!);
+    }
 
     switch (tabBarType) {
       case TikTokPageTag.home:
@@ -233,40 +238,27 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               tabBar: tikTokTabBar,
               header: header,
               leftPage: searchPage,
-              commentForm: Container(
+              commentForm: Container(width: 300,
                 margin: const EdgeInsets.only(left: 20),
-                child: Row(
-                  children: [
-                    WidgetButton(
-                      label: 'แสดงความคิดเห็น ...',
-                      pressFunc: () {
-                        // Get.bottomSheet(ChatCommentBottomSheet());
+                child: WidgetButton(
+                  label: 'แสดงความคิดเห็น ...',
+                  pressFunc: () {
+                    // Get.bottomSheet(ChatCommentBottomSheet());
 
-                         Get.bottomSheet(
-                            TikTokCommentBottomSheet(
-                              docIdVideo: appController.docIdVideos[appController.indexVideo.value],
-                              indexVideo: appController.indexVideo.value,
-                            ),
-                          );
-                      },
-                      color: ColorPlate.back1.withOpacity(0.5),
-                    ),
-                    WidgetIconButtonGF(
-                      iconData: Icons.android,
-                      pressFunc: () {},
-                      color: Colors.red,
-                    ),
-                    WidgetIconButtonGF(
-                      iconData: Icons.badge,
-                      pressFunc: () {},
-                      color: Colors.green,
-                    ),
-                    WidgetIconButtonGF(
-                      iconData: Icons.email,
-                      pressFunc: () {},
-                      color: Colors.orange,
-                    ),
-                  ],
+                    appController.screenHeights
+                        .add(screenHeight! * 0.5 - 50);
+
+                    Get.bottomSheet(
+                      TikTokCommentBottomSheet(
+                        docIdVideo: appController
+                            .docIdVideos[appController.indexVideo.value],
+                        indexVideo: appController.indexVideo.value,
+                      ),
+                    ).then((value) {
+                      appController.screenHeights.add(screenHeight!);
+                    });
+                  },
+                  color: ColorPlate.back1.withOpacity(0.5),
                 ),
               ),
 
@@ -315,16 +307,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               //         ),
               //       ),
 
-
               rightPage: UserDetailOwnerVideo(
                 ownerVideoUserModel: UserModel.fromMap(appController
                     .videoModels[appController.indexVideo.value].mapUserModel),
                 displayBack: false,
               ),
               enableGesture: tabBarType == TikTokPageTag.home,
-              // onPullDownRefresh: _fetchData,
+
               page: Stack(
-                // index: currentPage == null ? 0 : 1,
                 children: <Widget>[
                   PageView.builder(
                     key: const Key('home'),
@@ -437,11 +427,24 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         docIdVideo: appController.docIdVideos[i],
                         indexVideo: i,
                       );
+
                       // video
-                      Widget currentVideo = Center(
-                        child: AspectRatio(
-                          aspectRatio: player.controller.value.aspectRatio,
-                          child: VideoPlayer(player.controller),
+                      Widget currentVideo = SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Obx(() {
+                              return appController.screenHeights.isEmpty
+                                  ? const SizedBox()
+                                  : SizedBox(
+                                      height: appController.screenHeights.last,
+                                      child: AspectRatio(
+                                        aspectRatio:
+                                            player.controller.value.aspectRatio,
+                                        child: VideoPlayer(player.controller),
+                                      ),
+                                    );
+                            }),
+                          ],
                         ),
                       );
 
