@@ -8,6 +8,7 @@ import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/views/tikTokVideoGesture.dart';
 import 'package:xstream/views/widget_avatar.dart';
+import 'package:xstream/views/widget_text.dart';
 
 ///
 class TikTokVideoPage extends StatelessWidget {
@@ -18,6 +19,7 @@ class TikTokVideoPage extends StatelessWidget {
 
   final Widget? rightButtonColumn;
   final Widget? userInfoWidget;
+  final Widget? commentButton;
 
   final bool hidePauseIcon;
 
@@ -26,15 +28,16 @@ class TikTokVideoPage extends StatelessWidget {
 
   const TikTokVideoPage({
     Key? key,
-    this.bottomPadding = 16,
-    this.tag,
-    this.rightButtonColumn,
-    this.userInfoWidget,
-    this.onAddFavorite,
-    this.onSingleTap,
     this.video,
     this.aspectRatio = 9 / 16.0,
+    this.tag,
+    this.bottomPadding = 16,
+    this.rightButtonColumn,
+    this.userInfoWidget,
+     this.commentButton,
     this.hidePauseIcon = false,
+    this.onAddFavorite,
+    this.onSingleTap,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -42,7 +45,8 @@ class TikTokVideoPage extends StatelessWidget {
 
     Widget userInfo = userInfoWidget ??
         VideoUserInfo(
-          bottomPadding: bottomPadding, tapProfileFunction: () {  },
+          bottomPadding: bottomPadding,
+          tapProfileFunction: () {},commentButton: commentButton,
         );
 
     Widget videoContainer = Stack(
@@ -148,11 +152,13 @@ class VideoLoadingPlaceHolder extends StatelessWidget {
 class VideoUserInfo extends StatelessWidget {
   final String? desc;
   final VideoModel? videoModel;
+  final Widget? commentButton;
 
   const VideoUserInfo({
     Key? key,
     this.desc,
     this.videoModel,
+     this.commentButton,
     required this.bottomPadding,
     required this.tapProfileFunction,
   }) : super(key: key);
@@ -172,36 +178,8 @@ class VideoUserInfo extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          // Row(
-          //   children: [
-          //     InkWell(
-          //       onTap: tapProfileFunction,
-          //       child: Row(
-          //         mainAxisSize: MainAxisSize.min,
-          //         children: [
-          //           // WidgetAvatar(
-          //           //   urlImage: videoModel!.mapUserModel['urlAvatar'],
-          //           //   size: 48,
-          //           // ),
-          //           // Text(
-          //           //   videoModel == null
-          //           //       ? ''
-          //           //       : ' @${videoModel!.mapUserModel["name"]}',
-          //           //   style: AppConstant().bodyStyle(
-          //           //     fontWeight: FontWeight.bold,
-          //           //     fontSize: 20,
-          //           //   ),
-          //           // ),
-          //         ],
-          //       ),
-          //     ),
-          //   ],
-          // ),
+          commentButton ?? WidgetText(data: 'data'),
           Container(height: 6),
-          // Text(
-          //   desc ?? '',
-          //   style: StandardTextStyle.normal,
-          // ),
           ExpandableText(
             videoModel!.detail ?? '',
             expandText: 'ดูเพิ่มเติม',
@@ -213,18 +191,6 @@ class VideoUserInfo extends StatelessWidget {
                 .bodyStyle(fontWeight: FontWeight.bold, fontSize: SysSize.big),
           ),
           Container(height: 6),
-          // const Row(
-          //   children: <Widget>[
-          //     Icon(Icons.music_note, size: 14),
-          //     Expanded(
-          //       child: Text(
-          //         'คำอธิบาย ???',
-          //         maxLines: 9,
-          //         style: StandardTextStyle.normal,
-          //       ),
-          //     )
-          //   ],
-          // ),
         ],
       ),
     );
