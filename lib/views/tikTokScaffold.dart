@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:xstream/style/style.dart';
-import 'package:xstream/utility/app_constant.dart';
-import 'package:xstream/views/widget_text.dart';
 
 const double scrollSpeed = 300;
 
@@ -49,7 +47,7 @@ class TikTokScaffold extends StatefulWidget {
   final Widget? rightPage;
   final Widget? commentPage;
   final Widget? page;
-  final Widget commentForm;
+  // final Widget commentForm;
 
   final int currentIndex;
   final bool hasBottomPadding;
@@ -66,7 +64,7 @@ class TikTokScaffold extends StatefulWidget {
     this.rightPage,
     this.commentPage,
     this.page,
-    required this.commentForm,
+    // required this.commentForm,
     this.currentIndex = 0,
     this.hasBottomPadding = false,
     this.enableGesture,
@@ -151,10 +149,10 @@ class _TikTokScaffoldState extends State<TikTokScaffold>
                 bottom: screenHeight! > 800 ? screenHeight!*0.15 : 70,
                 child: widget.commentPage!,
               ),
-        Positioned(
-          bottom: screenHeight! > 800 ? screenHeight!*0.15 : 40,
-          child: widget.commentForm,
-        ),
+        // Positioned(
+        //   bottom: screenHeight! > 800 ? screenHeight!*0.15 : 40,
+        //   child: widget.commentForm,
+        // ),
       ],
     );
 

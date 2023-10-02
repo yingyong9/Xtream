@@ -4,12 +4,8 @@ import 'package:xstream/pages/authen.dart';
 import 'package:xstream/pages/userDetailPage.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
-import 'package:xstream/views/chat_comment_bottomsheet.dart';
-import 'package:xstream/views/commentShopBottomSheet.dart';
 import 'package:xstream/views/remarkBottomSheet.dart';
 import 'package:xstream/views/selectText.dart';
-import 'package:xstream/views/widget_button.dart';
-import 'package:xstream/views/widget_icon_button_gf.dart';
 
 enum TikTokPageTag {
   home,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:xstream/pages/page_affilitate.dart';
 import 'package:xstream/pages/page_product.dart';
+import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
+import 'package:xstream/views/widget_back_button.dart';
 import 'package:xstream/views/widget_text.dart';
 
 class ManageProduct extends StatefulWidget {
@@ -29,7 +31,10 @@ class _ManageProductState extends State<ManageProduct> {
           length: titles.length,
           initialIndex: 0,
           child: Scaffold(
-            appBar: TabBar(
+            appBar: AppBar(leading: const WidgetBackButton(),
+              backgroundColor: ColorPlate.back1,
+              elevation: 0,
+              bottom: TabBar(
                   tabs: titles
                       .map(
                         (e) => WidgetText(
@@ -38,6 +43,7 @@ class _ManageProductState extends State<ManageProduct> {
                         ),
                       )
                       .toList()),
+            ),
             body: TabBarView(children: widgets),
           ),
         ),

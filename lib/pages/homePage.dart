@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:safemap/safemap.dart';
 import 'package:video_player/video_player.dart';
@@ -149,16 +150,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     switch (tabBarType) {
       case TikTokPageTag.home:
         break;
-      // case TikTokPageTag.remark:
-      //   // currentPage = FollowPage();
-      //   break;
-      // case TikTokPageTag.msg:
-      //   currentPage = MsgPage();
-      //   break;
-      // case TikTokPageTag.me:
-      //   currentPage = const UserPage(isSelfPage: true);
-      //   // currentPage = EditProfile();
-      //   break;
       default:
     }
     double a = MediaQuery.of(context).size.aspectRatio;
@@ -238,82 +229,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               tabBar: tikTokTabBar,
               header: header,
               leftPage: searchPage,
-              commentForm: Container(width: 300,
-                margin: const EdgeInsets.only(left: 20),
-                child: WidgetButton(
-                  label: 'แสดงความคิดเห็น ...',
-                  pressFunc: () {
-                    // Get.bottomSheet(ChatCommentBottomSheet());
-
-                    appController.screenHeights
-                        .add(screenHeight! * 0.5 - 50);
-
-                    Get.bottomSheet(
-                      TikTokCommentBottomSheet(
-                        docIdVideo: appController
-                            .docIdVideos[appController.indexVideo.value],
-                        indexVideo: appController.indexVideo.value,
-                      ),
-                    ).then((value) {
-                      appController.screenHeights.add(screenHeight!);
-                    });
-                  },
-                  color: ColorPlate.back1.withOpacity(0.5),
-                ),
-              ),
-
-              // commentPage: appController.chatCommentModels.isEmpty
-              //     ? const SizedBox()
-              //     : Container(
-              //         padding: const EdgeInsets.all(16),
-              //         constraints: BoxConstraints(
-              //           maxWidth: 250,
-              //           maxHeight: screenHeight! * 0.3,
-              //         ),
-              //         child: ListView.builder(
-              //           reverse: true,
-              //           itemCount: appController.chatCommentModels.length,
-              //           physics: const ScrollPhysics(),
-              //           shrinkWrap: true,
-              //           itemBuilder: (context, index) => Container(
-              //             padding: const EdgeInsets.symmetric(horizontal: 8),
-              //             margin: const EdgeInsets.only(bottom: 8),
-              //             decoration: BoxDecoration(
-              //                 color: Colors.black.withOpacity(0.4),
-              //                 borderRadius: BorderRadius.circular(6)),
-              //             child: Row(
-              //               mainAxisSize: MainAxisSize.min,
-              //               children: [
-              //                 WidgetAvatar(
-              //                   urlImage: appController.chatCommentModels[index]
-              //                       .mapComment['urlAvatar'],
-              //                   size: 36,
-              //                 ),
-              //                 Column(
-              //                   crossAxisAlignment: CrossAxisAlignment.start,
-              //                   children: [
-              //                     WidgetText(
-              //                         data: appController
-              //                             .chatCommentModels[index]
-              //                             .mapComment['name']),
-              //                     WidgetText(
-              //                         data: appController
-              //                             .chatCommentModels[index].comment),
-              //                   ],
-              //                 ),
-              //               ],
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-
+              // commentForm: commentButton(),
               rightPage: UserDetailOwnerVideo(
                 ownerVideoUserModel: UserModel.fromMap(appController
                     .videoModels[appController.indexVideo.value].mapUserModel),
                 displayBack: false,
               ),
               enableGesture: tabBarType == TikTokPageTag.home,
-
               page: Stack(
                 children: <Widget>[
                   PageView.builder(
@@ -454,6 +376,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         key: Key(data.url + '$i'),
                         tag: data.url,
                         bottomPadding: hasBottomPadding ? 16.0 : 16.0,
+                        commentButton: commentButton(),
                         userInfoWidget: VideoUserInfo(
                           desc: data.desc,
                           bottomPadding: hasBottomPadding ? 16.0 : 50.0,
@@ -467,6 +390,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                               videoModel: appController.videoModels[i],
                             ));
                           },
+                          commentButton: commentButton(),
                         ),
                         onSingleTap: () async {
                           if (player.controller.value.isPlaying) {
@@ -515,5 +439,30 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               ),
             );
     });
+  }
+
+  Widget commentButton() {
+    return Container(
+      width: 200,
+      // margin: const EdgeInsets.only(left: 20),
+      child: WidgetButton(
+        label: 'แสดงความคิดเห็น ...',
+        pressFunc: () {
+          appController.screenHeights.add(screenHeight! * 0.5 - 50);
+
+          Get.bottomSheet(
+            TikTokCommentBottomSheet(
+              docIdVideo:
+                  appController.docIdVideos[appController.indexVideo.value],
+              indexVideo: appController.indexVideo.value,
+            ),
+          ).then((value) {
+            appController.screenHeights.add(screenHeight!);
+          });
+        },
+        // color: ColorPlate.back1.withOpacity(0.5),
+        color: GFColors.PRIMARY,
+      ),
+    );
   }
 }
