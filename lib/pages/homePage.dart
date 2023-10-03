@@ -8,6 +8,7 @@ import 'package:getwidget/getwidget.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:safemap/safemap.dart';
 import 'package:video_player/video_player.dart';
+import 'package:wakelock/wakelock.dart';
 import 'package:xstream/controller/tikTokVideoListController.dart';
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
@@ -80,6 +81,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   void initState() {
+    // Wakelock.enable().then((value) {
+    //   print('##3oct WakeLock Enable');
+    // });
+
     AppService()
         .findCurrentUserModel()
         .then((value) => AppService().aboutNoti());
