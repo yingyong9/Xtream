@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:getwidget/getwidget.dart';
+import 'package:xstream/pages/add_new_product.dart';
 import 'package:xstream/pages/page_affilitate.dart';
 import 'package:xstream/pages/page_product.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/views/widget_back_button.dart';
+import 'package:xstream/views/widget_form.dart';
 import 'package:xstream/views/widget_text.dart';
 
 class ManageProduct extends StatefulWidget {
@@ -31,7 +35,16 @@ class _ManageProductState extends State<ManageProduct> {
           length: titles.length,
           initialIndex: 0,
           child: Scaffold(
-            appBar: AppBar(leading: const WidgetBackButton(),
+            appBar: AppBar(
+              title: GFButton(
+                onPressed: () {
+                  Get.to(const AddNewProduct());
+                },
+                text: '+ เพิ่มสินค้า',
+                fullWidthButton: true,
+                type: GFButtonType.outline2x,
+              ),
+              leading: const WidgetBackButton(),
               backgroundColor: ColorPlate.back1,
               elevation: 0,
               bottom: TabBar(

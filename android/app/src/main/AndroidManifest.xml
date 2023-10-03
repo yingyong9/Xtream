@@ -4,7 +4,7 @@
     
 
     <application
-        android:label="WeHappy"
+        android:label="TikTik"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

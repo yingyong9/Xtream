@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:safemap/safemap.dart';
+// import 'package:safemap/safemap.dart';
 import 'package:tapped/tapped.dart';
 
 
@@ -31,7 +31,7 @@ class _FollowPageState extends State<FollowPage> {
       ),
       itemCount: 10,
       itemBuilder: (ctx, i) {
-        bool isF = SafeMap(fMap)[i].boolean;
+        bool isF = false;
         return FollowRow(
           isFavorite: isF,
           onFavorite: () {
