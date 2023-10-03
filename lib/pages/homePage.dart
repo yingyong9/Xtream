@@ -6,9 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:restart_app/restart_app.dart';
-import 'package:safemap/safemap.dart';
+// import 'package:safemap/safemap.dart';
 import 'package:video_player/video_player.dart';
-import 'package:wakelock/wakelock.dart';
 import 'package:xstream/controller/tikTokVideoListController.dart';
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
@@ -250,7 +249,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     scrollDirection: Axis.vertical,
                     itemCount: _videoListController.videoCount,
                     itemBuilder: (context, i) {
-                      bool isF = SafeMap(favoriteMap)[i].boolean;
+                      // bool isF = SafeMap(favoriteMap)[i].boolean;
+                      bool isF = false;
                       var player = _videoListController.playerOfIndex(i)!;
                       var data = player.videoInfo!;
 
