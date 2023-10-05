@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_print
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pin_code_widget/flutter_pin_code_widget.dart';
@@ -9,6 +9,7 @@ import 'package:otp_text_field/style.dart';
 import 'package:xstream/models/otp_require_thaibulk.dart';
 import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/style/style.dart';
+import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/widget_back_button.dart';
 import 'package:xstream/views/widget_image.dart';
@@ -51,14 +52,17 @@ class _CheckPincodeState extends State<CheckPincode> {
           children: [
             Column(
               children: [
-                displayLogo(boxConstraints),
+                // displayLogo(boxConstraints),
+                const SizedBox(
+                  height: 50,
+                ),
                 displayTitle(),
                 OTPTextField(
                   controller: otpFieldController,
-                  fieldStyle: FieldStyle.box,
+                  fieldStyle: FieldStyle.underline,
                   length: 6,
                   width: 250,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 24,
                   ),
                   otpFieldStyle:
@@ -118,7 +122,10 @@ class _CheckPincodeState extends State<CheckPincode> {
         Container(
           width: 250,
           margin: const EdgeInsets.only(bottom: 16),
-          child: WidgetText(data: 'กรอกรหัส OTP ที่ส่ง'),
+          child: WidgetText(
+            data: 'กรอกรหัสยืนยัน',
+            textStyle: AppConstant().bodyStyle(fontSize: 30),
+          ),
         ),
       ],
     );

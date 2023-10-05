@@ -24,6 +24,7 @@ import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/utility/app_snackbar.dart';
+import 'package:xstream/views/bottom_sheet_authen.dart';
 import 'package:xstream/views/chat_comment_bottomsheet.dart';
 import 'package:xstream/views/product_bottomSheet.dart';
 import 'package:xstream/views/tikTokCommentBottomSheet.dart';
@@ -174,7 +175,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       onTabSwitch: (type) async {
         if (appController.currentUserModels.isEmpty) {
           _videoListController.currentPlayer.pause();
-          Get.to(const Authen());
+
+          Get.bottomSheet(
+            const BottomSheetAuthen(),
+            isScrollControlled: true,
+          );
         } else {
           setState(() {
             tabBarType = type;
@@ -190,7 +195,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         _videoListController.currentPlayer.pause();
 
         if (appController.currentUserModels.isEmpty) {
-          Get.to(const Authen());
+          Get.bottomSheet(
+            const BottomSheetAuthen(),
+            isScrollControlled: true,
+          );
         } else {
           // Get.bottomSheet(const AddBottomSheet());
 
@@ -266,7 +274,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           _videoListController.currentPlayer.pause();
 
                           if (appController.currentUserModels.isEmpty) {
-                            Get.to(const Authen());
+                            Get.bottomSheet(
+                              const BottomSheetAuthen(),
+                              isScrollControlled: true,
+                            );
                           } else {
                             Get.to(UserDetailOwnerVideo(
                               ownerVideoUserModel: userModel,
@@ -280,7 +291,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           //     appController.videoModels[i].mapUserModel);
 
                           if (appController.currentUserModels.isEmpty) {
-                            Get.to(const Authen());
+                            Get.bottomSheet(
+                              const BottomSheetAuthen(),
+                              isScrollControlled: true,
+                            );
                           } else {
                             if (appController
                                 .videoModels[i].priceProduct!.isEmpty) {
@@ -455,17 +469,23 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       child: WidgetButton(
         label: 'แสดงความคิดเห็น ...',
         pressFunc: () {
-          appController.screenHeights.add(screenHeight! * 0.5 - 50);
-
-          Get.bottomSheet(
-            TikTokCommentBottomSheet(
-              docIdVideo:
-                  appController.docIdVideos[appController.indexVideo.value],
-              indexVideo: appController.indexVideo.value,
-            ),
-          ).then((value) {
-            appController.screenHeights.add(screenHeight!);
-          });
+          if (appController.currentUserModels.isEmpty) {
+            Get.bottomSheet(
+              const BottomSheetAuthen(),
+              isScrollControlled: true,
+            );
+          } else {
+            appController.screenHeights.add(screenHeight! * 0.5 - 50);
+            Get.bottomSheet(
+              TikTokCommentBottomSheet(
+                docIdVideo:
+                    appController.docIdVideos[appController.indexVideo.value],
+                indexVideo: appController.indexVideo.value,
+              ),
+            ).then((value) {
+              appController.screenHeights.add(screenHeight!);
+            });
+          }
         },
         // color: ColorPlate.back1.withOpacity(0.5),
         color: GFColors.PRIMARY,

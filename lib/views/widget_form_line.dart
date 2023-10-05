@@ -31,8 +31,8 @@ class WidgetFormLine extends StatelessWidget {
         label: labelWidget,
         hintText: hint,
         hintStyle: StandardTextStyle.normalWithOpacity,
-        filled: true,
-        border: InputBorder.none,
+        // filled: true,
+        // border: InputBorder.none,
       ),
       controller: textEditingController,
     );
