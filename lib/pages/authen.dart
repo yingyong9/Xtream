@@ -37,7 +37,7 @@ class _AuthenState extends State<Authen> {
                     const SizedBox(
                       height: 60,
                     ),
-                    const WidgetImage(
+                    const WidgetImage(path: 'images/tuktuk.png',
                       size: 280,
                     ),
                     Row(mainAxisAlignment: MainAxisAlignment.center,

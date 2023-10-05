@@ -17,8 +17,6 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  
-
   await Firebase.initializeApp().then((value) {
     FirebaseAuth.instance.authStateChanges().listen((event) {
       if (event != null) {

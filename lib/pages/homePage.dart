@@ -84,9 +84,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     //   print('##3oct WakeLock Enable');
     // });
 
-    AppService()
-        .findCurrentUserModel()
-        .then((value) => AppService().aboutNoti());
+    AppService().findCurrentUserModel().then((value) {
+      if (appController.currentUserModels.isNotEmpty) {
+        AppService().aboutNoti();
+      }
+    });
 
     homePageLoadVideo();
 
