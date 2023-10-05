@@ -287,16 +287,15 @@ class AppService {
   }
 
   Future<void> readAllVideo() async {
-    if (appController.videoModels.isNotEmpty) {
-      appController.videoModels.clear();
-      appController.docIdVideos.clear();
-    }
-
     await FirebaseFirestore.instance
         .collection('video')
         .orderBy('timestamp', descending: true)
         .get()
         .then((value) async {
+      if (appController.videoModels.isNotEmpty) {
+        appController.videoModels.clear();
+        appController.docIdVideos.clear();
+      }
       for (var element in value.docs) {
         VideoModel videoModel = VideoModel.fromMap(element.data());
         appController.videoModels.add(videoModel);

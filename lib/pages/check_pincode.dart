@@ -58,7 +58,7 @@ class _CheckPincodeState extends State<CheckPincode> {
                 ),
                 displayTitle(),
                 OTPTextField(
-                  controller: otpFieldController,
+                  // controller: otpFieldController,
                   fieldStyle: FieldStyle.underline,
                   length: 6,
                   width: 250,
@@ -67,45 +67,68 @@ class _CheckPincodeState extends State<CheckPincode> {
                   ),
                   otpFieldStyle:
                       OtpFieldStyle(backgroundColor: ColorPlate.gray),
+                  onCompleted: (value) async {
+                    if (widget.phoneNumber == '0818595309') {
+                      await FirebaseAuth.instance
+                          .signInWithEmailAndPassword(
+                              email: 'email${widget.phoneNumber}@xstream.com',
+                              password: '123456')
+                          .then((value) {
+                        AppService()
+                            .findCurrentUserModel()
+                            .then((value) => Get.offAll(HomePage()));
+                      });
+                    } else {
+                      AppService().verifyOTPThaibulk(
+                          token: otpRequireThaibulk!.token,
+                          pin: value,
+                          context: context,
+                          phoneNumber: widget.phoneNumber);
+                    }
+                  },
                 ),
-                SizedBox(
-                  height: boxConstraints.maxHeight * 0.6,
-                  width: boxConstraints.maxWidth,
-                  child: PinCodeWidget(
-                    maxPinLength: 6,
-                    onEnter: (pin, state) {
-                      // print('pin ---> $pin');
-                    },
-                    onChangedPin: (pin) async {
-                      String string = pin.substring(pin.length - 1);
-                      otpFieldController.setValue(string, pin.length - 1);
-                      if (pin.length == 6) {
-                        if (widget.phoneNumber == '0818595309') {
-                          await FirebaseAuth.instance
-                              .signInWithEmailAndPassword(
-                                  email:
-                                      'email${widget.phoneNumber}@xstream.com',
-                                  password: '123456')
-                              .then((value) {
-                            AppService()
-                                .findCurrentUserModel()
-                                .then((value) => Get.offAll(HomePage()));
-                          });
-                        } else {
-                          AppService().verifyOTPThaibulk(
-                              token: otpRequireThaibulk!.token,
-                              pin: pin,
-                              context: context,
-                              phoneNumber: widget.phoneNumber);
-                        }
-                      }
-                    },
-                    onChangedPinLength: (length) {
-                      print('length --> $length');
-                    },
-                    filledIndicatorColor: ColorPlate.back1,
-                  ),
-                ),
+                // SizedBox(
+                //   height: boxConstraints.maxHeight * 0.6,
+                //   width: boxConstraints.maxWidth,
+                //   child: PinCodeWidget(
+                //     maxPinLength: 6,
+                //     onEnter: (pin, state) {
+                //       // print('pin ---> $pin');
+                //     },
+                //     onChangedPin: (pin) async {
+                //       String string = pin.substring(pin.length - 1);
+                //       otpFieldController.setValue(string, pin.length - 1);
+                //       if (pin.length == 6) {
+                //         if (widget.phoneNumber == '0818595309') {
+                //           await FirebaseAuth.instance
+                //               .signInWithEmailAndPassword(
+                //                   email:
+                //                       'email${widget.phoneNumber}@xstream.com',
+                //                   password: '123456')
+                //               .then((value) {
+                //             AppService()
+                //                 .findCurrentUserModel()
+                //                 .then((value) => Get.offAll(HomePage()));
+                //           });
+                //         } else {
+                //           AppService().verifyOTPThaibulk(
+                //               token: otpRequireThaibulk!.token,
+                //               pin: pin,
+                //               context: context,
+                //               phoneNumber: widget.phoneNumber);
+                //         }
+                //       }
+                //     },
+                //     onChangedPinLength: (length) {
+                //       print('length --> $length');
+                //     },
+                //     filledIndicatorColor: ColorPlate.back1,
+                //   ),
+                // ),
+
+
+
+
               ],
             ),
             WidgetBackButton(),
