@@ -335,10 +335,16 @@ class AppService {
 
   Future<void> processSignOut() async {
     await FirebaseAuth.instance.signOut().then((value) {
-      appController.currentUserModels.clear();
-      Get.offAll(HomePage());
+      if (GetPlatform.isAndroid) {
+        Restart.restartApp();
+      } else {
+         appController.currentUserModels.clear();
+      Get.offAll(const HomePage());
       AppSnackBar(title: 'Sign Out Success', message: 'Sign Out Success')
           .normalSnackBar();
+      }
+
+     
     });
   }
 

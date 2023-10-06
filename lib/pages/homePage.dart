@@ -461,7 +461,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   Widget commentButton() {
-    return Container(
+    return SizedBox(
       width: 200,
       // margin: const EdgeInsets.only(left: 20),
       child: WidgetButton(
