@@ -16,6 +16,7 @@ import 'package:ftpconnect/ftpconnect.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:path/path.dart';
 import 'package:xstream/models/amphure_model.dart';
@@ -241,8 +242,13 @@ class AppService {
                     .doc(uid)
                     .set(userModel.toMap())
                     .then((value) {
-                  findCurrentUserModel()
-                      .then((value) => Get.offAll(const HomePage()));
+                  if (GetPlatform.isAndroid) {
+                    Restart.restartApp();
+                  } else {
+                    AppService()
+                        .findCurrentUserModel()
+                        .then((value) => Get.offAll(const HomePage()));
+                  }
                 });
               }).catchError((onError) {});
             } else {
@@ -254,8 +260,13 @@ class AppService {
                       email: 'email$phoneNumber@xstream.com',
                       password: '123456')
                   .then((value) {
-                findCurrentUserModel()
-                    .then((value) => Get.offAll(const HomePage()));
+                if (GetPlatform.isAndroid) {
+                  Restart.restartApp();
+                } else {
+                  AppService()
+                      .findCurrentUserModel()
+                      .then((value) => Get.offAll(const HomePage()));
+                }
               });
             }
           });

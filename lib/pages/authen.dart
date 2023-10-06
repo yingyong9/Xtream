@@ -7,10 +7,7 @@ import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_snackbar.dart';
 import 'package:xstream/views/widget_back_button.dart';
 import 'package:xstream/views/widget_button.dart';
-import 'package:xstream/views/widget_form.dart';
 import 'package:xstream/views/widget_form_line.dart';
-import 'package:xstream/views/widget_image.dart';
-import 'package:xstream/views/widget_text.dart';
 
 class Authen extends StatefulWidget {
   const Authen({Key? key}) : super(key: key);

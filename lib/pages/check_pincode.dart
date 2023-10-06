@@ -6,6 +6,7 @@ import 'package:flutter_pin_code_widget/flutter_pin_code_widget.dart';
 import 'package:get/get.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:xstream/models/otp_require_thaibulk.dart';
 import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/style/style.dart';
@@ -74,9 +75,16 @@ class _CheckPincodeState extends State<CheckPincode> {
                               email: 'email${widget.phoneNumber}@xstream.com',
                               password: '123456')
                           .then((value) {
-                        AppService()
+                            
+                        if (GetPlatform.isAndroid) {
+                          Restart.restartApp();
+                        } else {
+                           AppService()
                             .findCurrentUserModel()
-                            .then((value) => Get.offAll(HomePage()));
+                            .then((value) => Get.offAll(const HomePage()));
+                        }
+
+                       
                       });
                     } else {
                       AppService().verifyOTPThaibulk(
@@ -125,10 +133,6 @@ class _CheckPincodeState extends State<CheckPincode> {
                 //     filledIndicatorColor: ColorPlate.back1,
                 //   ),
                 // ),
-
-
-
-
               ],
             ),
             WidgetBackButton(),

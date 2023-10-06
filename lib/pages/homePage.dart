@@ -81,9 +81,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    // Wakelock.enable().then((value) {
-    //   print('##3oct WakeLock Enable');
-    // });
+   
 
     AppService().findCurrentUserModel().then((value) {
       if (appController.currentUserModels.isNotEmpty) {
