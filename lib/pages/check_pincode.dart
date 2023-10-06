@@ -12,6 +12,7 @@ import 'package:xstream/models/otp_require_thaibulk.dart';
 import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
+import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/widget_back_button.dart';
 import 'package:xstream/views/widget_button.dart';
@@ -40,6 +41,8 @@ class _CheckPincodeState extends State<CheckPincode> {
 
   TextEditingController textEditingController = TextEditingController();
 
+  AppController appController = Get.put(AppController());
+
   @override
   void initState() {
     super.initState();
@@ -58,83 +61,110 @@ class _CheckPincodeState extends State<CheckPincode> {
           LayoutBuilder(builder: (context, BoxConstraints boxConstraints) {
         return Stack(
           children: [
-            Column(
-              children: [
-                // displayLogo(boxConstraints),
-                const SizedBox(
-                  height: 50,
-                ),
-                displayTitle(),
+            GestureDetector(
+              onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+              child: ListView(
+                children: [
+                  Column(
+                    children: [
+                      // displayLogo(boxConstraints),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      displayTitle(),
 
-                SizedBox(
-                  width: 250,
-                  child: WidgetFormLine(textEditingController: textEditingController,
-                    hint: 'กรอกรหัส OTP',
-                    suffixWidget: WidgetIconButtonGF(
-                      iconData: Icons.clear,
-                      pressFunc: () {},
-                    ),
+                      SizedBox(
+                        width: 250,
+                        child: WidgetFormLine(
+                          textEditingController: textEditingController,
+                          hint: 'กรอกรหัส OTP',
+                          suffixWidget: WidgetIconButtonGF(
+                            iconData: Icons.clear,
+                            pressFunc: () {
+                              textEditingController.text = '';
+                              appController.displayConfirmButtom.value = false;
+                            },
+                          ),
+                          changeFunc: (p0) {
+                            if (p0.isNotEmpty) {
+                              appController.displayConfirmButtom.value = true;
+                            } else {
+                              appController.displayConfirmButtom.value = false;
+                            }
+                          },
+                        ),
+                      ),
+
+                      const SizedBox(
+                        height: 30,
+                      ),
+
+                      Obx(() {
+                        return SizedBox(
+                          width: 250,
+                          child: appController.displayConfirmButtom.value
+                              ? WidgetButton(
+                                  label: 'ยืนยัน',
+                                  pressFunc: () {},
+                                  color: ColorPlate.red,
+                                  gfButtonShape: GFButtonShape.pills,
+                                )
+                              : WidgetButton(
+                                  label: 'ยืนยัน',
+                                  pressFunc: () {},
+                                  color: ColorPlate.red.withOpacity(0.2),
+                                  gfButtonShape: GFButtonShape.pills,
+                                ),
+                        );
+                      }),
+
+                      const SizedBox(
+                        height: 150,
+                      ),
+
+                      WidgetTextButton(
+                        label: 'ขอรหัส OTP ใหม่',
+                        pressFunc: () {},
+                      )
+
+                      // OTPTextField(
+                      //   fieldStyle: FieldStyle.underline,
+                      //   length: 6,
+                      //   width: 250,
+                      //   style: const TextStyle(
+                      //     fontSize: 24,
+                      //   ),
+                      //   otpFieldStyle: OtpFieldStyle(
+                      //       borderColor: Colors.white,
+                      //       enabledBorderColor: Colors.white),
+                      //   onCompleted: (value) async {
+                      //     if (widget.phoneNumber == '0818595309') {
+                      //       await FirebaseAuth.instance
+                      //           .signInWithEmailAndPassword(
+                      //               email: 'email${widget.phoneNumber}@xstream.com',
+                      //               password: '123456')
+                      //           .then((value) {
+                      //         if (GetPlatform.isAndroid) {
+                      //           Restart.restartApp();
+                      //         } else {
+                      //           AppService()
+                      //               .findCurrentUserModel()
+                      //               .then((value) => Get.offAll(const HomePage()));
+                      //         }
+                      //       });
+                      //     } else {
+                      //       AppService().verifyOTPThaibulk(
+                      //           token: otpRequireThaibulk!.token,
+                      //           pin: value,
+                      //           context: context,
+                      //           phoneNumber: widget.phoneNumber);
+                      //     }
+                      //   },
+                      // ),
+                    ],
                   ),
-                ),
-
-                const SizedBox(
-                  height: 30,
-                ),
-
-                 SizedBox(
-                  width: 250,
-                  child: WidgetButton(
-                    label: 'ยืนยัน',
-                    pressFunc: () {},
-                    color: ColorPlate.red,
-                    gfButtonShape: GFButtonShape.pills,
-                  ),
-                ),
-
-                const SizedBox(
-                  height: 150,
-                ),
-
-                WidgetTextButton(
-                  label: 'ขอรหัส OTP ใหม่',
-                  pressFunc: () {},
-                )
-
-                // OTPTextField(
-                //   fieldStyle: FieldStyle.underline,
-                //   length: 6,
-                //   width: 250,
-                //   style: const TextStyle(
-                //     fontSize: 24,
-                //   ),
-                //   otpFieldStyle: OtpFieldStyle(
-                //       borderColor: Colors.white,
-                //       enabledBorderColor: Colors.white),
-                //   onCompleted: (value) async {
-                //     if (widget.phoneNumber == '0818595309') {
-                //       await FirebaseAuth.instance
-                //           .signInWithEmailAndPassword(
-                //               email: 'email${widget.phoneNumber}@xstream.com',
-                //               password: '123456')
-                //           .then((value) {
-                //         if (GetPlatform.isAndroid) {
-                //           Restart.restartApp();
-                //         } else {
-                //           AppService()
-                //               .findCurrentUserModel()
-                //               .then((value) => Get.offAll(const HomePage()));
-                //         }
-                //       });
-                //     } else {
-                //       AppService().verifyOTPThaibulk(
-                //           token: otpRequireThaibulk!.token,
-                //           pin: value,
-                //           context: context,
-                //           phoneNumber: widget.phoneNumber);
-                //     }
-                //   },
-                // ),
-              ],
+                ],
+              ),
             ),
             const WidgetBackButton(),
           ],
