@@ -14,6 +14,7 @@ import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
+import 'package:xstream/utility/app_snackbar.dart';
 import 'package:xstream/views/widget_back_button.dart';
 import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_form_line.dart';
@@ -72,7 +73,10 @@ class _CheckPincodeState extends State<CheckPincode> {
                         height: 50,
                       ),
                       displayTitle(),
-
+                      WidgetText(data: 'จากเบอร์ ${widget.phoneNumber}'),
+                      const SizedBox(
+                        height: 50,
+                      ),
                       SizedBox(
                         width: 250,
                         child: WidgetFormLine(
@@ -105,13 +109,52 @@ class _CheckPincodeState extends State<CheckPincode> {
                           child: appController.displayConfirmButtom.value
                               ? WidgetButton(
                                   label: 'ยืนยัน',
-                                  pressFunc: () {},
+                                  pressFunc: () {
+
+                                     print('Click Confirm');
+
+                                    AppService().verifyOTPThaibulk(
+                                              token: otpRequireThaibulk!.token,
+                                              pin: textEditingController.text,
+                                              context: context,
+                                              phoneNumber: widget.phoneNumber);
+
+                                  },
                                   color: ColorPlate.red,
                                   gfButtonShape: GFButtonShape.pills,
                                 )
                               : WidgetButton(
                                   label: 'ยืนยัน',
-                                  pressFunc: () {},
+                                  pressFunc: ()async {
+
+                                   
+
+
+                                        // if (widget.phoneNumber == '0818595309') {
+                                        //   await FirebaseAuth.instance
+                                        //       .signInWithEmailAndPassword(
+                                        //           email: 'email${widget.phoneNumber}@xstream.com',
+                                        //           password: '123456')
+                                        //       .then((value) {
+                                        //     if (GetPlatform.isAndroid) {
+                                        //       Restart.restartApp();
+                                        //     } else {
+                                        //       AppService()
+                                        //           .findCurrentUserModel()
+                                        //           .then((value) => Get.offAll(const HomePage()));
+                                        //     }
+                                        //   });
+                                        // } else {
+                                        //   AppService().verifyOTPThaibulk(
+                                        //       token: otpRequireThaibulk!.token,
+                                        //       pin: textEditingController.text,
+                                        //       context: context,
+                                        //       phoneNumber: widget.phoneNumber);
+                                        // }
+
+
+
+                                  },
                                   color: ColorPlate.red.withOpacity(0.2),
                                   gfButtonShape: GFButtonShape.pills,
                                 ),
@@ -124,7 +167,20 @@ class _CheckPincodeState extends State<CheckPincode> {
 
                       WidgetTextButton(
                         label: 'ขอรหัส OTP ใหม่',
-                        pressFunc: () {},
+                        pressFunc: () {
+                          AppService()
+                              .processSentSmsThaibulk(
+                                  phoneNumber: widget.phoneNumber)
+                              .then((value) {
+                            print('value ---> ${value.toMap()}');
+                            otpRequireThaibulk = value;
+                            AppSnackBar(
+                                    title: 'ขอรหัส OTP ใหม่',
+                                    message:
+                                        'ขอรหัส OTP ใหม่ จากเบอร์ ${widget.phoneNumber}')
+                                .normalSnackBar();
+                          });
+                        },
                       )
 
                       // OTPTextField(
@@ -138,6 +194,7 @@ class _CheckPincodeState extends State<CheckPincode> {
                       //       borderColor: Colors.white,
                       //       enabledBorderColor: Colors.white),
                       //   onCompleted: (value) async {
+
                       //     if (widget.phoneNumber == '0818595309') {
                       //       await FirebaseAuth.instance
                       //           .signInWithEmailAndPassword(
@@ -159,6 +216,7 @@ class _CheckPincodeState extends State<CheckPincode> {
                       //           context: context,
                       //           phoneNumber: widget.phoneNumber);
                       //     }
+
                       //   },
                       // ),
                     ],
@@ -177,9 +235,9 @@ class _CheckPincodeState extends State<CheckPincode> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
+        SizedBox(
           width: 250,
-          margin: const EdgeInsets.only(bottom: 32),
+          // margin: const EdgeInsets.only(bottom: 32),
           child: WidgetText(
             data: 'กรอกรหัสยืนยัน',
             textStyle: AppConstant().bodyStyle(fontSize: 30),

@@ -210,7 +210,7 @@ class AppService {
       Dio dio = Dio();
       dio.options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
       await dio.post(urlApi, data: map).then((value) async {
-        print('##11july statusCode --> ${value.statusCode}');
+        print('##7oct statusCode --> ${value.statusCode}');
         if (value.statusCode == 200) {
           //Everything OK
 
@@ -274,7 +274,7 @@ class AppService {
       });
     } on Exception catch (e) {
       print(e);
-      Get.back();
+      // Get.back();
       AppSnackBar(title: 'OTP ผิด', message: 'กรุณาลองใหม่').errorSnackBar();
     }
   }
