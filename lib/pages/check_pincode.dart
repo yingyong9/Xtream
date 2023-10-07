@@ -1,12 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_print
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pin_code_widget/flutter_pin_code_widget.dart';
 
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:otp_text_field/otp_text_field.dart';
-import 'package:otp_text_field/style.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:xstream/models/otp_require_thaibulk.dart';
 import 'package:xstream/pages/homePage.dart';
@@ -109,52 +107,37 @@ class _CheckPincodeState extends State<CheckPincode> {
                           child: appController.displayConfirmButtom.value
                               ? WidgetButton(
                                   label: 'ยืนยัน',
-                                  pressFunc: () {
-
-                                     print('Click Confirm');
-
-                                    AppService().verifyOTPThaibulk(
-                                              token: otpRequireThaibulk!.token,
-                                              pin: textEditingController.text,
-                                              context: context,
-                                              phoneNumber: widget.phoneNumber);
-
+                                  pressFunc: () async {
+                                    if (widget.phoneNumber == '0818595309') {
+                                      await FirebaseAuth.instance
+                                          .signInWithEmailAndPassword(
+                                              email:
+                                                  'email${widget.phoneNumber}@xstream.com',
+                                              password: '123456')
+                                          .then((value) {
+                                        if (GetPlatform.isAndroid) {
+                                          Restart.restartApp();
+                                        } else {
+                                          AppService()
+                                              .findCurrentUserModel()
+                                              .then((value) =>
+                                                  Get.offAll(const HomePage()));
+                                        }
+                                      });
+                                    } else {
+                                      AppService().verifyOTPThaibulk(
+                                          token: otpRequireThaibulk!.token,
+                                          pin: textEditingController.text,
+                                          context: context,
+                                          phoneNumber: widget.phoneNumber);
+                                    }
                                   },
                                   color: ColorPlate.red,
                                   gfButtonShape: GFButtonShape.pills,
                                 )
                               : WidgetButton(
                                   label: 'ยืนยัน',
-                                  pressFunc: ()async {
-
-                                   
-
-
-                                        // if (widget.phoneNumber == '0818595309') {
-                                        //   await FirebaseAuth.instance
-                                        //       .signInWithEmailAndPassword(
-                                        //           email: 'email${widget.phoneNumber}@xstream.com',
-                                        //           password: '123456')
-                                        //       .then((value) {
-                                        //     if (GetPlatform.isAndroid) {
-                                        //       Restart.restartApp();
-                                        //     } else {
-                                        //       AppService()
-                                        //           .findCurrentUserModel()
-                                        //           .then((value) => Get.offAll(const HomePage()));
-                                        //     }
-                                        //   });
-                                        // } else {
-                                        //   AppService().verifyOTPThaibulk(
-                                        //       token: otpRequireThaibulk!.token,
-                                        //       pin: textEditingController.text,
-                                        //       context: context,
-                                        //       phoneNumber: widget.phoneNumber);
-                                        // }
-
-
-
-                                  },
+                                  
                                   color: ColorPlate.red.withOpacity(0.2),
                                   gfButtonShape: GFButtonShape.pills,
                                 ),

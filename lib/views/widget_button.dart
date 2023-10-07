@@ -2,14 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 
-import 'package:xstream/style/style.dart';
-import 'package:xstream/views/widget_text.dart';
 
 class WidgetButton extends StatelessWidget {
   const WidgetButton({
     Key? key,
     required this.label,
-    required this.pressFunc,
+    this.pressFunc,
     this.color,
     this.gfButtonShape,
     this.fullWidthButton,
@@ -17,7 +15,7 @@ class WidgetButton extends StatelessWidget {
   }) : super(key: key);
 
   final String label;
-  final Function() pressFunc;
+  final Function()? pressFunc;
   final Color? color;
   final GFButtonShape? gfButtonShape;
   final bool? fullWidthButton;
