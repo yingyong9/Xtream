@@ -1,8 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:xstream/style/style.dart';
-
-
 
 class WidgetFormLine extends StatelessWidget {
   const WidgetFormLine({
@@ -12,6 +11,7 @@ class WidgetFormLine extends StatelessWidget {
     this.textInputType,
     this.labelWidget,
     this.prefixWidget,
+    this.suffixWidget,
     this.changeFunc,
   }) : super(key: key);
 
@@ -20,6 +20,7 @@ class WidgetFormLine extends StatelessWidget {
   final TextInputType? textInputType;
   final Widget? labelWidget;
   final Widget? prefixWidget;
+  final Widget? suffixWidget;
   final Function(String)? changeFunc;
 
   @override
@@ -27,12 +28,13 @@ class WidgetFormLine extends StatelessWidget {
     return TextFormField(
       onChanged: changeFunc,
       keyboardType: textInputType ?? TextInputType.text,
-      decoration: InputDecoration(prefixIcon: prefixWidget,
+      decoration: InputDecoration(suffixIcon: suffixWidget,
+        prefixIcon: prefixWidget,
         label: labelWidget,
         hintText: hint,
         hintStyle: StandardTextStyle.normalWithOpacity,
-        filled: true,
-        border: InputBorder.none,
+        // filled: true,
+        // border: InputBorder.none,
       ),
       controller: textEditingController,
     );

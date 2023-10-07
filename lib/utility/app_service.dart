@@ -16,6 +16,7 @@ import 'package:ftpconnect/ftpconnect.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:path/path.dart';
 import 'package:xstream/models/amphure_model.dart';
@@ -209,7 +210,7 @@ class AppService {
       Dio dio = Dio();
       dio.options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
       await dio.post(urlApi, data: map).then((value) async {
-        print('##11july statusCode --> ${value.statusCode}');
+        print('##7oct statusCode --> ${value.statusCode}');
         if (value.statusCode == 200) {
           //Everything OK
 
@@ -241,8 +242,13 @@ class AppService {
                     .doc(uid)
                     .set(userModel.toMap())
                     .then((value) {
-                  findCurrentUserModel()
-                      .then((value) => Get.offAll(const HomePage()));
+                  if (GetPlatform.isAndroid) {
+                    Restart.restartApp();
+                  } else {
+                    AppService()
+                        .findCurrentUserModel()
+                        .then((value) => Get.offAll(const HomePage()));
+                  }
                 });
               }).catchError((onError) {});
             } else {
@@ -254,8 +260,13 @@ class AppService {
                       email: 'email$phoneNumber@xstream.com',
                       password: '123456')
                   .then((value) {
-                findCurrentUserModel()
-                    .then((value) => Get.offAll(const HomePage()));
+                if (GetPlatform.isAndroid) {
+                  Restart.restartApp();
+                } else {
+                  AppService()
+                      .findCurrentUserModel()
+                      .then((value) => Get.offAll(const HomePage()));
+                }
               });
             }
           });
@@ -263,7 +274,7 @@ class AppService {
       });
     } on Exception catch (e) {
       print(e);
-      Get.back();
+      // Get.back();
       AppSnackBar(title: 'OTP ผิด', message: 'กรุณาลองใหม่').errorSnackBar();
     }
   }
@@ -287,16 +298,15 @@ class AppService {
   }
 
   Future<void> readAllVideo() async {
-    if (appController.videoModels.isNotEmpty) {
-      appController.videoModels.clear();
-      appController.docIdVideos.clear();
-    }
-
     await FirebaseFirestore.instance
         .collection('video')
         .orderBy('timestamp', descending: true)
         .get()
         .then((value) async {
+      if (appController.videoModels.isNotEmpty) {
+        appController.videoModels.clear();
+        appController.docIdVideos.clear();
+      }
       for (var element in value.docs) {
         VideoModel videoModel = VideoModel.fromMap(element.data());
         appController.videoModels.add(videoModel);
@@ -325,10 +335,16 @@ class AppService {
 
   Future<void> processSignOut() async {
     await FirebaseAuth.instance.signOut().then((value) {
-      appController.currentUserModels.clear();
-      Get.offAll(HomePage());
+      if (GetPlatform.isAndroid) {
+        Restart.restartApp();
+      } else {
+         appController.currentUserModels.clear();
+      Get.offAll(const HomePage());
       AppSnackBar(title: 'Sign Out Success', message: 'Sign Out Success')
           .normalSnackBar();
+      }
+
+     
     });
   }
 

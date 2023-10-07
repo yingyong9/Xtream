@@ -125,7 +125,6 @@ class TikTokButtonColumn extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  
                   WidgetImage(
                     path: 'images/arrowdown2.png',
                     size: 36,
@@ -191,8 +190,9 @@ class TikTokButtonColumn extends StatelessWidget {
               context: context, onTap: onDisplayImageProduct ?? () {}),
           videoModel.urlImageLive!.isEmpty
               ? const SizedBox()
-              : InkWell(onTap: onTapImageLive,
-                child: Container(
+              : InkWell(
+                  onTap: onTapImageLive,
+                  child: Container(
                     margin: const EdgeInsets.only(right: 12),
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     width: 110,
@@ -209,14 +209,18 @@ class TikTokButtonColumn extends StatelessWidget {
                           boxFit: BoxFit.cover,
                         ),
                         WidgetText(
-                          data: AppService().checkTimeLive(startLive: videoModel.startLive!) ? 'Live สดขณะนี้' : 'Live สิ้นสุดแล้ว',
-                          textStyle: AppConstant().bodyStyle(color: Colors.black),
+                          data: AppService().checkTimeLive(
+                                  startLive: videoModel.startLive!)
+                              ? 'Live สดขณะนี้'
+                              : 'Live สิ้นสุดแล้ว',
+                          textStyle:
+                              AppConstant().bodyStyle(color: Colors.black),
                         ),
                       ],
                     ),
                     decoration: const BoxDecoration(color: ColorPlate.white),
                   ),
-              ),
+                ),
           Container(
             width: SysSize.avatar,
             height: SysSize.avatar,
@@ -445,26 +449,28 @@ class _TikTokAvatarState extends State<TikTokAvatar> {
               ? widget.videoModel.mapUserModel['urlAvatar']
               : ownerUserModel!.urlAvatar),
     );
-    Widget addButton = appController.currentUserModels.last.uid ==
-            widget.videoModel.mapUserModel['uid']
+    Widget addButton = appController.currentUserModels.isEmpty
         ? const SizedBox()
-        : AppService().checkStatusFriend(videoModel: widget.videoModel)
+        : appController.currentUserModels.last.uid ==
+                widget.videoModel.mapUserModel['uid']
             ? const SizedBox()
-            : InkWell(
-                onTap: widget.onAddButton,
-                child: Container(
-                  width: 20,
-                  height: 20,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: ColorPlate.red,
-                  ),
-                  child: const Icon(
-                    Icons.add,
-                    size: 16,
-                  ),
-                ),
-              );
+            : AppService().checkStatusFriend(videoModel: widget.videoModel)
+                ? const SizedBox()
+                : InkWell(
+                    onTap: widget.onAddButton,
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: ColorPlate.red,
+                      ),
+                      child: const Icon(
+                        Icons.add,
+                        size: 16,
+                      ),
+                    ),
+                  );
     return Container(
       width: SysSize.avatar,
       height: 66,

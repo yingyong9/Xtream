@@ -48,8 +48,8 @@ class AppController extends GetxController {
   RxList<OptionModel> optionModels = <OptionModel>[].obs;
   RxBool displaySave = false.obs;
   RxList<String> subOptions = <String>[].obs;
-
   RxList<ChatCommentModel> chatCommentModels = <ChatCommentModel>[].obs;
-
   RxList<double> screenHeights = <double>[].obs;
+
+  RxBool displayConfirmButtom = false.obs;
 }

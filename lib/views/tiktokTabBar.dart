@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xstream/pages/authen.dart';
 import 'package:xstream/pages/userDetailPage.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
+import 'package:xstream/views/bottom_sheet_authen.dart';
 import 'package:xstream/views/remarkBottomSheet.dart';
 import 'package:xstream/views/selectText.dart';
 
@@ -92,7 +92,10 @@ class TikTokTabBar extends StatelessWidget {
               if (appController.currentUserModels.isNotEmpty) {
                 Get.to(UserDetailPage());
               } else {
-                Get.to(const Authen());
+                 Get.bottomSheet(
+            const BottomSheetAuthen(),
+            isScrollControlled: true,
+          );
               }
             },
           ),
