@@ -193,6 +193,20 @@ class AppService {
 
     return urlImage;
   }
+  Future<String?> processUploadFileImageReview() async {
+    String? urlImage;
+
+    FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+    Reference reference = firebaseStorage
+        .ref()
+        .child('review/${appController.nameFiles.last}');
+    UploadTask uploadTask = reference.putFile(appController.files.last);
+    await uploadTask.whenComplete(() async {
+      urlImage = await reference.getDownloadURL();
+    });
+
+    return urlImage;
+  }
 
   Future<void> verifyOTPThaibulk(
       {required String token,
@@ -338,13 +352,11 @@ class AppService {
       if (GetPlatform.isAndroid) {
         Restart.restartApp();
       } else {
-         appController.currentUserModels.clear();
-      Get.offAll(const HomePage());
-      AppSnackBar(title: 'Sign Out Success', message: 'Sign Out Success')
-          .normalSnackBar();
+        appController.currentUserModels.clear();
+        Get.offAll(const HomePage());
+        AppSnackBar(title: 'Sign Out Success', message: 'Sign Out Success')
+            .normalSnackBar();
       }
-
-     
     });
   }
 

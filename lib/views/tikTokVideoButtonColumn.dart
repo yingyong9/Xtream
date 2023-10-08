@@ -56,11 +56,10 @@ class TikTokButtonColumn extends StatelessWidget {
     AppController appController = Get.put(AppController());
 
     return Container(
-      // color: Colors.red,
-      // width: SysSize.avatar,
+     
       margin: EdgeInsets.only(
         bottom: bottomPadding ?? 0,
-        right: 12,
+        right: 26,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
