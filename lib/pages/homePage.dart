@@ -27,7 +27,6 @@ import 'package:xstream/views/tikTokVideo.dart';
 import 'package:xstream/views/tikTokVideoButtonColumn.dart';
 import 'package:xstream/views/tiktokTabBar.dart';
 import 'package:xstream/views/widget_button.dart';
-
 import 'package:xstream/views/widget_progress.dart';
 import 'package:xstream/views/widget_web_view.dart';
 
@@ -198,13 +197,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       },
     );
 
-    // var userPage = UserPage(
-    //   isSelfPage: false,
-    //   canPop: true,
-    //   onPop: () {
-    //     tkController.animateToMiddle();
-    //   },
-    // );
+   
     var searchPage = SearchPage(
       onPop: tkController.animateToMiddle,
     );

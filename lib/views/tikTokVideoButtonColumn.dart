@@ -73,30 +73,13 @@ class TikTokButtonColumn extends StatelessWidget {
             ),
             onTap: onAvatar,
           ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.end,
-          //   children: [
-          //     FavoriteIcon(
-          //       onFavorite: onFavorite,
-          //       isFavorite: isFavorite,
-          //     ),
-          //   ],
-          // ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Column(
                 children: [
-                  WidgetText(
-                    // data: videoModel.up.toString(),
-                    data: appController.videoModels[indexVideo].up.toString(),
-                    textStyle: AppConstant().bodyStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: SysSize.big,
-                    ),
-                  ),
                   WidgetImage(
-                    path: 'images/arrowup2.png',
+                    path: 'images/like.png',
                     size: 36,
                     tapFunc: () {
                       print('tab up at docIdVideo ---> $docIdVideo');
@@ -113,6 +96,14 @@ class TikTokButtonColumn extends StatelessWidget {
                       AppService().processIncrease(docIdVideo: docIdVideo);
                     },
                   ),
+                  WidgetText(
+                    // data: videoModel.up.toString(),
+                    data: appController.videoModels[indexVideo].up.toString(),
+                    textStyle: AppConstant().bodyStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: SysSize.big,
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -123,10 +114,20 @@ class TikTokButtonColumn extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              _IconButton(
+                icon: WidgetImage(path: 'images/comment2.png' ,size: 36,),
+                text: appController.videoModels[indexVideo].comment.toString(),
+                onTap: onComment,
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
               Column(
                 children: [
                   WidgetImage(
-                    path: 'images/arrowdown2.png',
+                    path: 'images/star.png',
                     size: 36,
                     tapFunc: () {
                       Map<String, dynamic> map =
@@ -153,39 +154,31 @@ class TikTokButtonColumn extends StatelessWidget {
               ),
             ],
           ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.end,
-          //   children: [
-          //     Column(
-          //       children: [
-          //         WidgetImage(
-          //           path: 'images/comment.png',
-          //           size: 36,
-          //           tapFunc: onComment,
-          //         ),
-          //         WidgetText(
-          //           data: '45',
-          //           textStyle: AppConstant().bodyStyle(
-          //             fontWeight: FontWeight.bold,
-          //             fontSize: SysSize.big,
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ],
-          // ),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              _IconButton(
-                icon: const IconToText(Icons.mode_comment_outlined,
-                    size: SysSize.iconBig - 4),
-                text: appController.videoModels[indexVideo].comment.toString(),
-                onTap: onComment,
+              WidgetImage(
+                path: 'images/share.png',
+                size: 36,
+                tapFunc: () {
+                  Map<String, dynamic> map =
+                      appController.videoModels[indexVideo].toMap();
+
+                  int down = appController.videoModels[indexVideo].down!;
+                  down++;
+                  map['down'] = down;
+
+                  appController.videoModels[indexVideo] =
+                      VideoModel.fromMap(map);
+
+                  AppService().processDecrease(docIdVideo: docIdVideo);
+                },
               ),
             ],
           ),
+
+
+
           displayImageProduct(appController,
               context: context, onTap: onDisplayImageProduct ?? () {}),
           videoModel.urlImageLive!.isEmpty
