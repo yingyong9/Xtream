@@ -52,4 +52,6 @@ class AppController extends GetxController {
   RxList<double> screenHeights = <double>[].obs;
 
   RxBool displayConfirmButtom = false.obs;
+
+  RxMap mapReview = {}.obs;
 }

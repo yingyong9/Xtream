@@ -63,6 +63,9 @@ class _ReviewPageState extends State<ReviewPage> {
                             map['nameShop'] = textEditingController.text;
 
                             print('map ---> $map');
+
+                            // appController.mapReview.value = map;
+                            Get.back(result: map);
                           });
                         }
                       },

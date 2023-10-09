@@ -149,6 +149,12 @@ class _DetailPostState extends State<DetailPost> {
                       pressFunc: () {
                         Get.to(const ReviewPage())!.then((value) {
                           Map<String, dynamic> map = value;
+
+                          if (appController.files.isNotEmpty) {
+                            appController.files.clear();
+                          }
+
+                          print('##9oct map ที่ได้มาจาก review page -----> $map');
                           insertVideoOnly(mapReview: map);
                         });
                       },
@@ -228,6 +234,8 @@ class _DetailPostState extends State<DetailPost> {
   }
 
   Future<void> insertVideoOnly({Map<String, dynamic>? mapReview}) async {
+    print('##9oct mapReview ที่ insertVideoOnly ---> $mapReview');
+
     String? urlImage = await AppService().processUploadThumbnailVideo(
         fileThumbnail: widget.fileThumbnail, nameFile: widget.nameFileImage);
 

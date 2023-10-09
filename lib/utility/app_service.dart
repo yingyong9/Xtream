@@ -113,7 +113,7 @@ class AppService {
         urlImageLive: urlImagelive ?? '',
         startLive: startLive ?? Timestamp(0, 0),
         liveTitle: liveTitle ?? '',
-        // mapReview: mapReview ?? {},
+        mapReview: mapReview ?? {},
       );
 
       FirebaseFirestore.instance
@@ -787,4 +787,9 @@ class AppService {
       }
     });
   }
+
+
+
+
+  
 }
