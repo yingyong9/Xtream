@@ -38,7 +38,9 @@ class TikTokTabBar extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: GestureDetector(
-            child: WidgetImage(path: 'images/tuktuk.png',),
+            child: WidgetImage(
+              path: 'images/tuktuk.png',
+            ),
             onTap: () => onTabSwitch?.call(TikTokPageTag.home),
           ),
         ),
@@ -57,7 +59,10 @@ class TikTokTabBar extends StatelessWidget {
         // ),
         Expanded(
           child: GestureDetector(
-            child: WidgetImage(path: 'images/plus.png',size: 48,),
+            child: WidgetImage(
+              path: 'images/plus.png',
+              size: 48,
+            ),
             onTap: () {
               onAddButton?.call();
               // Get.to(CameraPage());
@@ -81,24 +86,27 @@ class TikTokTabBar extends StatelessWidget {
             //   isSelect: current == TikTokPageTag.me,
             //   title: 'Profile',
             // ),
-            child: WidgetImage(path: 'images/user.png', size: 36,),
+            child: WidgetImage(
+              path: 'images/user.png',
+              size: 36,
+            ),
             onTap: () {
               onTabSwitch?.call(TikTokPageTag.me);
 
               if (appController.currentUserModels.isNotEmpty) {
                 Get.to(UserDetailPage());
               } else {
-                 Get.bottomSheet(
-            const BottomSheetAuthen(),
-            isScrollControlled: true,
-          );
+                Get.bottomSheet(
+                  const BottomSheetAuthen(),
+                  isScrollControlled: true,
+                );
               }
             },
           ),
         ),
       ],
     );
-   
+
     return Container(
       color: hasBackground ? ColorPlate.back2 : ColorPlate.back2.withOpacity(0),
       child: Container(
@@ -107,7 +115,5 @@ class TikTokTabBar extends StatelessWidget {
         child: row,
       ),
     );
-
-
   }
 }

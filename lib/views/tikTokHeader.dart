@@ -76,23 +76,23 @@ class _TikTokHeaderState extends State<TikTokHeader> {
               child: headSwitch,
             ),
           ),
-          Expanded(
-            child: Tapped(
-              onTap: widget.onLive,
-              child: Container(
-                color: Colors.black.withOpacity(0),
-                padding: const EdgeInsets.all(4),
-                alignment: Alignment.centerRight,
-                child: WidgetText(
-                  data: 'Live',
-                  textStyle: AppConstant().bodyStyle(
-                      color: ColorPlate.red,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-          ),
+          // Expanded(
+          //   child: Tapped(
+          //     onTap: widget.onLive,
+          //     child: Container(
+          //       color: Colors.black.withOpacity(0),
+          //       padding: const EdgeInsets.all(4),
+          //       alignment: Alignment.centerRight,
+          //       child: WidgetText(
+          //         data: 'Live',
+          //         textStyle: AppConstant().bodyStyle(
+          //             color: ColorPlate.red,
+          //             fontSize: 18,
+          //             fontWeight: FontWeight.bold),
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
