@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:xstream/pages/add_option_product.dart';
 import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/pages/manage_product.dart';
+import 'package:xstream/pages/review_page.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
@@ -120,13 +121,13 @@ class _DetailPostState extends State<DetailPost> {
                             maxLines: 5,
                           ),
                         ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            displayIcon(),
-                            displayIcon2(),
-                          ],
-                        ),
+                        // Row(
+                        //   mainAxisSize: MainAxisSize.min,
+                        //   children: [
+                        //     displayIcon(),
+                        //     displayIcon2(),
+                        //   ],
+                        // ),
                       ],
                     ),
                     SizedBox(
@@ -141,6 +142,25 @@ class _DetailPostState extends State<DetailPost> {
                 ),
                 displayImageFile(boxConstraints),
                 displayLive(boxConstraints: boxConstraints),
+                Row(
+                  children: [
+                    WidgetTextButton(
+                      label: 'Review',
+                      pressFunc: () {
+                        Get.to(const ReviewPage())!.then((value) {
+                          Map<String, dynamic> map = value;
+
+                          if (appController.files.isNotEmpty) {
+                            appController.files.clear();
+                          }
+
+                          print('##9oct map ที่ได้มาจาก review page -----> $map');
+                          insertVideoOnly(mapReview: map);
+                        });
+                      },
+                    ),
+                  ],
+                )
               ],
             ),
           ),
@@ -182,17 +202,7 @@ class _DetailPostState extends State<DetailPost> {
             } else if (appController.files.isEmpty) {
               // Video Only
 
-              String? urlImage = await AppService().processUploadThumbnailVideo(
-                  fileThumbnail: widget.fileThumbnail,
-                  nameFile: widget.nameFileImage);
-
-              AppService()
-                  .processFtpUploadAndInsertDataVideo(
-                      fileVideo: widget.fileVideo,
-                      nameFileVideo: widget.nameFileVideo,
-                      urlThumbnail: urlImage!,
-                      detail: detailController.text)
-                  .then((value) => Get.back());
+              await insertVideoOnly();
             } else {
               // Have Product
 
@@ -221,6 +231,23 @@ class _DetailPostState extends State<DetailPost> {
         ),
       ),
     );
+  }
+
+  Future<void> insertVideoOnly({Map<String, dynamic>? mapReview}) async {
+    print('##9oct mapReview ที่ insertVideoOnly ---> $mapReview');
+
+    String? urlImage = await AppService().processUploadThumbnailVideo(
+        fileThumbnail: widget.fileThumbnail, nameFile: widget.nameFileImage);
+
+    AppService()
+        .processFtpUploadAndInsertDataVideo(
+          fileVideo: widget.fileVideo,
+          nameFileVideo: widget.nameFileVideo,
+          urlThumbnail: urlImage!,
+          detail: detailController.text,
+          mapReview: mapReview,
+        )
+        .then((value) => Get.back());
   }
 
   AppBar mainAppbar() {
