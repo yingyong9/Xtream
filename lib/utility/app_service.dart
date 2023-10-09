@@ -82,6 +82,7 @@ class AppService {
     String? urlImagelive,
     String? liveTitle,
     Timestamp? startLive,
+    Map<String, dynamic>? mapReview,
   }) async {
     //  Get.offAll(HomePage());
 
@@ -112,6 +113,7 @@ class AppService {
         urlImageLive: urlImagelive ?? '',
         startLive: startLive ?? Timestamp(0, 0),
         liveTitle: liveTitle ?? '',
+        // mapReview: mapReview ?? {},
       );
 
       FirebaseFirestore.instance
@@ -193,13 +195,13 @@ class AppService {
 
     return urlImage;
   }
+
   Future<String?> processUploadFileImageReview() async {
     String? urlImage;
 
     FirebaseStorage firebaseStorage = FirebaseStorage.instance;
-    Reference reference = firebaseStorage
-        .ref()
-        .child('review/${appController.nameFiles.last}');
+    Reference reference =
+        firebaseStorage.ref().child('review/${appController.nameFiles.last}');
     UploadTask uploadTask = reference.putFile(appController.files.last);
     await uploadTask.whenComplete(() async {
       urlImage = await reference.getDownloadURL();

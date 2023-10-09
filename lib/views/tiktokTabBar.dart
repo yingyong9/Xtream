@@ -44,19 +44,19 @@ class TikTokTabBar extends StatelessWidget {
             onTap: () => onTabSwitch?.call(TikTokPageTag.home),
           ),
         ),
-        Expanded(
-          child: GestureDetector(
-            child: SelectText(
-              isSelect: current == TikTokPageTag.remark,
-              title: 'เสนอแนะ',
-            ),
-            onTap: () {
-              Get.bottomSheet(RemarkBottomSheet());
+        // Expanded(
+        //   child: GestureDetector(
+        //     child: SelectText(
+        //       isSelect: current == TikTokPageTag.remark,
+        //       title: 'เสนอแนะ',
+        //     ),
+        //     onTap: () {
+        //       Get.bottomSheet(RemarkBottomSheet());
 
-              // onTabSwitch?.call(TikTokPageTag.follow);
-            },
-          ),
-        ),
+        //       // onTabSwitch?.call(TikTokPageTag.follow);
+        //     },
+        //   ),
+        // ),
         Expanded(
           child: GestureDetector(
             child: const Icon(
@@ -69,17 +69,17 @@ class TikTokTabBar extends StatelessWidget {
             },
           ),
         ),
-        Expanded(
-          child: GestureDetector(
-            child: SelectText(
-              isSelect: current == TikTokPageTag.msg,
-              title: 'สินค้า',
-            ),
-            onTap: () {
-              // onTabSwitch?.call(TikTokPageTag.msg);
-            },
-          ),
-        ),
+        // Expanded(
+        //   child: GestureDetector(
+        //     child: SelectText(
+        //       isSelect: current == TikTokPageTag.msg,
+        //       title: 'สินค้า',
+        //     ),
+        //     onTap: () {
+        //       // onTabSwitch?.call(TikTokPageTag.msg);
+        //     },
+        //   ),
+        // ),
         Expanded(
           child: GestureDetector(
             child: SelectText(

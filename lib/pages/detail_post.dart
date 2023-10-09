@@ -147,7 +147,10 @@ class _DetailPostState extends State<DetailPost> {
                     WidgetTextButton(
                       label: 'Review',
                       pressFunc: () {
-                        Get.to(const ReviewPage());
+                        Get.to(const ReviewPage())!.then((value) {
+                          Map<String, dynamic> map = value;
+                          insertVideoOnly(mapReview: map);
+                        });
                       },
                     ),
                   ],
@@ -224,17 +227,18 @@ class _DetailPostState extends State<DetailPost> {
     );
   }
 
-  Future<void> insertVideoOnly() async {
-     String? urlImage = await AppService().processUploadThumbnailVideo(
-        fileThumbnail: widget.fileThumbnail,
-        nameFile: widget.nameFileImage);
-    
+  Future<void> insertVideoOnly({Map<String, dynamic>? mapReview}) async {
+    String? urlImage = await AppService().processUploadThumbnailVideo(
+        fileThumbnail: widget.fileThumbnail, nameFile: widget.nameFileImage);
+
     AppService()
         .processFtpUploadAndInsertDataVideo(
-            fileVideo: widget.fileVideo,
-            nameFileVideo: widget.nameFileVideo,
-            urlThumbnail: urlImage!,
-            detail: detailController.text)
+          fileVideo: widget.fileVideo,
+          nameFileVideo: widget.nameFileVideo,
+          urlThumbnail: urlImage!,
+          detail: detailController.text,
+          mapReview: mapReview,
+        )
         .then((value) => Get.back());
   }
 
