@@ -6,6 +6,7 @@ import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/views/bottom_sheet_authen.dart';
 import 'package:xstream/views/remarkBottomSheet.dart';
 import 'package:xstream/views/selectText.dart';
+import 'package:xstream/views/widget_image.dart';
 
 enum TikTokPageTag {
   home,
@@ -37,10 +38,7 @@ class TikTokTabBar extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: GestureDetector(
-            child: SelectText(
-              isSelect: current == TikTokPageTag.home,
-              title: 'Home',
-            ),
+            child: WidgetImage(path: 'images/tuktuk.png',),
             onTap: () => onTabSwitch?.call(TikTokPageTag.home),
           ),
         ),
@@ -59,10 +57,7 @@ class TikTokTabBar extends StatelessWidget {
         // ),
         Expanded(
           child: GestureDetector(
-            child: const Icon(
-              Icons.add_box,
-              size: 32,
-            ),
+            child: WidgetImage(path: 'images/plus.png',size: 48,),
             onTap: () {
               onAddButton?.call();
               // Get.to(CameraPage());
@@ -82,10 +77,11 @@ class TikTokTabBar extends StatelessWidget {
         // ),
         Expanded(
           child: GestureDetector(
-            child: SelectText(
-              isSelect: current == TikTokPageTag.me,
-              title: 'Profile',
-            ),
+            // child: SelectText(
+            //   isSelect: current == TikTokPageTag.me,
+            //   title: 'Profile',
+            // ),
+            child: WidgetImage(path: 'images/user.png', size: 36,),
             onTap: () {
               onTabSwitch?.call(TikTokPageTag.me);
 
