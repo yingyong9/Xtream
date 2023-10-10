@@ -162,6 +162,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     //ส่วนของ Bottom Navigator
     Widget tikTokTabBar = TikTokTabBar(
       hasBackground: hasBackground,
+      
       current: tabBarType,
       onTabSwitch: (type) async {
         if (appController.currentUserModels.isEmpty) {

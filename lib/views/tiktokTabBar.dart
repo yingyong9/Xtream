@@ -117,6 +117,7 @@ class TikTokTabBar extends StatelessWidget {
 
     return Container(
       color: hasBackground ? ColorPlate.back2 : ColorPlate.back2.withOpacity(0),
+      
       child: Container(
         padding: EdgeInsets.only(bottom: padding.bottom),
         height: 50 + padding.bottom,
