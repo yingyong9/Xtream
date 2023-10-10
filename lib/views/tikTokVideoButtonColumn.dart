@@ -56,7 +56,6 @@ class TikTokButtonColumn extends StatelessWidget {
     AppController appController = Get.put(AppController());
 
     return Container(
-     
       margin: EdgeInsets.only(
         bottom: bottomPadding ?? 0,
         right: 26,
@@ -114,7 +113,10 @@ class TikTokButtonColumn extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               _IconButton(
-                icon: WidgetImage(path: 'images/comment2.png' ,size: 36,),
+                icon: const WidgetImage(
+                  path: 'images/comment2.png',
+                  size: 36,
+                ),
                 text: appController.videoModels[indexVideo].comment.toString(),
                 onTap: onComment,
               ),
@@ -175,9 +177,6 @@ class TikTokButtonColumn extends StatelessWidget {
               ),
             ],
           ),
-
-
-
           displayImageProduct(appController,
               context: context, onTap: onDisplayImageProduct ?? () {}),
           videoModel.urlImageLive!.isEmpty
