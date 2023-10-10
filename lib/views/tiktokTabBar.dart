@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xstream/pages/userDetailPage.dart';
 import 'package:xstream/style/style.dart';
+import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/views/bottom_sheet_authen.dart';
 import 'package:xstream/views/remarkBottomSheet.dart';
 import 'package:xstream/views/selectText.dart';
 import 'package:xstream/views/widget_image.dart';
+import 'package:xstream/views/widget_text.dart';
 
 enum TikTokPageTag {
   home,
@@ -38,8 +40,13 @@ class TikTokTabBar extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: GestureDetector(
-            child: WidgetImage(
-              path: 'images/tuktuk.png',
+            child: Column(mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const WidgetImage(
+                  path: 'images/tuktuk.png',size: 30,
+                ),
+                WidgetText(data: 'หน้าหลัก', textStyle: AppConstant().bodyStyle(fontSize: 12),)
+              ],
             ),
             onTap: () => onTabSwitch?.call(TikTokPageTag.home),
           ),
@@ -59,9 +66,9 @@ class TikTokTabBar extends StatelessWidget {
         // ),
         Expanded(
           child: GestureDetector(
-            child: WidgetImage(
+            child: const WidgetImage(
               path: 'images/plus.png',
-              size: 48,
+              size: 38,
             ),
             onTap: () {
               onAddButton?.call();
@@ -82,13 +89,14 @@ class TikTokTabBar extends StatelessWidget {
         // ),
         Expanded(
           child: GestureDetector(
-            // child: SelectText(
-            //   isSelect: current == TikTokPageTag.me,
-            //   title: 'Profile',
-            // ),
-            child: WidgetImage(
-              path: 'images/user.png',
-              size: 36,
+            child: Column(mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const WidgetImage(
+                  path: 'images/user.png',
+                  size: 20,
+                ),
+                WidgetText(data: 'โปรไฟร์', textStyle: AppConstant().bodyStyle(fontSize: 12),)
+              ],
             ),
             onTap: () {
               onTabSwitch?.call(TikTokPageTag.me);
@@ -109,6 +117,7 @@ class TikTokTabBar extends StatelessWidget {
 
     return Container(
       color: hasBackground ? ColorPlate.back2 : ColorPlate.back2.withOpacity(0),
+      
       child: Container(
         padding: EdgeInsets.only(bottom: padding.bottom),
         height: 50 + padding.bottom,

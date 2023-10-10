@@ -7,6 +7,7 @@ import 'package:xstream/utility/app_snackbar.dart';
 import 'package:xstream/views/widget_back_button.dart';
 import 'package:xstream/views/widget_form_line.dart';
 import 'package:xstream/views/widget_image_file.dart';
+import 'package:xstream/views/widget_text.dart';
 import 'package:xstream/views/widget_text_button.dart';
 
 class ReviewPage extends StatefulWidget {
@@ -74,16 +75,12 @@ class _ReviewPageState extends State<ReviewPage> {
                 ),
                 Row(
                   children: [
-                    appController.files.isEmpty
+                    appController.xFiles.isEmpty
                         ? const SizedBox()
-                        : WidgetImageFile(
-                            fileImage: appController.files.last,
-                            size: 120,
-                          ),
+                        : WidgetText(data: 'Have image'),
                     InkWell(
                       onTap: () {
-                        AppService()
-                            .processTakePhoto(imageSource: ImageSource.gallery);
+                        AppService().takeMultiPhoto();
                       },
                       child: Container(
                         margin: const EdgeInsets.symmetric(

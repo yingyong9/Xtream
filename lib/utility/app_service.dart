@@ -788,8 +788,14 @@ class AppService {
     });
   }
 
-
-
-
-  
+  Future<void> takeMultiPhoto() async {
+    await ImagePicker()
+        .pickMultiImage(
+      maxWidth: 800,
+      maxHeight: 800,
+    )
+        .then((value) {
+      appController.xFiles.addAll(value);
+    });
+  }
 }
