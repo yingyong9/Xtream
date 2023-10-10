@@ -58,170 +58,176 @@ class TikTokButtonColumn extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(
         bottom: bottomPadding ?? 0,
-        right: 26,
+        // right: 16,
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: <Widget>[
-          Tapped(
-            child: TikTokAvatar(
-              videoModel: videoModel,
-              onAddButton: onAddButton,
-            ),
-            onTap: onAvatar,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Column(
-                children: [
-                  WidgetImage(
-                    path: 'images/like.png',
-                    size: 36,
-                    tapFunc: () {
-                      print('tab up at docIdVideo ---> $docIdVideo');
-                      print('tab up at indexVideo ---> $indexVideo');
-
-                      Map<String, dynamic> map =
-                          appController.videoModels[indexVideo].toMap();
-                      int up = appController.videoModels[indexVideo].up!;
-                      up = up + 1;
-                      map['up'] = up;
-                      appController.videoModels[indexVideo] =
-                          VideoModel.fromMap(map);
-
-                      AppService().processIncrease(docIdVideo: docIdVideo);
-                    },
-                  ),
-                  WidgetText(
-                    // data: videoModel.up.toString(),
-                    data: appController.videoModels[indexVideo].up.toString(),
-                    textStyle: AppConstant().bodyStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: SysSize.big,
-                    ),
-                  ),
-                ],
+      child: SizedBox(
+        width: 60,
+        // color: Colors.grey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Tapped(
+              child: TikTokAvatar(
+                videoModel: videoModel,
+                onAddButton: onAddButton,
               ),
-            ],
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              _IconButton(
-                icon: const WidgetImage(
-                  path: 'images/comment2.png',
+              onTap: onAvatar,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Column(
+                  children: [
+                    WidgetImage(
+                      path: 'images/like.png',
+                      size: 36,
+                      tapFunc: () {
+                        print('tab up at docIdVideo ---> $docIdVideo');
+                        print('tab up at indexVideo ---> $indexVideo');
+
+                        Map<String, dynamic> map =
+                            appController.videoModels[indexVideo].toMap();
+                        int up = appController.videoModels[indexVideo].up!;
+                        up = up + 1;
+                        map['up'] = up;
+                        appController.videoModels[indexVideo] =
+                            VideoModel.fromMap(map);
+
+                        AppService().processIncrease(docIdVideo: docIdVideo);
+                      },
+                    ),
+                    WidgetText(
+                      // data: videoModel.up.toString(),
+                      data: appController.videoModels[indexVideo].up.toString(),
+                      textStyle: AppConstant().bodyStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: SysSize.big,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _IconButton(
+                  icon: const WidgetImage(
+                    path: 'images/comment2.png',
+                    size: 36,
+                  ),
+                  text:
+                      appController.videoModels[indexVideo].comment.toString(),
+                  onTap: onComment,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Column(
+                  children: [
+                    WidgetImage(
+                      path: 'images/star.png',
+                      size: 36,
+                      tapFunc: () {
+                        Map<String, dynamic> map =
+                            appController.videoModels[indexVideo].toMap();
+
+                        int down = appController.videoModels[indexVideo].down!;
+                        down++;
+                        map['down'] = down;
+
+                        appController.videoModels[indexVideo] =
+                            VideoModel.fromMap(map);
+
+                        AppService().processDecrease(docIdVideo: docIdVideo);
+                      },
+                    ),
+                    WidgetText(
+                      data:
+                          appController.videoModels[indexVideo].down.toString(),
+                      textStyle: AppConstant().bodyStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: SysSize.big,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                WidgetImage(
+                  path: 'images/share.png',
                   size: 36,
+                  tapFunc: () {
+                    Map<String, dynamic> map =
+                        appController.videoModels[indexVideo].toMap();
+
+                    int down = appController.videoModels[indexVideo].down!;
+                    down++;
+                    map['down'] = down;
+
+                    appController.videoModels[indexVideo] =
+                        VideoModel.fromMap(map);
+
+                    AppService().processDecrease(docIdVideo: docIdVideo);
+                  },
                 ),
-                text: appController.videoModels[indexVideo].comment.toString(),
-                onTap: onComment,
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Column(
-                children: [
-                  WidgetImage(
-                    path: 'images/star.png',
-                    size: 36,
-                    tapFunc: () {
-                      Map<String, dynamic> map =
-                          appController.videoModels[indexVideo].toMap();
-
-                      int down = appController.videoModels[indexVideo].down!;
-                      down++;
-                      map['down'] = down;
-
-                      appController.videoModels[indexVideo] =
-                          VideoModel.fromMap(map);
-
-                      AppService().processDecrease(docIdVideo: docIdVideo);
-                    },
-                  ),
-                  WidgetText(
-                    data: appController.videoModels[indexVideo].down.toString(),
-                    textStyle: AppConstant().bodyStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: SysSize.big,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              WidgetImage(
-                path: 'images/share.png',
-                size: 36,
-                tapFunc: () {
-                  Map<String, dynamic> map =
-                      appController.videoModels[indexVideo].toMap();
-
-                  int down = appController.videoModels[indexVideo].down!;
-                  down++;
-                  map['down'] = down;
-
-                  appController.videoModels[indexVideo] =
-                      VideoModel.fromMap(map);
-
-                  AppService().processDecrease(docIdVideo: docIdVideo);
-                },
-              ),
-            ],
-          ),
-          displayImageProduct(appController,
-              context: context, onTap: onDisplayImageProduct ?? () {}),
-          videoModel.urlImageLive!.isEmpty
-              ? const SizedBox()
-              : InkWell(
-                  onTap: onTapImageLive,
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 12),
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    width: 110,
-                    height: 170,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        WidgetImageNetwork(
-                          urlImage: videoModel.urlImageLive!,
-                          size: 100,
-                          boxFit: BoxFit.cover,
-                        ),
-                        WidgetText(
-                          data: AppService().checkTimeLive(
-                                  startLive: videoModel.startLive!)
-                              ? 'Live สดขณะนี้'
-                              : 'Live สิ้นสุดแล้ว',
-                          textStyle:
-                              AppConstant().bodyStyle(color: Colors.black),
-                        ),
-                      ],
-                    ),
-                    decoration: const BoxDecoration(color: ColorPlate.white),
-                  ),
-                ),
-          Container(
-            width: SysSize.avatar,
-            height: SysSize.avatar,
-            margin: const EdgeInsets.only(top: 10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(SysSize.avatar / 2.0),
-              // color: Colors.black.withOpacity(0.8),
+              ],
             ),
-          )
-        ],
+            displayImageProduct(appController,
+                context: context, onTap: onDisplayImageProduct ?? () {}),
+            videoModel.urlImageLive!.isEmpty
+                ? const SizedBox()
+                : InkWell(
+                    onTap: onTapImageLive,
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      width: 110,
+                      height: 170,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          WidgetImageNetwork(
+                            urlImage: videoModel.urlImageLive!,
+                            size: 100,
+                            boxFit: BoxFit.cover,
+                          ),
+                          WidgetText(
+                            data: AppService().checkTimeLive(
+                                    startLive: videoModel.startLive!)
+                                ? 'Live สดขณะนี้'
+                                : 'Live สิ้นสุดแล้ว',
+                            textStyle:
+                                AppConstant().bodyStyle(color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      decoration: const BoxDecoration(color: ColorPlate.white),
+                    ),
+                  ),
+            Container(
+              width: SysSize.avatar,
+              height: SysSize.avatar,
+              margin: const EdgeInsets.only(top: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(SysSize.avatar / 2.0),
+                // color: Colors.black.withOpacity(0.8),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

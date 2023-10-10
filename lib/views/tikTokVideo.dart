@@ -34,7 +34,7 @@ class TikTokVideoPage extends StatelessWidget {
     this.bottomPadding = 16,
     this.rightButtonColumn,
     this.userInfoWidget,
-     this.commentButton,
+    this.commentButton,
     this.hidePauseIcon = false,
     this.onAddFavorite,
     this.onSingleTap,
@@ -46,7 +46,8 @@ class TikTokVideoPage extends StatelessWidget {
     Widget userInfo = userInfoWidget ??
         VideoUserInfo(
           bottomPadding: bottomPadding,
-          tapProfileFunction: () {},commentButton: commentButton,
+          tapProfileFunction: () {},
+          reviewWidget: commentButton,
         );
 
     Widget videoContainer = Stack(
@@ -152,13 +153,13 @@ class VideoLoadingPlaceHolder extends StatelessWidget {
 class VideoUserInfo extends StatelessWidget {
   final String? desc;
   final VideoModel? videoModel;
-  final Widget? commentButton;
+  final Widget? reviewWidget;
 
   const VideoUserInfo({
     Key? key,
     this.desc,
     this.videoModel,
-     this.commentButton,
+    this.reviewWidget,
     required this.bottomPadding,
     required this.tapProfileFunction,
   }) : super(key: key);
@@ -170,15 +171,15 @@ class VideoUserInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-        left: 12,
-        bottom: bottomPadding,
+        left: 12,right: 12,
+        // bottom: bottomPadding,
       ),
-      margin: const EdgeInsets.only(right: 80),
+      // margin: const EdgeInsets.only(right: 80),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          commentButton ?? WidgetText(data: 'data'),
+          reviewWidget ?? const SizedBox(),
           Container(height: 6),
           ExpandableText(
             videoModel!.detail ?? '',

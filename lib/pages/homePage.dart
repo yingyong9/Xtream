@@ -12,9 +12,11 @@ import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
 import 'package:xstream/pages/display_profile_tap_icon.dart';
 import 'package:xstream/pages/list_live.dart';
+import 'package:xstream/pages/list_review.dart';
 import 'package:xstream/pages/searchPage.dart';
 import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/style/physics.dart';
+import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/utility/app_snackbar.dart';
@@ -351,6 +353,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                             : appController.videoModels.last,
                         docIdVideo: appController.docIdVideos[i],
                         indexVideo: i,
+                        bottomPadding: 100,
                       );
 
                       // video
@@ -393,7 +396,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                               videoModel: appController.videoModels[i],
                             ));
                           },
-                          commentButton: displayReview(index: i),
+                          reviewWidget: displayReview(index: i),
                         ),
                         onSingleTap: () async {
                           if (player.controller.value.isPlaying) {
@@ -447,12 +450,28 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Widget displayReview({required int index}) {
     return appController.videoModels[index].mapReview!.isEmpty
         ? const SizedBox()
-        : Row(crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            WidgetImageNetwork(urlImage: appController.videoModels[index].mapReview!['urlImageReview'], size: 100,),
-            WidgetText(data: appController.videoModels[index].mapReview!['nameShop']),
-          ],
-        );
+        : Container(
+            color: ColorPlate.back1.withOpacity(0.75),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                WidgetImageNetwork(
+                  urlImage: appController
+                      .videoModels[index].mapReview!['urlImageReview'],
+                  size: 90,
+                  tapFunc: () {
+                    Get.to(ListReview(videoModel: appController.videoModels[index],));
+                  },
+                ),
+                SizedBox(
+                  width: 200,
+                  child: WidgetText(
+                      data: appController
+                          .videoModels[index].mapReview!['nameShop']),
+                ),
+              ],
+            ),
+          );
   }
 
   // Widget commentButton() {
