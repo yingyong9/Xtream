@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:xstream/bodys/body_food.dart';
+import 'package:xstream/bodys/body_resourse.dart';
+import 'package:xstream/bodys/body_travel.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
@@ -34,6 +37,19 @@ class _ReviewPageState extends State<ReviewPage> {
     'เครื่องใช้ไฟฟ้า',
     'รถยนต์',
     'สัตร์เลียง',
+  ];
+
+  var bodys = <Widget>[
+    const BodyFood(),
+    const BodyResourse(),
+    const BodyTravel(),
+    WidgetText(data: 'data'),
+    WidgetText(data: 'data'),
+    WidgetText(data: 'data'),
+    WidgetText(data: 'data'),
+    WidgetText(data: 'data'),
+    WidgetText(data: 'data'),
+    WidgetText(data: 'data'),
   ];
 
   @override
@@ -166,7 +182,8 @@ class _ReviewPageState extends State<ReviewPage> {
                     itemBuilder: (context, index) => InkWell(
                       onTap: () {
                         appController.indexCategory.value = index;
-                        print('You tab indexCategory ---> ${appController.indexCategory}');
+                        print(
+                            'You tab indexCategory ---> ${appController.indexCategory}');
                       },
                       child: SizedBox(
                         width: 120,
@@ -174,23 +191,23 @@ class _ReviewPageState extends State<ReviewPage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             WidgetText(data: titles[index]),
-                            Obx(
-                               () {
-                                return AnimatedContainer(
-                                  duration: const Duration(milliseconds: 300),
-                                  height: 4,
-                                  color: appController.indexCategory.value == index
-                                      ? Colors.blue
-                                      : ColorPlate.back1,
-                                );
-                              }
-                            )
+                            Obx(() {
+                              return AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
+                                height: 4,
+                                color:
+                                    appController.indexCategory.value == index
+                                        ? Colors.blue
+                                        : ColorPlate.back1,
+                              );
+                            })
                           ],
                         ),
                       ),
                     ),
                   ),
-                )
+                ),
+                bodys[appController.indexCategory.value],
 
                 // DefaultTabController(
                 //   length: titles.length,
