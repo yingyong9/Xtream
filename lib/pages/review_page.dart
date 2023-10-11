@@ -78,24 +78,7 @@ class _ReviewPageState extends State<ReviewPage> {
                     appController.xFiles.isEmpty
                         ? const SizedBox()
                         : WidgetText(data: 'Have image'),
-                    InkWell(
-                      onTap: () {
-                        AppService().takeMultiPhoto();
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 16),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white),
-                        ),
-                        width: 120,
-                        height: 120,
-                        child: const Icon(
-                          Icons.add_a_photo_outlined,
-                          size: 36,
-                        ),
-                      ),
-                    ),
+                    inkwellWidget(),
                   ],
                 ),
                 WidgetFormLine(
@@ -108,5 +91,26 @@ class _ReviewPageState extends State<ReviewPage> {
         );
       }),
     );
+  }
+
+  InkWell inkwellWidget() {
+    return InkWell(
+                    onTap: () {
+                      AppService().takeMultiPhoto();
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 16),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white),
+                      ),
+                      width: 120,
+                      height: 120,
+                      child: const Icon(
+                        Icons.add_a_photo_outlined,
+                        size: 36,
+                      ),
+                    ),
+                  );
   }
 }
