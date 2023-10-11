@@ -35,6 +35,7 @@ import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_snackbar.dart';
+import 'package:xstream/views/widget_image_file.dart';
 
 class AppService {
   AppController appController = Get.put(AppController());
@@ -796,6 +797,11 @@ class AppService {
     )
         .then((value) {
       appController.xFiles.addAll(value);
+      
+      for (var element in value) {
+        appController.imageNetworkWidgets
+          .add(WidgetImageFile(fileImage: File(element.path)));
+      }
     });
   }
 }
