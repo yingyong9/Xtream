@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:xstream/models/amphure_model.dart';
@@ -53,6 +54,8 @@ class AppController extends GetxController {
   RxList<double> screenHeights = <double>[].obs;
   RxBool displayConfirmButtom = false.obs;
   RxMap mapReview = {}.obs;
-
   RxList<XFile> xFiles = <XFile>[].obs;
+  RxList<Widget> imageNetworkWidgets = <Widget>[].obs;
+
+  RxInt indexCategory = 0.obs;
 }
