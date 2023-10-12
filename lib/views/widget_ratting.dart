@@ -10,10 +10,14 @@ class WidgetRatingStar extends StatelessWidget {
     Key? key,
     required this.title,
     this.sizeIcon,
+    this.map,
+    required this.ratingUpdateFunc,
   }) : super(key: key);
 
   final String title;
   final double? sizeIcon;
+  final Map<String, dynamic>? map;
+  final Function(double) ratingUpdateFunc;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +34,7 @@ class WidgetRatingStar extends StatelessWidget {
         Expanded(
           flex: 3,
           child: RatingBar.builder(
-            initialRating: 3,
+            initialRating: map?[title] ?? 0.0,
             minRating: 1,
             direction: Axis.horizontal,
             itemCount: 5,
@@ -39,9 +43,7 @@ class WidgetRatingStar extends StatelessWidget {
               Icons.star,
               color: Colors.amber,
             ),
-            onRatingUpdate: (value) {
-              print('onRatingUpdaet ---> $value');
-            },
+            onRatingUpdate: ratingUpdateFunc,
           ),
         ),
       ],

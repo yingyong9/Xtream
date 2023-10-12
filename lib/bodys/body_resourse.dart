@@ -9,11 +9,11 @@ class BodyResourse extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        WidgetRatingStar(title: 'โดยรวม', sizeIcon: 30,),
-        WidgetRatingStar(title: 'ที่ตั่ง'),
-        WidgetRatingStar(title: 'บริการ'),
-        WidgetRatingStar(title: 'สิ่งอำนวยความสะดวก'),
-        WidgetRatingStar(title: 'สิ่งแวดล้อม'),
+        // WidgetRatingStar(title: 'โดยรวม', sizeIcon: 30,),
+        // WidgetRatingStar(title: 'ที่ตั่ง'),
+        // WidgetRatingStar(title: 'บริการ'),
+        // WidgetRatingStar(title: 'สิ่งอำนวยความสะดวก'),
+        // WidgetRatingStar(title: 'สิ่งแวดล้อม'),
       ],
     );;
   }

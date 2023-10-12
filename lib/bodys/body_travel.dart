@@ -9,12 +9,12 @@ class BodyTravel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        WidgetRatingStar(title: 'โดยรวม', sizeIcon: 30,),
-        WidgetRatingStar(title: 'บริการ'),
-        WidgetRatingStar(title: 'ความคุ้มค่า'),
-        WidgetRatingStar(title: 'ไกด์'),
-        WidgetRatingStar(title: 'อาหาร'),
-        WidgetRatingStar(title: 'ที่พัก'),
+        // WidgetRatingStar(title: 'โดยรวม', sizeIcon: 30,),
+        // WidgetRatingStar(title: 'บริการ'),
+        // WidgetRatingStar(title: 'ความคุ้มค่า'),
+        // WidgetRatingStar(title: 'ไกด์'),
+        // WidgetRatingStar(title: 'อาหาร'),
+        // WidgetRatingStar(title: 'ที่พัก'),
       ],
     );
   }
