@@ -10,8 +10,6 @@ import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/utility/app_snackbar.dart';
 import 'package:xstream/views/widget_back_button.dart';
 import 'package:xstream/views/widget_form_line.dart';
-import 'package:xstream/views/widget_form_multiline.dart';
-import 'package:xstream/views/widget_image_file.dart';
 import 'package:xstream/views/widget_text.dart';
 import 'package:xstream/views/widget_text_button.dart';
 
@@ -28,28 +26,21 @@ class _ReviewPageState extends State<ReviewPage> {
 
   var titles = <String>[
     'อาหาร',
+    'ท่องเทียว/ทัวร์',
     'ที่พัก',
-    'ท่องเทียว',
-    'ภาพยนต์',
-    'เพลง',
-    'กีฬา',
-    'แฟชั่น',
-    'เครื่องใช้ไฟฟ้า',
-    'รถยนต์',
-    'สัตร์เลียง',
+    // 'ภาพยนต์',
+    // 'เพลง',
+    // 'กีฬา',
+    // 'แฟชั่น',
+    // 'เครื่องใช้ไฟฟ้า',
+    // 'รถยนต์',
+    // 'สัตร์เลียง',
   ];
 
   var bodys = <Widget>[
     const BodyFood(),
-    const BodyResourse(),
     const BodyTravel(),
-    WidgetText(data: 'data'),
-    WidgetText(data: 'data'),
-    WidgetText(data: 'data'),
-    WidgetText(data: 'data'),
-    WidgetText(data: 'data'),
-    WidgetText(data: 'data'),
-    WidgetText(data: 'data'),
+    const BodyResourse(),
   ];
 
   @override
