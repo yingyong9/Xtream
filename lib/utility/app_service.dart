@@ -13,6 +13,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ftpconnect/ftpconnect.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -34,8 +35,11 @@ import 'package:xstream/pages/check_video.dart';
 import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
+import 'package:xstream/utility/app_dialog.dart';
 import 'package:xstream/utility/app_snackbar.dart';
 import 'package:xstream/views/widget_image_file.dart';
+import 'package:xstream/views/widget_text.dart';
+import 'package:xstream/views/widget_text_button.dart';
 
 class AppService {
   AppController appController = Get.put(AppController());
@@ -797,11 +801,68 @@ class AppService {
     )
         .then((value) {
       appController.xFiles.addAll(value);
-      
+
       for (var element in value) {
         appController.imageNetworkWidgets
-          .add(WidgetImageFile(fileImage: File(element.path)));
+            .add(WidgetImageFile(fileImage: File(element.path)));
       }
     });
+  }
+
+  Future<void> processFindPosition() async {
+    bool locationEnable = await Geolocator.isLocationServiceEnabled();
+    LocationPermission locationPermission;
+
+    if (locationEnable) {
+      //Open Location Service
+
+      locationPermission = await Geolocator.checkPermission();
+
+      if (locationPermission == LocationPermission.deniedForever) {
+        //DeniedForever
+        dialogOpenPermission();
+      } else {
+        if (locationPermission == LocationPermission.denied) {
+          //Denied
+          locationPermission = await Geolocator.requestPermission();
+
+          if ((locationPermission != LocationPermission.always) &&
+              (locationPermission != LocationPermission.whileInUse)) {
+            dialogOpenPermission();
+          } else {
+            Position position = await Geolocator.getCurrentPosition();
+            appController.positions.add(position);
+          }
+        } else {
+          Position position = await Geolocator.getCurrentPosition();
+          appController.positions.add(position);
+        }
+      }
+    } else {
+      //Off Location Service
+      AppDialog().normalDialog(
+          title: const WidgetText(data: 'คุณปิด Location Service'),
+          content: const WidgetText(data: 'กรุณาเปิด Location Service'),
+          firstAction: WidgetTextButton(
+            label: 'Open Service',
+            pressFunc: () async {
+              await Geolocator.openLocationSettings();
+              exit(0);
+            },
+          ));
+    }
+  }
+
+  Future<void> dialogOpenPermission() async {
+    AppDialog().normalDialog(
+        title: const WidgetText(data: 'Location Permission Off'),
+        content: const WidgetText(data: 'Please Open Permission'),
+        firstAction: WidgetTextButton(
+          label: 'Open Permission',
+          pressFunc: () async {
+            await Geolocator.openAppSettings();
+            exit(0);
+          },
+        ));
   }
 }

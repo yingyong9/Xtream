@@ -120,7 +120,7 @@ class AppDialog {
                 },
               ), secondAction ?? const SizedBox(),
         ],
-      ),
+      ),barrierDismissible: false
     );
   }
 }
