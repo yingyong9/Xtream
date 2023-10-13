@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:xstream/pages/add_option_product.dart';
+import 'package:xstream/pages/find_foodtravelhotel.dart';
 import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/pages/manage_product.dart';
 import 'package:xstream/pages/review_page.dart';
@@ -147,16 +148,23 @@ class _DetailPostState extends State<DetailPost> {
                     WidgetTextButton(
                       label: 'Review',
                       pressFunc: () {
-                        Get.to(const ReviewPage())!.then((value) {
-                          Map<String, dynamic> map = value;
 
-                          if (appController.files.isNotEmpty) {
-                            appController.files.clear();
-                          }
+                        Get.to(const FindFoodTravelHotel());
 
-                          print('##9oct map ที่ได้มาจาก review page -----> $map');
-                          insertVideoOnly(mapReview: map);
-                        });
+
+
+
+                        // Get.to(const ReviewPage())!.then((value) {
+                        //   Map<String, dynamic> map = value;
+                        //   if (appController.files.isNotEmpty) {
+                        //     appController.files.clear();
+                        //   }
+
+                        //   insertVideoOnly(mapReview: map);
+                        // });
+
+
+
                       },
                     ),
                   ],
