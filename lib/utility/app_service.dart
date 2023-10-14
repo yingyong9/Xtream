@@ -25,6 +25,7 @@ import 'package:xstream/models/chat_comment_model.dart';
 import 'package:xstream/models/comment_model.dart';
 import 'package:xstream/models/districe_model.dart';
 import 'package:xstream/models/invoid_model.dart';
+import 'package:xstream/models/landmark_model.dart';
 import 'package:xstream/models/order_model.dart';
 import 'package:xstream/models/otp_require_thaibulk.dart';
 import 'package:xstream/models/province_model.dart';
@@ -864,5 +865,14 @@ class AppService {
             exit(0);
           },
         ));
+  }
+
+  Future<void> readLandMark() async {
+    FirebaseFirestore.instance.collection('landmark').get().then((value) {
+      for (var element in value.docs) {
+        LandMarkModel landMarkModel = LandMarkModel.fromMap(element.data());
+        
+      }
+    });
   }
 }

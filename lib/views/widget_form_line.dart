@@ -13,6 +13,7 @@ class WidgetFormLine extends StatelessWidget {
     this.prefixWidget,
     this.suffixWidget,
     this.changeFunc,
+    this.validateFunc,
   }) : super(key: key);
 
   final TextEditingController? textEditingController;
@@ -22,10 +23,11 @@ class WidgetFormLine extends StatelessWidget {
   final Widget? prefixWidget;
   final Widget? suffixWidget;
   final Function(String)? changeFunc;
+  final String? Function(String?)? validateFunc;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return TextFormField(validator: validateFunc,
       onChanged: changeFunc,
       keyboardType: textInputType ?? TextInputType.text,
       decoration: InputDecoration(suffixIcon: suffixWidget,
