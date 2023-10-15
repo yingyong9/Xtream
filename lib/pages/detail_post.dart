@@ -162,7 +162,7 @@ class _DetailPostState extends State<DetailPost> {
                                       gfButtonType: GFButtonType.outline,
                                       iconData: Icons.food_bank,
                                       pressFunc: () {
-                                         Get.back();
+                                        Get.back();
                                         routeToReviewPage(indexReviewCat: 0);
                                       },
                                     ),
@@ -176,7 +176,7 @@ class _DetailPostState extends State<DetailPost> {
                                       gfButtonType: GFButtonType.outline,
                                       iconData: Icons.travel_explore,
                                       pressFunc: () {
-                                         Get.back();
+                                        Get.back();
                                         routeToReviewPage(indexReviewCat: 1);
                                       },
                                     ),
@@ -276,13 +276,14 @@ class _DetailPostState extends State<DetailPost> {
   }
 
   void routeToReviewPage({required int indexReviewCat}) {
-    Get.to( ReviewPage(indexReviewCat: indexReviewCat,))!.then((value) {
+    Get.to(ReviewPage(
+      indexReviewCat: indexReviewCat,
+    ))!
+        .then((value) {
       Map<String, dynamic> map = value;
-      if (appController.files.isNotEmpty) {
-        appController.files.clear();
-      }
+      print('### map ที่ได้จาก reviewPage ----> $map');
 
-      insertVideoOnly(mapReview: map);
+      // insertVideoOnly(mapReview: map);
     });
   }
 

@@ -22,6 +22,10 @@ class VideoModel {
   final String? urlImageLive;
   final Timestamp? startLive;
   final String? liveTitle;
+  final String? headReview;
+  final String? review;
+  final int? rating;
+  final List<String>? urlImageReviews;
   final Map<String, dynamic>? mapReview;
 
   VideoModel({
@@ -43,6 +47,10 @@ class VideoModel {
     this.urlImageLive,
     this.startLive,
     this.liveTitle,
+    this.headReview,
+    this.review,
+    this.rating,
+    this.urlImageReviews,
     this.mapReview,
   });
 
@@ -66,6 +74,10 @@ class VideoModel {
       'urlImageLive': urlImageLive,
       'startLive': startLive,
       'liveTitle': liveTitle,
+      'headReview': headReview,
+      'review': review,
+      'rating': rating,
+      'urlImageReviews': urlImageReviews,
       'mapReview': mapReview,
     };
   }
@@ -90,7 +102,11 @@ class VideoModel {
       urlImageLive: map['urlImageLive'] ?? '',
       startLive: map['startLive'] ?? Timestamp(0, 0),
       liveTitle: map['liveTitle'] ?? '',
-      mapReview:  Map<String, dynamic>.from(map['mapReview'] ?? {}),
+      headReview: (map['headReview'] ?? '') as String,
+      review: (map['review'] ?? '') as String,
+      rating: (map['rating'] ?? 0) as int,
+      urlImageReviews: List<String>.from(map['urlImageReviews'] ?? []),
+      mapReview: Map<String, dynamic>.from(map['mapReview'] ?? {}),
     );
   }
 
