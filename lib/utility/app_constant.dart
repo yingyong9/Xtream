@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:xstream/style/style.dart';
 
 class AppConstant {
+  static List<String> reviewCats = <String>[
+    'อาหาร',
+    'ท่องเทียว/ทัวร์',
+    'ที่พัก',
+  ];
+
   static String host = 'stream115.otaro.co.th';
   static String user = 'adminftp';
   static String pass = 'c@WS83m4&C3j';

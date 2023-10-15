@@ -1,20 +1,30 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'package:xstream/bodys/body_food.dart';
 import 'package:xstream/bodys/body_resourse.dart';
 import 'package:xstream/bodys/body_travel.dart';
 import 'package:xstream/style/style.dart';
+import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/utility/app_snackbar.dart';
 import 'package:xstream/views/widget_back_button.dart';
+import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_form_line.dart';
+import 'package:xstream/views/widget_ratting.dart';
 import 'package:xstream/views/widget_text.dart';
 import 'package:xstream/views/widget_text_button.dart';
 
 class ReviewPage extends StatefulWidget {
-  const ReviewPage({super.key});
+  const ReviewPage({
+    Key? key,
+    required this.indexReviewCat,
+  }) : super(key: key);
+
+  final int indexReviewCat;
 
   @override
   State<ReviewPage> createState() => _ReviewPageState();
@@ -28,13 +38,6 @@ class _ReviewPageState extends State<ReviewPage> {
     'อาหาร',
     'ท่องเทียว/ทัวร์',
     'ที่พัก',
-    // 'ภาพยนต์',
-    // 'เพลง',
-    // 'กีฬา',
-    // 'แฟชั่น',
-    // 'เครื่องใช้ไฟฟ้า',
-    // 'รถยนต์',
-    // 'สัตร์เลียง',
   ];
 
   var bodys = <Widget>[
@@ -62,56 +65,8 @@ class _ReviewPageState extends State<ReviewPage> {
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    WidgetBackButton(
-                      pressFunc: () {
-                        if (appController.files.isNotEmpty) {
-                          appController.files.clear();
-                          appController.nameFiles.clear();
-                        }
-                        Get.back();
-                      },
-                    ),
-                    WidgetTextButton(
-                      label: 'บันทึก',
-                      pressFunc: () async {
-                        if (appController.files.isEmpty) {
-                          AppSnackBar(
-                                  title: 'Image ?', message: 'กรุณาเลือกภาพ')
-                              .errorSnackBar();
-                        } else if (textEditingController.text.isEmpty) {
-                          AppSnackBar(
-                                  title: 'ซื่อร้านค้า ?',
-                                  message: 'กรุณากรอก ซื่อร้านค้า')
-                              .errorSnackBar();
-                        } else {
-                          AppService()
-                              .processUploadFileImageReview()
-                              .then((value) {
-                            Map<String, dynamic> map = {};
-                            map['urlImageReview'] = value;
-                            map['nameShop'] = textEditingController.text;
-
-                            print('map ---> $map');
-
-                            // appController.mapReview.value = map;
-                            Get.back(result: map);
-                          });
-                        }
-                      },
-                    )
-                  ],
-                ),
-                GridView.count(
-                  physics: const ScrollPhysics(),
-                  shrinkWrap: true,
-                  crossAxisCount: 3,
-                  children: appController.imageNetworkWidgets,
-                  mainAxisSpacing: 4,
-                  crossAxisSpacing: 4,
-                ),
+                head(),
+                imageGridView(),
                 const SizedBox(
                   height: 16,
                 ),
@@ -125,97 +80,88 @@ class _ReviewPageState extends State<ReviewPage> {
                 TextFormField(
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
-                  decoration: InputDecoration(hintText: 'รายละเอียด'),
+                  decoration:
+                      const InputDecoration(hintText: 'เขียนรีวิวสถานที่นี้'),
                 ),
                 const SizedBox(
-                  height: 16,
+                  height: 32,
                 ),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.pin_drop),
-                        WidgetText(data: 'Location')
-                      ],
-                    ),
-                    Icon(Icons.arrow_forward_ios)
-                  ],
+                WidgetRatingStar(
+                  title: 'ให้คะแนนสถานที่นี้',
+                  sizeIcon: 30,
+                  map: appController.foodSum,
+                  ratingUpdateFunc: (double rating) {
+                    appController.foodSum['โดยรวม'] = rating;
+                  },
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.home),
-                        WidgetText(data: 'แทรคร้านค้า')
-                      ],
-                    ),
-                    Icon(Icons.arrow_forward_ios)
-                  ],
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-
-                SizedBox(
-                  height: 50,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    physics: const ClampingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: titles.length,
-                    itemBuilder: (context, index) => InkWell(
-                      onTap: () {
-                        appController.indexCategory.value = index;
-                        print(
-                            'You tab indexCategory ---> ${appController.indexCategory}');
-                      },
-                      child: SizedBox(
-                        width: 120,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            WidgetText(data: titles[index]),
-                            Obx(() {
-                              return AnimatedContainer(
-                                duration: const Duration(milliseconds: 300),
-                                height: 4,
-                                color:
-                                    appController.indexCategory.value == index
-                                        ? Colors.blue
-                                        : ColorPlate.back1,
-                              );
-                            })
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                bodys[appController.indexCategory.value],
-
-                // DefaultTabController(
-                //   length: titles.length,
-                //   initialIndex: 0,
-                //   child: Scaffold(
-                //     appBar: TabBar(
-                //       tabs: titles.map((e) => WidgetText(data: e)).toList(),
-                //       isScrollable: true,
-                //     ),
-                //     body: WidgetText(data: 'data'),
-                //   ),
-                // ),
+                const SizedBox(height: 64,)
               ],
             ),
           ),
         );
       }),
+      bottomSheet: Container(decoration: const BoxDecoration(color: ColorPlate.back1),
+        child: WidgetButton(
+          label: 'โพสต์',
+          pressFunc: () {},fullWidthButton: true,color: ColorPlate.red,
+        ),
+      ),
+    );
+  }
+
+  GridView imageGridView() {
+    return GridView.count(
+      physics: const ScrollPhysics(),
+      shrinkWrap: true,
+      crossAxisCount: 3,
+      children: appController.imageNetworkWidgets,
+      mainAxisSpacing: 4,
+      crossAxisSpacing: 4,
+    );
+  }
+
+  Row head() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        WidgetBackButton(
+          pressFunc: () {
+            if (appController.files.isNotEmpty) {
+              appController.files.clear();
+              appController.nameFiles.clear();
+            }
+            Get.back();
+          },
+        ),
+        WidgetText(
+          data: AppConstant.reviewCats[widget.indexReviewCat],
+          textStyle: AppConstant().bodyStyle(fontSize: 20),
+        ),
+        WidgetTextButton(
+          label: 'บันทึก',
+          pressFunc: () async {
+            if (appController.files.isEmpty) {
+              AppSnackBar(title: 'Image ?', message: 'กรุณาเลือกภาพ')
+                  .errorSnackBar();
+            } else if (textEditingController.text.isEmpty) {
+              AppSnackBar(
+                      title: 'ซื่อร้านค้า ?', message: 'กรุณากรอก ซื่อร้านค้า')
+                  .errorSnackBar();
+            } else {
+              AppService().processUploadFileImageReview().then((value) {
+                Map<String, dynamic> map = {};
+                map['urlImageReview'] = value;
+                map['nameShop'] = textEditingController.text;
+
+                print('map ---> $map');
+
+                // appController.mapReview.value = map;
+                Get.back(result: map);
+              });
+            }
+          },
+        )
+      ],
     );
   }
 
