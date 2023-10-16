@@ -22,6 +22,7 @@ class VideoModel {
   final String? urlImageLive;
   final Timestamp? startLive;
   final String? liveTitle;
+
   final Map<String, dynamic>? mapReview;
 
   VideoModel({
@@ -90,7 +91,7 @@ class VideoModel {
       urlImageLive: map['urlImageLive'] ?? '',
       startLive: map['startLive'] ?? Timestamp(0, 0),
       liveTitle: map['liveTitle'] ?? '',
-      mapReview:  Map<String, dynamic>.from(map['mapReview'] ?? {}),
+      mapReview: Map<String, dynamic>.from(map['mapReview'] ?? {}),
     );
   }
 

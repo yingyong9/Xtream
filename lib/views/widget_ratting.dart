@@ -21,30 +21,25 @@ class WidgetRatingStar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        Expanded(
-          flex: 2,
-          child: WidgetText(
-            data: title,
-            textStyle: AppConstant()
-                .bodyStyle(fontSize: 16, fontWeight: FontWeight.w500),
-          ),
+        WidgetText(
+          data: title,
+          textStyle: AppConstant()
+              .bodyStyle(fontSize: 24, fontWeight: FontWeight.w500),
         ),
-        Expanded(
-          flex: 3,
-          child: RatingBar.builder(
-            initialRating: map?[title] ?? 0.0,
-            minRating: 1,
-            direction: Axis.horizontal,
-            itemCount: 5,
-            itemSize: sizeIcon ?? 20,
-            itemBuilder: (context, index) => const Icon(
-              Icons.star,
-              color: Colors.amber,
-            ),
-            onRatingUpdate: ratingUpdateFunc,
+        const SizedBox(height: 16,),
+        RatingBar.builder(
+          initialRating: map?[title] ?? 0.0,
+          minRating: 1,
+          direction: Axis.horizontal,
+          itemCount: 5,
+          itemSize: sizeIcon ?? 20,
+          itemBuilder: (context, index) => const Icon(
+            Icons.star,
+            color: Colors.amber,
           ),
+          onRatingUpdate: ratingUpdateFunc,
         ),
       ],
     );

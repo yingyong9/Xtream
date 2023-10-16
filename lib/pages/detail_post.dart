@@ -5,8 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:xstream/pages/add_option_product.dart';
+import 'package:xstream/pages/find_foodtravelhotel.dart';
 import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/pages/manage_product.dart';
 import 'package:xstream/pages/review_page.dart';
@@ -21,6 +23,7 @@ import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_form.dart';
 import 'package:xstream/views/widget_form_multiline.dart';
 import 'package:xstream/views/widget_icon_button.dart';
+import 'package:xstream/views/widget_icon_button_gf.dart';
 import 'package:xstream/views/widget_image_file.dart';
 import 'package:xstream/views/widget_text.dart';
 import 'package:xstream/views/widget_text_button.dart';
@@ -147,16 +150,55 @@ class _DetailPostState extends State<DetailPost> {
                     WidgetTextButton(
                       label: 'Review',
                       pressFunc: () {
-                        Get.to(const ReviewPage())!.then((value) {
-                          Map<String, dynamic> map = value;
-
-                          if (appController.files.isNotEmpty) {
-                            appController.files.clear();
-                          }
-
-                          print('##9oct map ที่ได้มาจาก review page -----> $map');
-                          insertVideoOnly(mapReview: map);
-                        });
+                        AppDialog().normalDialog(
+                            title: const WidgetText(data: 'เลือกประเภทรีวิว'),
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    WidgetIconButtonGF(
+                                      gfButtonType: GFButtonType.outline,
+                                      iconData: Icons.food_bank,
+                                      pressFunc: () {
+                                        Get.back();
+                                        routeToReviewPage(indexReviewCat: 0);
+                                      },
+                                    ),
+                                    const WidgetText(data: 'Food'),
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    WidgetIconButtonGF(
+                                      gfButtonType: GFButtonType.outline,
+                                      iconData: Icons.travel_explore,
+                                      pressFunc: () {
+                                        Get.back();
+                                        routeToReviewPage(indexReviewCat: 1);
+                                      },
+                                    ),
+                                    const WidgetText(data: 'Travel'),
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    WidgetIconButtonGF(
+                                      gfButtonType: GFButtonType.outline,
+                                      iconData: Icons.hotel,
+                                      pressFunc: () {
+                                        Get.back();
+                                        routeToReviewPage(indexReviewCat: 2);
+                                      },
+                                    ),
+                                    const WidgetText(data: 'Hotel'),
+                                  ],
+                                ),
+                              ],
+                            ));
                       },
                     ),
                   ],
@@ -231,6 +273,18 @@ class _DetailPostState extends State<DetailPost> {
         ),
       ),
     );
+  }
+
+  void routeToReviewPage({required int indexReviewCat}) {
+    Get.to(ReviewPage(
+      indexReviewCat: indexReviewCat,
+    ))!
+        .then((value) {
+      Map<String, dynamic> map = value;
+      print('### map ที่ได้จาก reviewPage ----> $map');
+
+      insertVideoOnly(mapReview: map);
+    });
   }
 
   Future<void> insertVideoOnly({Map<String, dynamic>? mapReview}) async {

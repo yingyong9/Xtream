@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:restart_app/restart_app.dart';
@@ -13,6 +14,7 @@ import 'package:xstream/models/video_model.dart';
 import 'package:xstream/pages/display_profile_tap_icon.dart';
 import 'package:xstream/pages/list_live.dart';
 import 'package:xstream/pages/list_review.dart';
+import 'package:xstream/pages/review_detail_page.dart';
 import 'package:xstream/pages/searchPage.dart';
 import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/style/physics.dart';
@@ -162,7 +164,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     //ส่วนของ Bottom Navigator
     Widget tikTokTabBar = TikTokTabBar(
       hasBackground: hasBackground,
-      
       current: tabBarType,
       onTabSwitch: (type) async {
         if (appController.currentUserModels.isEmpty) {
@@ -212,9 +213,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             },
             onLive: () {
               _videoListController.currentPlayer.pause();
-              Get.to(const ListLive())!.then((value) {
-                _videoListController.currentPlayer.play();
-              });
+              // Get.to(const ListLive())!.then((value) {
+              //   _videoListController.currentPlayer.play();
+              // });
             },
           )
         : Container();
@@ -451,26 +452,65 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Widget displayReview({required int index}) {
     return appController.videoModels[index].mapReview!.isEmpty
         ? const SizedBox()
-        : Container(
-            color: ColorPlate.back1.withOpacity(0.75),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                WidgetImageNetwork(
-                  urlImage: appController
-                      .videoModels[index].mapReview!['urlImageReview'],
-                  size: 90,
-                  tapFunc: () {
-                    Get.to(ListReview(videoModel: appController.videoModels[index],));
-                  },
-                ),
-                SizedBox(
-                  width: 200,
-                  child: WidgetText(
-                      data: appController
-                          .videoModels[index].mapReview!['nameShop']),
-                ),
-              ],
+        : InkWell(
+            onTap: () {
+              Get.to(const ReviewDetailPage());
+            },
+            child: Container(
+              color: ColorPlate.back1.withOpacity(0.75),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  WidgetImageNetwork(
+                    urlImage: appController
+                        .videoModels[index].mapReview!['urlImageReviews'][0],
+                    size: 90,
+                    tapFunc: () {
+                      Get.to(ListReview(
+                        videoModel: appController.videoModels[index],
+                      ));
+                    },
+                  ),
+                  SizedBox(
+                    height: 90,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: 200,
+                          child: WidgetText(
+                              data: appController
+                                  .videoModels[index].mapReview!['nameReview']),
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 200,
+                              child: RatingBar.builder(
+                                initialRating: appController
+                                    .videoModels[index].mapReview!['rating'],
+                                itemSize: 24,
+                                itemCount: 5,
+                                itemBuilder: (context, index) => const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                onRatingUpdate: (value) {},
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 200,
+                          child: WidgetText(
+                              data: appController
+                                  .videoModels[index].mapReview!['review']),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
   }

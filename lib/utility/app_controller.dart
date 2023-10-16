@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:xstream/models/amphure_model.dart';
@@ -64,4 +65,10 @@ class AppController extends GetxController {
   RxMap<String, dynamic> foodItem2 = {'สิ่งแวดล้อม': 0.0}.obs;
   RxMap<String, dynamic> foodItem3 = {'บริการ': 0.0}.obs;
   RxMap<String, dynamic> foodItem4 = {'วัตถุดิบ': 0.0}.obs;
+
+  RxList<String?> chooseTypes = <String?>[null].obs;
+
+  RxList<Position> positions = <Position>[].obs;
+
+  RxDouble rating = 0.0.obs;
 }

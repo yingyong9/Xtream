@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 
-
 class WidgetButton extends StatelessWidget {
   const WidgetButton({
     Key? key,
@@ -12,6 +11,7 @@ class WidgetButton extends StatelessWidget {
     this.gfButtonShape,
     this.fullWidthButton,
     this.iconWidget,
+    this.textColor,
   }) : super(key: key);
 
   final String label;
@@ -20,10 +20,12 @@ class WidgetButton extends StatelessWidget {
   final GFButtonShape? gfButtonShape;
   final bool? fullWidthButton;
   final Widget? iconWidget;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
     return GFButton(
+      textColor: textColor,
       onPressed: pressFunc,
       text: label,
       color: color ?? GFColors.PRIMARY,

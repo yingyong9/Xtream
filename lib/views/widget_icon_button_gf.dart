@@ -11,6 +11,7 @@ class WidgetIconButtonGF extends StatelessWidget {
     this.color,
     this.size,
     this.gfButtonType,
+    this.iconWidget,
   }) : super(key: key);
 
   final IconData iconData;
@@ -18,11 +19,12 @@ class WidgetIconButtonGF extends StatelessWidget {
   final Color? color;
   final double? size;
   final GFButtonType? gfButtonType;
+  final Widget? iconWidget;
 
   @override
   Widget build(BuildContext context) {
     return GFIconButton(
-      icon: Icon(iconData),
+      icon: iconWidget ?? Icon(iconData),
       onPressed: pressFunc,
       type: gfButtonType ?? GFButtonType.transparent,
       color: color ?? GFColors.PRIMARY,
