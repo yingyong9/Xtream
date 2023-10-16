@@ -4,6 +4,7 @@ import 'package:tapped/tapped.dart';
 
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
+import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_text.dart';
 
 import 'selectText.dart';
@@ -74,6 +75,19 @@ class _TikTokHeaderState extends State<TikTokHeader> {
               color: Colors.black.withOpacity(0),
               alignment: Alignment.center,
               child: headSwitch,
+            ),
+          ),
+          Expanded(
+            child: Tapped(
+              onTap: widget.onLive,
+              child: Container(
+                color: Colors.black.withOpacity(0),
+                padding: const EdgeInsets.all(4),
+                alignment: Alignment.centerRight,
+                child: Container(
+                  child: WidgetText(data: 'นักสำรวจ'),
+                ),
+              ),
             ),
           ),
           // Expanded(

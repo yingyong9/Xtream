@@ -39,6 +39,7 @@ class _ReviewPageState extends State<ReviewPage> {
     if (appController.imageNetworkWidgets.isNotEmpty) {
       appController.imageNetworkWidgets.clear();
       appController.xFiles.clear();
+      appController.rating.value = 0;
     }
     appController.imageNetworkWidgets.add(inkwellWidget());
   }
@@ -89,7 +90,8 @@ class _ReviewPageState extends State<ReviewPage> {
                     sizeIcon: 30,
                     map: appController.foodSum,
                     ratingUpdateFunc: (double rating) {
-                      appController.foodSum['โดยรวม'] = rating;
+                      // appController.foodSum['โดยรวม'] = rating;
+                      appController.rating.value = rating;
                     },
                   ),
                   const SizedBox(
@@ -105,17 +107,23 @@ class _ReviewPageState extends State<ReviewPage> {
         decoration: const BoxDecoration(color: ColorPlate.back1),
         child: WidgetButton(
           label: 'โพสต์',
-          pressFunc: () {
+          pressFunc: () async {
             if (appController.xFiles.isEmpty) {
               AppSnackBar(title: 'ยังไม่มีรูปภาพ', message: 'กรุณาเพิ่มรูปภาพ')
                   .errorSnackBar();
             } else {
               if (formStateKey.currentState!.validate()) {
+                var urlImageReviews =
+                    await AppService().processUploadMultiFile(path: 'review');
+
+              
+
                 Map<String, dynamic> map = {};
-                map['headReive'] = headReviewController.text;
+                map['nameReview'] = headReviewController.text;
                 map['review'] = reviewController.text;
-                map['rating'] = 5;
-                map['urlImageReviews'] = [];
+                map['type'] = AppConstant.reviewCats[widget.indexReviewCat];
+                map['rating'] = appController.rating.value;
+                map['urlImageReviews'] = urlImageReviews;
 
                 Get.back(result: map);
               }

@@ -283,7 +283,7 @@ class _DetailPostState extends State<DetailPost> {
       Map<String, dynamic> map = value;
       print('### map ที่ได้จาก reviewPage ----> $map');
 
-      // insertVideoOnly(mapReview: map);
+      insertVideoOnly(mapReview: map);
     });
   }
 

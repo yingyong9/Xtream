@@ -187,6 +187,24 @@ class AppService {
     return urlImage;
   }
 
+  Future<List<String>> processUploadMultiFile({required String path}) async {
+    var urlImages = <String>[];
+
+    for (var element in appController.xFiles) {
+      FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+      Reference reference = firebaseStorage
+          .ref()
+          .child('$path/imageReivew${Random().nextInt(1000000)}.jpg');
+      UploadTask uploadTask = reference.putFile(File(element.path));
+      await uploadTask.whenComplete(() async {
+        String urlImage = await reference.getDownloadURL();
+        urlImages.add(urlImage);
+      });
+    }
+
+    return urlImages;
+  }
+
   Future<String?> processUploadFileImageLive({required String path}) async {
     String? urlImage;
 
@@ -871,7 +889,6 @@ class AppService {
     FirebaseFirestore.instance.collection('landmark').get().then((value) {
       for (var element in value.docs) {
         LandMarkModel landMarkModel = LandMarkModel.fromMap(element.data());
-        
       }
     });
   }

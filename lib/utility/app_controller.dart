@@ -69,4 +69,6 @@ class AppController extends GetxController {
   RxList<String?> chooseTypes = <String?>[null].obs;
 
   RxList<Position> positions = <Position>[].obs;
+
+  RxDouble rating = 0.0.obs;
 }
