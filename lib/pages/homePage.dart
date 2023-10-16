@@ -470,6 +470,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       data: appController
                           .videoModels[index].mapReview!['nameShop']),
                 ),
+                
               ],
             ),
           );
