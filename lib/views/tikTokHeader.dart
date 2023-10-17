@@ -11,11 +11,11 @@ import 'selectText.dart';
 
 class TikTokHeader extends StatefulWidget {
   final Function? onSearch;
-  final Function? onLive;
+  final Function? onDiscover;
   const TikTokHeader({
     Key? key,
     this.onSearch,
-    this.onLive,
+    this.onDiscover,
   }) : super(key: key);
 
   @override
@@ -79,7 +79,7 @@ class _TikTokHeaderState extends State<TikTokHeader> {
           ),
           Expanded(
             child: Tapped(
-              onTap: widget.onLive,
+              onTap: widget.onDiscover,
               child: Container(
                 color: Colors.black.withOpacity(0),
                 padding: const EdgeInsets.all(4),
