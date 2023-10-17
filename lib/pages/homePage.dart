@@ -5,17 +5,16 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:video_player/video_player.dart';
 import 'package:xstream/controller/tikTokVideoListController.dart';
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
 import 'package:xstream/pages/display_profile_tap_icon.dart';
-import 'package:xstream/pages/list_live.dart';
 import 'package:xstream/pages/list_review.dart';
 import 'package:xstream/pages/review_detail_page.dart';
 import 'package:xstream/pages/searchPage.dart';
+import 'package:xstream/pages/show_map.dart';
 import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/style/physics.dart';
 import 'package:xstream/style/style.dart';
@@ -30,7 +29,6 @@ import 'package:xstream/views/tikTokScaffold.dart';
 import 'package:xstream/views/tikTokVideo.dart';
 import 'package:xstream/views/tikTokVideoButtonColumn.dart';
 import 'package:xstream/views/tiktokTabBar.dart';
-import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_image_network.dart';
 import 'package:xstream/views/widget_progress.dart';
 import 'package:xstream/views/widget_text.dart';
@@ -211,11 +209,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             onSearch: () {
               tkController.animateToLeft();
             },
-            onLive: () {
+            onDiscover: () {
               _videoListController.currentPlayer.pause();
-              // Get.to(const ListLive())!.then((value) {
-              //   _videoListController.currentPlayer.play();
-              // });
+              Get.to(const ShowMap());
             },
           )
         : Container();
@@ -454,26 +450,34 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         ? const SizedBox()
         : InkWell(
             onTap: () {
-              Get.to(const ReviewDetailPage());
+              Get.to(ReviewDetailPage(
+                videoModel: appController.videoModels[index],
+              ));
             },
             child: Container(
               color: ColorPlate.back1.withOpacity(0.75),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  WidgetImageNetwork(
-                    urlImage: appController
-                        .videoModels[index].mapReview!['urlImageReviews'][0],
-                    size: 90,
-                    tapFunc: () {
-                      Get.to(ListReview(
-                        videoModel: appController.videoModels[index],
-                      ));
-                    },
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: WidgetImageNetwork(
+                      boxFit: BoxFit.cover,
+                      urlImage: appController
+                          .videoModels[index].mapReview!['urlImageReviews'][0],
+                      size: 80,
+                      tapFunc: () {
+                        Get.to(ListReview(
+                          videoModel: appController.videoModels[index],
+                        ));
+                      },
+                    ),
                   ),
-                  SizedBox(
-                    height: 90,
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    height: 80,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
@@ -482,29 +486,55 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                               data: appController
                                   .videoModels[index].mapReview!['nameReview']),
                         ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 200,
-                              child: RatingBar.builder(
-                                initialRating: appController
-                                    .videoModels[index].mapReview!['rating'],
-                                itemSize: 24,
-                                itemCount: 5,
-                                itemBuilder: (context, index) => const Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
-                                onRatingUpdate: (value) {},
+                        // const SizedBox(height: 10,),
+                        SizedBox(
+                          width: 230,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SizedBox(
+                                    width: 110,
+                                    child: RatingBar.builder(
+                                      initialRating: appController
+                                          .videoModels[index]
+                                          .mapReview!['rating'],
+                                      itemSize: 20,
+                                      itemCount: 5,
+                                      itemBuilder: (context, index) =>
+                                          const Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
+                                      onRatingUpdate: (value) {},
+                                    ),
+                                  ),
+                                  WidgetText(
+                                      data: appController.videoModels[index]
+                                          .mapReview!['rating']
+                                          .toString()),
+                                ],
                               ),
-                            ),
-                          ],
+                              const Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.star_border),
+                                  WidgetText(data: '500'),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
+                        // const SizedBox(height:4,),
                         SizedBox(
                           width: 200,
                           child: WidgetText(
-                              data: appController
-                                  .videoModels[index].mapReview!['review']),
+                            data: appController
+                                .videoModels[index].mapReview!['review'],
+                            maxLines: 1,
+                          ),
                         ),
                       ],
                     ),
