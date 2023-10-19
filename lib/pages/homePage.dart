@@ -10,6 +10,7 @@ import 'package:video_player/video_player.dart';
 import 'package:xstream/controller/tikTokVideoListController.dart';
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
+import 'package:xstream/pages/add_phone_shopper.dart';
 import 'package:xstream/pages/display_profile_tap_icon.dart';
 import 'package:xstream/pages/list_review.dart';
 import 'package:xstream/pages/review_detail_page.dart';
@@ -212,6 +213,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             onDiscover: () {
               _videoListController.currentPlayer.pause();
               Get.to(const ShowMap());
+            },
+            onTiker: () {
+              _videoListController.currentPlayer.pause();
+              Get.to(const AddPhoneShopper());
             },
           )
         : Container();
