@@ -57,18 +57,15 @@ class AppController extends GetxController {
   RxMap mapReview = {}.obs;
   RxList<XFile> xFiles = <XFile>[].obs;
   RxList<Widget> imageNetworkWidgets = <Widget>[].obs;
-
   RxInt indexCategory = 0.obs;
-
   RxMap<String, dynamic> foodSum = {'โดยรวม': 0.0}.obs;
   RxMap<String, dynamic> foodItem1 = {'รสชาติ': 0.0}.obs;
   RxMap<String, dynamic> foodItem2 = {'สิ่งแวดล้อม': 0.0}.obs;
   RxMap<String, dynamic> foodItem3 = {'บริการ': 0.0}.obs;
   RxMap<String, dynamic> foodItem4 = {'วัตถุดิบ': 0.0}.obs;
-
   RxList<String?> chooseTypes = <String?>[null].obs;
-
   RxList<Position> positions = <Position>[].obs;
-
   RxDouble rating = 0.0.obs;
+
+  RxList<Widget> ratingStarWidgets = <Widget>[].obs;
 }
