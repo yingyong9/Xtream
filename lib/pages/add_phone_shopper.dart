@@ -58,7 +58,7 @@ class AddPhoneShopper extends StatelessWidget {
                     child: WidgetGfButton(
                       label: 'ยืนยัน OTP',
                       pressFunc: () {
-                         Get.to(const RegisterShop());
+                        //  Get.to(const RegisterShop());
                       },
                     ),
                   ),

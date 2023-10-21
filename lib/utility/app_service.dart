@@ -28,6 +28,7 @@ import 'package:xstream/models/invoid_model.dart';
 import 'package:xstream/models/landmark_model.dart';
 import 'package:xstream/models/order_model.dart';
 import 'package:xstream/models/otp_require_thaibulk.dart';
+import 'package:xstream/models/plate_model.dart';
 import 'package:xstream/models/province_model.dart';
 import 'package:xstream/models/remark_model.dart';
 import 'package:xstream/models/user_model.dart';
@@ -889,6 +890,31 @@ class AppService {
     FirebaseFirestore.instance.collection('landmark').get().then((value) {
       for (var element in value.docs) {
         LandMarkModel landMarkModel = LandMarkModel.fromMap(element.data());
+      }
+    });
+  }
+
+  Future<void> processInsertPlate(
+      {required PlateModel plateModel, required String collectionPlate}) async {
+    FirebaseFirestore.instance
+        .collection(collectionPlate)
+        .doc()
+        .set(plateModel.toMap());
+  }
+
+  Future<void> readPlateModels({required String collrctionPlate}) async {
+    await FirebaseFirestore.instance
+        .collection(collrctionPlate)
+        .get()
+        .then((value) {
+      if (appController.plateModels.isNotEmpty) {
+        appController.plateModels.clear();
+        appController.searchPlateModels.clear();
+      }
+
+      for (var element in value.docs) {
+        PlateModel plateModel = PlateModel.fromMap(element.data());
+        appController.plateModels.add(plateModel);
       }
     });
   }

@@ -11,6 +11,7 @@ import 'package:xstream/models/districe_model.dart';
 import 'package:xstream/models/invoid_model.dart';
 import 'package:xstream/models/option_model.dart';
 import 'package:xstream/models/order_model.dart';
+import 'package:xstream/models/plate_model.dart';
 import 'package:xstream/models/province_model.dart';
 import 'package:xstream/models/remark_model.dart';
 import 'package:xstream/models/user_model.dart';
@@ -68,4 +69,9 @@ class AppController extends GetxController {
   RxDouble rating = 0.0.obs;
 
   RxList<Widget> ratingStarWidgets = <Widget>[].obs;
+
+  RxList<PlateModel> plateModels = <PlateModel>[].obs;
+  RxList<PlateModel> searchPlateModels = <PlateModel>[].obs;
+
+  RxBool displayListPlate = false.obs;
 }
