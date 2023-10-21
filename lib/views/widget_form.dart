@@ -15,6 +15,7 @@ class WidgetForm extends StatelessWidget {
     this.changeFunc,
     this.fillColor,
     this.autofocus,
+    this.validatorFunc,
   }) : super(key: key);
 
   final TextEditingController? textEditingController;
@@ -26,10 +27,11 @@ class WidgetForm extends StatelessWidget {
   final Function(String)? changeFunc;
   final Color? fillColor;
   final bool? autofocus;
+  final String? Function(String?)? validatorFunc;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return TextFormField(validator: validatorFunc,
       autofocus: autofocus ?? false,
       onChanged: changeFunc,
       keyboardType: textInputType ?? TextInputType.text,
