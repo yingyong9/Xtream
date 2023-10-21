@@ -8,7 +8,11 @@ class AppConstant {
     'ที่พัก',
   ];
 
-  static List<String> collectionPlates = <String>['Food','Travel','Hotel',];
+  static List<String> collectionPlates = <String>[
+    'Food',
+    'Travel',
+    'Hotel',
+  ];
 
   static String host = 'stream115.otaro.co.th';
   static String user = 'adminftp';
@@ -36,4 +40,6 @@ class AppConstant {
         fontSize: fontSize ?? SysSize.small,
         color: color ?? ColorPlate.white,
       );
+
+  BoxDecoration borderBox() => BoxDecoration(border: Border.all(color: ColorPlate.gray));
 }

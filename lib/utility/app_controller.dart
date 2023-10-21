@@ -71,6 +71,7 @@ class AppController extends GetxController {
   RxList<Widget> ratingStarWidgets = <Widget>[].obs;
 
   RxList<PlateModel> plateModels = <PlateModel>[].obs;
+  RxList<PlateModel> searchPlateModels = <PlateModel>[].obs;
 
   RxBool displayListPlate = false.obs;
 }

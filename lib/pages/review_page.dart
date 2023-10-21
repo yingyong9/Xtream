@@ -1,8 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xstream/pages/register_shop.dart';
 
+import 'package:xstream/pages/register_shop.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
@@ -40,6 +42,12 @@ class _ReviewPageState extends State<ReviewPage> {
   void initState() {
     super.initState();
 
+    appController.displayListPlate.value = false;
+
+    // if (appController.searchPlateModels.isNotEmpty) {
+    //   appController.searchPlateModels.clear();
+    // }
+
     if (appController.imageNetworkWidgets.isNotEmpty) {
       appController.imageNetworkWidgets.clear();
       appController.xFiles.clear();
@@ -47,8 +55,17 @@ class _ReviewPageState extends State<ReviewPage> {
     }
     appController.imageNetworkWidgets.add(inkwellWidget());
 
-    AppService().readPlateModels(
-        collrctionPlate: AppConstant.collectionPlates[widget.indexReviewCat]);
+    AppService()
+        .readPlateModels(
+            collrctionPlate:
+                AppConstant.collectionPlates[widget.indexReviewCat])
+        .then((value) {
+      print('ขนาดของ plateModels ---> ${appController.plateModels.length}');
+
+      appController.searchPlateModels.addAll(appController.plateModels);
+
+       print('ขนาดของ searchPlateModels ---> ${appController.searchPlateModels.length}');
+    });
   }
 
   @override
@@ -100,11 +117,21 @@ class _ReviewPageState extends State<ReviewPage> {
                             children: [
                               appController.displayListPlate.value
                                   ? Container(
+                                      padding: const EdgeInsets.all(8),
                                       width: 250,
                                       height: 150,
-                                      decoration:
-                                          BoxDecoration(color: Colors.grey),
-                                      child: WidgetText(data: 'ส่วนแสดง list'),
+                                      decoration: AppConstant().borderBox(),
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: const ScrollPhysics(),
+                                        itemCount: appController
+                                            .searchPlateModels.length,
+                                        itemBuilder: (context, index) =>
+                                            WidgetText(
+                                                data: appController
+                                                    .searchPlateModels[index]
+                                                    .name),
+                                      ),
                                     )
                                   : const SizedBox(),
                               WidgetFormLine(
@@ -278,5 +305,23 @@ class _ReviewPageState extends State<ReviewPage> {
         ),
       ),
     );
+  }
+}
+
+class Debouncer {
+  final int milliSecond;
+  Timer? timer;
+  VoidCallback? voidCallback;
+  Debouncer({
+    required this.milliSecond,
+    this.timer,
+    this.voidCallback,
+  });
+
+  run(VoidCallback voidCallback) {
+    if (timer != null) {
+      timer!.cancel();
+    }
+    timer = Timer(Duration(milliseconds: milliSecond), voidCallback);
   }
 }

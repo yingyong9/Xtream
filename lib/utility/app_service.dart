@@ -903,9 +903,13 @@ class AppService {
   }
 
   Future<void> readPlateModels({required String collrctionPlate}) async {
-    FirebaseFirestore.instance.collection(collrctionPlate).get().then((value) {
+    await FirebaseFirestore.instance
+        .collection(collrctionPlate)
+        .get()
+        .then((value) {
       if (appController.plateModels.isNotEmpty) {
         appController.plateModels.clear();
+        appController.searchPlateModels.clear();
       }
 
       for (var element in value.docs) {
