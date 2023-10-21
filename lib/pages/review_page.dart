@@ -38,15 +38,13 @@ class _ReviewPageState extends State<ReviewPage> {
 
   final formStateKey = GlobalKey<FormState>();
 
+  final debouncer = Debouncer(milliSecond: 500);
+
   @override
   void initState() {
     super.initState();
 
     appController.displayListPlate.value = false;
-
-    // if (appController.searchPlateModels.isNotEmpty) {
-    //   appController.searchPlateModels.clear();
-    // }
 
     if (appController.imageNetworkWidgets.isNotEmpty) {
       appController.imageNetworkWidgets.clear();
@@ -60,11 +58,11 @@ class _ReviewPageState extends State<ReviewPage> {
             collrctionPlate:
                 AppConstant.collectionPlates[widget.indexReviewCat])
         .then((value) {
-      print('ขนาดของ plateModels ---> ${appController.plateModels.length}');
+      // print('ขนาดของ plateModels ---> ${appController.plateModels.length}');
 
       appController.searchPlateModels.addAll(appController.plateModels);
 
-       print('ขนาดของ searchPlateModels ---> ${appController.searchPlateModels.length}');
+      //  print('ขนาดของ searchPlateModels ---> ${appController.searchPlateModels.length}');
     });
   }
 
@@ -127,10 +125,22 @@ class _ReviewPageState extends State<ReviewPage> {
                                         itemCount: appController
                                             .searchPlateModels.length,
                                         itemBuilder: (context, index) =>
-                                            WidgetText(
-                                                data: appController
+                                            InkWell(
+                                          onTap: () {
+                                            headReviewController.text =
+                                                appController
                                                     .searchPlateModels[index]
-                                                    .name),
+                                                    .name;
+                                          },
+                                          child: Row(
+                                            children: [
+                                              WidgetText(
+                                                  data: appController
+                                                      .searchPlateModels[index]
+                                                      .name),
+                                            ],
+                                          ),
+                                        ),
                                       ),
                                     )
                                   : const SizedBox(),
@@ -140,9 +150,33 @@ class _ReviewPageState extends State<ReviewPage> {
                                 changeFunc: (p0) {
                                   if (p0.isNotEmpty) {
                                     appController.displayListPlate.value = true;
+
+                                    debouncer.run(() {
+                                      if (appController
+                                          .searchPlateModels.isNotEmpty) {
+                                        appController.searchPlateModels.clear();
+                                        appController.searchPlateModels
+                                            .addAll(appController.plateModels);
+                                      }
+
+                                      appController.searchPlateModels.value =
+                                          appController.searchPlateModels
+                                              .where((element) => element.name
+                                                  .toLowerCase()
+                                                  .contains(p0.toLowerCase()))
+                                              .toList();
+
+                                      print(
+                                          'ขนาดของ searchPLatModel ----> ${appController.searchPlateModels.length}');
+
+                                      // appController.searchPlateModels
+                                      //     .addAll(search);
+                                    });
                                   } else {
                                     appController.displayListPlate.value =
                                         false;
+                                    appController.searchPlateModels
+                                        .addAll(appController.plateModels);
                                   }
                                 },
                                 validateFunc: (p0) {
@@ -172,6 +206,9 @@ class _ReviewPageState extends State<ReviewPage> {
                     height: 16,
                   ),
                   TextFormField(
+                    onChanged: (value) {
+                      appController.displayListPlate.value = false;
+                    },
                     controller: reviewController,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
