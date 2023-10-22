@@ -464,12 +464,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
+                   appController.videoModels[index].mapReview!['urlImageReviews'].isEmpty ? const SizedBox() : Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: WidgetImageNetwork(
                       boxFit: BoxFit.cover,
                       urlImage: appController
-                          .videoModels[index].mapReview!['urlImageReviews'][0],
+                          .videoModels[index].mapReview!['urlImageReviews'].last,
                       size: 80,
                       tapFunc: () {
                         Get.to(ListReview(

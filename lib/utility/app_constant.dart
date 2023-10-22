@@ -6,12 +6,14 @@ class AppConstant {
     'อาหาร',
     'ท่องเทียว/ทัวร์',
     'ที่พัก',
+    'อื่นๆ',
   ];
 
   static List<String> collectionPlates = <String>[
     'Food',
     'Travel',
     'Hotel',
+    'Other',
   ];
 
   static String host = 'stream115.otaro.co.th';

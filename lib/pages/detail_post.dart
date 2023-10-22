@@ -22,6 +22,7 @@ import 'package:xstream/views/widget_back_button.dart';
 import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_form.dart';
 import 'package:xstream/views/widget_form_multiline.dart';
+import 'package:xstream/views/widget_gf_button.dart';
 import 'package:xstream/views/widget_icon_button.dart';
 import 'package:xstream/views/widget_icon_button_gf.dart';
 import 'package:xstream/views/widget_image_file.dart';
@@ -145,64 +146,18 @@ class _DetailPostState extends State<DetailPost> {
                 ),
                 displayImageFile(boxConstraints),
                 displayLive(boxConstraints: boxConstraints),
-                Row(
-                  children: [
-                    WidgetTextButton(
-                      label: 'Review',
-                      pressFunc: () {
-                        AppDialog().normalDialog(
-                            title: const WidgetText(data: 'เลือกประเภทรีวิว'),
-                            content: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    WidgetIconButtonGF(
-                                      gfButtonType: GFButtonType.outline,
-                                      iconData: Icons.food_bank,
-                                      pressFunc: () {
-                                        Get.back();
-                                        routeToReviewPage(indexReviewCat: 0);
-                                      },
-                                    ),
-                                    const WidgetText(data: 'Food'),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    WidgetIconButtonGF(
-                                      gfButtonType: GFButtonType.outline,
-                                      iconData: Icons.travel_explore,
-                                      pressFunc: () {
-                                        Get.back();
-                                        routeToReviewPage(indexReviewCat: 1);
-                                      },
-                                    ),
-                                    const WidgetText(data: 'Travel'),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    WidgetIconButtonGF(
-                                      gfButtonType: GFButtonType.outline,
-                                      iconData: Icons.hotel,
-                                      pressFunc: () {
-                                        Get.back();
-                                        routeToReviewPage(indexReviewCat: 2);
-                                      },
-                                    ),
-                                    const WidgetText(data: 'Hotel'),
-                                  ],
-                                ),
-                              ],
-                            ));
-                      },
-                    ),
-                  ],
-                )
+                // Row(
+                //   children: [
+                //     WidgetTextButton(
+                //       label: 'Review',
+                //       pressFunc: () {
+                //         AppDialog().normalDialog(
+                //             title: const WidgetText(data: 'เลือกประเภทรีวิว'),
+                //             content: groupType());
+                //       },
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ),
@@ -212,66 +167,150 @@ class _DetailPostState extends State<DetailPost> {
         decoration: const BoxDecoration(color: ColorPlate.back1),
         padding: const EdgeInsets.symmetric(horizontal: 8),
         width: double.infinity,
-        child: WidgetButton(
-          color: ColorPlate.red,
-          label: 'โพสต์',
-          pressFunc: () async {
-            AppDialog().dialogProgress();
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            groupType(),
+            WidgetGfButton(
+              color: ColorPlate.red,
+              label: 'โพสต์',
+              fullScreen: true,
+              pressFunc: () async {
+                AppDialog().dialogProgress();
 
-            if (appController.liveBool.value) {
-              String? urlImageLive =
-                  await AppService().processUploadFileImageLive(path: 'live');
+                if (appController.liveBool.value) {
+                  String? urlImageLive = await AppService()
+                      .processUploadFileImageLive(path: 'live');
 
-              String? urlImage = await AppService().processUploadThumbnailVideo(
-                  fileThumbnail: widget.fileThumbnail,
-                  nameFile: widget.nameFileImage);
+                  String? urlImage = await AppService()
+                      .processUploadThumbnailVideo(
+                          fileThumbnail: widget.fileThumbnail,
+                          nameFile: widget.nameFileImage);
 
-              AppService()
-                  .processFtpUploadAndInsertDataVideo(
-                fileVideo: widget.fileVideo,
-                nameFileVideo: widget.nameFileVideo,
-                urlThumbnail: urlImage!,
-                detail: '',
-                urlImagelive: urlImageLive,
-                liveTitle: liveController.text,
-                startLive: Timestamp.fromDate(DateTime.now()),
-              )
-                  .then((value) {
-                // Get.back();
-
-                AppService().processLaunchPrismLive();
-              });
-            } else if (appController.files.isEmpty) {
-              // Video Only
-
-              await insertVideoOnly();
-            } else {
-              // Have Product
-
-              String? urlImageProduct =
-                  await AppService().processUploadFile(path: 'product');
-
-              String? urlImage = await AppService().processUploadThumbnailVideo(
-                  fileThumbnail: widget.fileThumbnail,
-                  nameFile: widget.nameFileImage);
-
-              AppService()
-                  .processFtpUploadAndInsertDataVideo(
+                  AppService()
+                      .processFtpUploadAndInsertDataVideo(
                     fileVideo: widget.fileVideo,
                     nameFileVideo: widget.nameFileVideo,
                     urlThumbnail: urlImage!,
-                    detail: detailController.text,
-                    nameProduct: nameController.text,
-                    priceProduct: priceController.text,
-                    stockProduct: stockController.text,
-                    affiliateProduct: affiliateController.text,
-                    urlProduct: urlImageProduct,
+                    detail: '',
+                    urlImagelive: urlImageLive,
+                    liveTitle: liveController.text,
+                    startLive: Timestamp.fromDate(DateTime.now()),
                   )
-                  .then((value) => Get.back());
-            }
-          },
+                      .then((value) {
+                    // Get.back();
+
+                    AppService().processLaunchPrismLive();
+                  });
+                } else if (appController.files.isEmpty) {
+                  // Video Only
+
+                  await insertVideoOnly();
+                } else {
+                  // Have Product
+
+                  String? urlImageProduct =
+                      await AppService().processUploadFile(path: 'product');
+
+                  String? urlImage = await AppService()
+                      .processUploadThumbnailVideo(
+                          fileThumbnail: widget.fileThumbnail,
+                          nameFile: widget.nameFileImage);
+
+                  AppService()
+                      .processFtpUploadAndInsertDataVideo(
+                        fileVideo: widget.fileVideo,
+                        nameFileVideo: widget.nameFileVideo,
+                        urlThumbnail: urlImage!,
+                        detail: detailController.text,
+                        nameProduct: nameController.text,
+                        priceProduct: priceController.text,
+                        stockProduct: stockController.text,
+                        affiliateProduct: affiliateController.text,
+                        urlProduct: urlImageProduct,
+                      )
+                      .then((value) => Get.back());
+                }
+              },
+            ),
+          ],
         ),
       ),
+    );
+  }
+
+  Row groupType() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        const SizedBox(
+          width: 8,
+        ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            WidgetIconButtonGF(
+              gfButtonType: GFButtonType.outline,
+              iconData: Icons.food_bank,
+              pressFunc: () {
+                routeToReviewPage(indexReviewCat: 0);
+              },
+            ),
+            const WidgetText(data: 'Food'),
+          ],
+        ),
+        const SizedBox(
+          width: 8,
+        ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            WidgetIconButtonGF(
+              gfButtonType: GFButtonType.outline,
+              iconData: Icons.travel_explore,
+              pressFunc: () {
+                routeToReviewPage(indexReviewCat: 1);
+              },
+            ),
+            const WidgetText(data: 'Travel'),
+          ],
+        ),
+        const SizedBox(
+          width: 8,
+        ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            WidgetIconButtonGF(
+              gfButtonType: GFButtonType.outline,
+              iconData: Icons.hotel,
+              pressFunc: () {
+                routeToReviewPage(indexReviewCat: 2);
+              },
+            ),
+            const WidgetText(data: 'Hotel'),
+          ],
+        ),
+        const SizedBox(
+          width: 8,
+        ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            WidgetIconButtonGF(
+              gfButtonType: GFButtonType.outline,
+              iconData: Icons.devices_other,
+              pressFunc: () {
+                routeToReviewPage(indexReviewCat: 3);
+              },
+            ),
+            const WidgetText(data: 'อึ่นๆ'),
+          ],
+        ),
+        const SizedBox(
+          width: 8,
+        ),
+      ],
     );
   }
 
@@ -281,28 +320,35 @@ class _DetailPostState extends State<DetailPost> {
     ))!
         .then((value) {
       Map<String, dynamic> map = value;
-      print('### map ที่ได้จาก reviewPage ----> $map');
+      print('##22oct map ที่ได้จาก reviewPage ----> $map');
 
-      insertVideoOnly(mapReview: map);
+      AppService()
+          .processInsertReview(
+              collectionName: map['type'], name: map['nameReview'], map: map)
+          .then((value) {
+             insertVideoOnly(mapReview: map);
+          });
+
+     
     });
   }
 
   Future<void> insertVideoOnly({Map<String, dynamic>? mapReview}) async {
-    print('##9oct mapReview ที่ insertVideoOnly ---> $mapReview');
-
     String? urlImage = await AppService().processUploadThumbnailVideo(
         fileThumbnail: widget.fileThumbnail, nameFile: widget.nameFileImage);
 
     AppService()
         .processFtpUploadAndInsertDataVideo(
-          fileVideo: widget.fileVideo,
-          nameFileVideo: widget.nameFileVideo,
-          urlThumbnail: urlImage!,
-          detail: detailController.text,
-          mapReview: mapReview,
-        )
-        .then((value) => Get.back());
-  }
+      fileVideo: widget.fileVideo,
+      nameFileVideo: widget.nameFileVideo,
+      urlThumbnail: urlImage!,
+      detail: detailController.text,
+      mapReview: mapReview,
+    )
+        .then((value) {
+      Get.back();
+    });
+  } // end
 
   AppBar mainAppbar() {
     return AppBar(

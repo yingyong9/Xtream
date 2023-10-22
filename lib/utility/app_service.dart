@@ -31,6 +31,7 @@ import 'package:xstream/models/otp_require_thaibulk.dart';
 import 'package:xstream/models/plate_model.dart';
 import 'package:xstream/models/province_model.dart';
 import 'package:xstream/models/remark_model.dart';
+import 'package:xstream/models/review_model.dart';
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
 import 'package:xstream/pages/check_video.dart';
@@ -915,6 +916,40 @@ class AppService {
       for (var element in value.docs) {
         PlateModel plateModel = PlateModel.fromMap(element.data());
         appController.plateModels.add(plateModel);
+      }
+    });
+  }
+
+  Future<void> processInsertReview(
+      {required String collectionName,
+      required String name,
+      required Map<String, dynamic> map}) async {
+    FirebaseFirestore.instance
+        .collection(collectionName)
+        .where('name', isEqualTo: name)
+        .get()
+        .then((value) async {
+      if (value.docs.isNotEmpty) {
+        for (var element in value.docs) {
+          String docId = element.id;
+          print('##22oct docId ---------> $docId');
+
+          ReviewModel reviewModel = ReviewModel(
+              rating: map['rating'],
+              review: map['review'],
+              urlImageReviews: map['urlImageReviews'],
+              timestamp: Timestamp.fromDate(DateTime.now()),
+              mapUserModel: appController.currentUserModels.last.toMap());
+
+          print('reviewModels ---> ${reviewModel.toMap()}');
+
+          await FirebaseFirestore.instance
+              .collection(collectionName)
+              .doc(docId)
+              .collection('review')
+              .doc()
+              .set(reviewModel.toMap());
+        }
       }
     });
   }
