@@ -145,64 +145,18 @@ class _DetailPostState extends State<DetailPost> {
                 ),
                 displayImageFile(boxConstraints),
                 displayLive(boxConstraints: boxConstraints),
-                Row(
-                  children: [
-                    WidgetTextButton(
-                      label: 'Review',
-                      pressFunc: () {
-                        AppDialog().normalDialog(
-                            title: const WidgetText(data: 'เลือกประเภทรีวิว'),
-                            content: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    WidgetIconButtonGF(
-                                      gfButtonType: GFButtonType.outline,
-                                      iconData: Icons.food_bank,
-                                      pressFunc: () {
-                                        Get.back();
-                                        routeToReviewPage(indexReviewCat: 0);
-                                      },
-                                    ),
-                                    const WidgetText(data: 'Food'),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    WidgetIconButtonGF(
-                                      gfButtonType: GFButtonType.outline,
-                                      iconData: Icons.travel_explore,
-                                      pressFunc: () {
-                                        Get.back();
-                                        routeToReviewPage(indexReviewCat: 1);
-                                      },
-                                    ),
-                                    const WidgetText(data: 'Travel'),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    WidgetIconButtonGF(
-                                      gfButtonType: GFButtonType.outline,
-                                      iconData: Icons.hotel,
-                                      pressFunc: () {
-                                        Get.back();
-                                        routeToReviewPage(indexReviewCat: 2);
-                                      },
-                                    ),
-                                    const WidgetText(data: 'Hotel'),
-                                  ],
-                                ),
-                              ],
-                            ));
-                      },
-                    ),
-                  ],
-                )
+                // Row(
+                //   children: [
+                //     WidgetTextButton(
+                //       label: 'Review',
+                //       pressFunc: () {
+                //         AppDialog().normalDialog(
+                //             title: const WidgetText(data: 'เลือกประเภทรีวิว'),
+                //             content: groupType());
+                //       },
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ),
@@ -212,66 +166,124 @@ class _DetailPostState extends State<DetailPost> {
         decoration: const BoxDecoration(color: ColorPlate.back1),
         padding: const EdgeInsets.symmetric(horizontal: 8),
         width: double.infinity,
-        child: WidgetButton(
-          color: ColorPlate.red,
-          label: 'โพสต์',
-          pressFunc: () async {
-            AppDialog().dialogProgress();
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            groupType(),
+            WidgetButton(
+              color: ColorPlate.red,
+              label: 'โพสต์',
+              pressFunc: () async {
+                AppDialog().dialogProgress();
 
-            if (appController.liveBool.value) {
-              String? urlImageLive =
-                  await AppService().processUploadFileImageLive(path: 'live');
+                if (appController.liveBool.value) {
+                  String? urlImageLive = await AppService()
+                      .processUploadFileImageLive(path: 'live');
 
-              String? urlImage = await AppService().processUploadThumbnailVideo(
-                  fileThumbnail: widget.fileThumbnail,
-                  nameFile: widget.nameFileImage);
+                  String? urlImage = await AppService()
+                      .processUploadThumbnailVideo(
+                          fileThumbnail: widget.fileThumbnail,
+                          nameFile: widget.nameFileImage);
 
-              AppService()
-                  .processFtpUploadAndInsertDataVideo(
-                fileVideo: widget.fileVideo,
-                nameFileVideo: widget.nameFileVideo,
-                urlThumbnail: urlImage!,
-                detail: '',
-                urlImagelive: urlImageLive,
-                liveTitle: liveController.text,
-                startLive: Timestamp.fromDate(DateTime.now()),
-              )
-                  .then((value) {
-                // Get.back();
-
-                AppService().processLaunchPrismLive();
-              });
-            } else if (appController.files.isEmpty) {
-              // Video Only
-
-              await insertVideoOnly();
-            } else {
-              // Have Product
-
-              String? urlImageProduct =
-                  await AppService().processUploadFile(path: 'product');
-
-              String? urlImage = await AppService().processUploadThumbnailVideo(
-                  fileThumbnail: widget.fileThumbnail,
-                  nameFile: widget.nameFileImage);
-
-              AppService()
-                  .processFtpUploadAndInsertDataVideo(
+                  AppService()
+                      .processFtpUploadAndInsertDataVideo(
                     fileVideo: widget.fileVideo,
                     nameFileVideo: widget.nameFileVideo,
                     urlThumbnail: urlImage!,
-                    detail: detailController.text,
-                    nameProduct: nameController.text,
-                    priceProduct: priceController.text,
-                    stockProduct: stockController.text,
-                    affiliateProduct: affiliateController.text,
-                    urlProduct: urlImageProduct,
+                    detail: '',
+                    urlImagelive: urlImageLive,
+                    liveTitle: liveController.text,
+                    startLive: Timestamp.fromDate(DateTime.now()),
                   )
-                  .then((value) => Get.back());
-            }
-          },
+                      .then((value) {
+                    // Get.back();
+
+                    AppService().processLaunchPrismLive();
+                  });
+                } else if (appController.files.isEmpty) {
+                  // Video Only
+
+                  await insertVideoOnly();
+                } else {
+                  // Have Product
+
+                  String? urlImageProduct =
+                      await AppService().processUploadFile(path: 'product');
+
+                  String? urlImage = await AppService()
+                      .processUploadThumbnailVideo(
+                          fileThumbnail: widget.fileThumbnail,
+                          nameFile: widget.nameFileImage);
+
+                  AppService()
+                      .processFtpUploadAndInsertDataVideo(
+                        fileVideo: widget.fileVideo,
+                        nameFileVideo: widget.nameFileVideo,
+                        urlThumbnail: urlImage!,
+                        detail: detailController.text,
+                        nameProduct: nameController.text,
+                        priceProduct: priceController.text,
+                        stockProduct: stockController.text,
+                        affiliateProduct: affiliateController.text,
+                        urlProduct: urlImageProduct,
+                      )
+                      .then((value) => Get.back());
+                }
+              },
+            ),
+          ],
         ),
       ),
+    );
+  }
+
+  Row groupType() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            WidgetIconButtonGF(
+              gfButtonType: GFButtonType.outline,
+              iconData: Icons.food_bank,
+              pressFunc: () {
+                Get.back();
+                routeToReviewPage(indexReviewCat: 0);
+              },
+            ),
+            const WidgetText(data: 'Food'),
+          ],
+        ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            WidgetIconButtonGF(
+              gfButtonType: GFButtonType.outline,
+              iconData: Icons.travel_explore,
+              pressFunc: () {
+                Get.back();
+                routeToReviewPage(indexReviewCat: 1);
+              },
+            ),
+            const WidgetText(data: 'Travel'),
+          ],
+        ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            WidgetIconButtonGF(
+              gfButtonType: GFButtonType.outline,
+              iconData: Icons.hotel,
+              pressFunc: () {
+                Get.back();
+                routeToReviewPage(indexReviewCat: 2);
+              },
+            ),
+            const WidgetText(data: 'Hotel'),
+          ],
+        ),
+      ],
     );
   }
 
