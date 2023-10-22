@@ -241,6 +241,9 @@ class _DetailPostState extends State<DetailPost> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        const SizedBox(
+          width: 8,
+        ),
         Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -248,12 +251,14 @@ class _DetailPostState extends State<DetailPost> {
               gfButtonType: GFButtonType.outline,
               iconData: Icons.food_bank,
               pressFunc: () {
-                Get.back();
                 routeToReviewPage(indexReviewCat: 0);
               },
             ),
             const WidgetText(data: 'Food'),
           ],
+        ),
+        const SizedBox(
+          width: 8,
         ),
         Column(
           mainAxisSize: MainAxisSize.min,
@@ -262,12 +267,14 @@ class _DetailPostState extends State<DetailPost> {
               gfButtonType: GFButtonType.outline,
               iconData: Icons.travel_explore,
               pressFunc: () {
-                Get.back();
                 routeToReviewPage(indexReviewCat: 1);
               },
             ),
             const WidgetText(data: 'Travel'),
           ],
+        ),
+        const SizedBox(
+          width: 8,
         ),
         Column(
           mainAxisSize: MainAxisSize.min,
@@ -276,12 +283,30 @@ class _DetailPostState extends State<DetailPost> {
               gfButtonType: GFButtonType.outline,
               iconData: Icons.hotel,
               pressFunc: () {
-                Get.back();
                 routeToReviewPage(indexReviewCat: 2);
               },
             ),
             const WidgetText(data: 'Hotel'),
           ],
+        ),
+        const SizedBox(
+          width: 8,
+        ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            WidgetIconButtonGF(
+              gfButtonType: GFButtonType.outline,
+              iconData: Icons.devices_other,
+              pressFunc: () {
+                routeToReviewPage(indexReviewCat: 3);
+              },
+            ),
+            const WidgetText(data: 'อึ่นๆ'),
+          ],
+        ),
+        const SizedBox(
+          width: 8,
         ),
       ],
     );

@@ -8,7 +8,6 @@ import 'package:xstream/pages/register_shop.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
-import 'package:xstream/utility/app_dialog.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/utility/app_snackbar.dart';
 import 'package:xstream/views/widget_back_button.dart';
@@ -17,7 +16,6 @@ import 'package:xstream/views/widget_form_line.dart';
 import 'package:xstream/views/widget_gf_button.dart';
 import 'package:xstream/views/widget_ratting.dart';
 import 'package:xstream/views/widget_text.dart';
-import 'package:xstream/views/widget_text_button.dart';
 
 class ReviewPage extends StatefulWidget {
   const ReviewPage({
