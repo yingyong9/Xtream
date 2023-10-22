@@ -9,7 +9,6 @@ import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
-import 'package:xstream/utility/app_snackbar.dart';
 import 'package:xstream/views/widget_back_button.dart';
 import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_form_line.dart';
@@ -239,23 +238,26 @@ class _ReviewPageState extends State<ReviewPage> {
         child: WidgetButton(
           label: 'โพสต์',
           pressFunc: () async {
-            if (appController.xFiles.isEmpty) {
-              AppSnackBar(title: 'ยังไม่มีรูปภาพ', message: 'กรุณาเพิ่มรูปภาพ')
-                  .errorSnackBar();
-            } else {
+            // if (appController.xFiles.isEmpty) {
+            //   AppSnackBar(title: 'ยังไม่มีรูปภาพ', message: 'กรุณาเพิ่มรูปภาพ')
+            //       .errorSnackBar();
+            // } else {
               if (formStateKey.currentState!.validate()) {
-                var urlImageReviews =
-                    await AppService().processUploadMultiFile(path: 'review');
+                var urlImageReviews = <String>[];
+
+                if (appController.xFiles.isNotEmpty) {
+                  urlImageReviews = await AppService().processUploadMultiFile(path: 'review');
+                }
 
                 Map<String, dynamic> map = {};
                 map['nameReview'] = headReviewController.text;
                 map['review'] = reviewController.text;
-                map['type'] = AppConstant.reviewCats[widget.indexReviewCat];
+                map['type'] = AppConstant.collectionPlates[widget.indexReviewCat];
                 map['rating'] = appController.rating.value;
                 map['urlImageReviews'] = urlImageReviews;
 
                 Get.back(result: map);
-              }
+              
             }
           },
           fullWidthButton: true,

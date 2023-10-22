@@ -13,7 +13,7 @@ class AppConstant {
     'Food',
     'Travel',
     'Hotel',
-    'อื่นๆ',
+    'Other',
   ];
 
   static String host = 'stream115.otaro.co.th';

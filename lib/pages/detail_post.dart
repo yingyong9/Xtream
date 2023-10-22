@@ -22,6 +22,7 @@ import 'package:xstream/views/widget_back_button.dart';
 import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_form.dart';
 import 'package:xstream/views/widget_form_multiline.dart';
+import 'package:xstream/views/widget_gf_button.dart';
 import 'package:xstream/views/widget_icon_button.dart';
 import 'package:xstream/views/widget_icon_button_gf.dart';
 import 'package:xstream/views/widget_image_file.dart';
@@ -170,9 +171,10 @@ class _DetailPostState extends State<DetailPost> {
           mainAxisSize: MainAxisSize.min,
           children: [
             groupType(),
-            WidgetButton(
+            WidgetGfButton(
               color: ColorPlate.red,
               label: 'โพสต์',
+              fullScreen: true,
               pressFunc: () async {
                 AppDialog().dialogProgress();
 
@@ -318,28 +320,35 @@ class _DetailPostState extends State<DetailPost> {
     ))!
         .then((value) {
       Map<String, dynamic> map = value;
-      print('### map ที่ได้จาก reviewPage ----> $map');
+      print('##22oct map ที่ได้จาก reviewPage ----> $map');
 
-      insertVideoOnly(mapReview: map);
+      AppService()
+          .processInsertReview(
+              collectionName: map['type'], name: map['nameReview'], map: map)
+          .then((value) {
+             insertVideoOnly(mapReview: map);
+          });
+
+     
     });
   }
 
   Future<void> insertVideoOnly({Map<String, dynamic>? mapReview}) async {
-    print('##9oct mapReview ที่ insertVideoOnly ---> $mapReview');
-
     String? urlImage = await AppService().processUploadThumbnailVideo(
         fileThumbnail: widget.fileThumbnail, nameFile: widget.nameFileImage);
 
     AppService()
         .processFtpUploadAndInsertDataVideo(
-          fileVideo: widget.fileVideo,
-          nameFileVideo: widget.nameFileVideo,
-          urlThumbnail: urlImage!,
-          detail: detailController.text,
-          mapReview: mapReview,
-        )
-        .then((value) => Get.back());
-  }
+      fileVideo: widget.fileVideo,
+      nameFileVideo: widget.nameFileVideo,
+      urlThumbnail: urlImage!,
+      detail: detailController.text,
+      mapReview: mapReview,
+    )
+        .then((value) {
+      Get.back();
+    });
+  } // end
 
   AppBar mainAppbar() {
     return AppBar(
