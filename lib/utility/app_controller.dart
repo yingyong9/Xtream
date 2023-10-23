@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:xstream/models/amphure_model.dart';
 import 'package:xstream/models/chat_comment_model.dart';
 import 'package:xstream/models/comment_model.dart';
+import 'package:xstream/models/comment_post_model.dart';
 import 'package:xstream/models/districe_model.dart';
 import 'package:xstream/models/invoid_model.dart';
 import 'package:xstream/models/option_model.dart';
@@ -67,11 +68,10 @@ class AppController extends GetxController {
   RxList<String?> chooseTypes = <String?>[null].obs;
   RxList<Position> positions = <Position>[].obs;
   RxDouble rating = 0.0.obs;
-
   RxList<Widget> ratingStarWidgets = <Widget>[].obs;
-
   RxList<PlateModel> plateModels = <PlateModel>[].obs;
   RxList<PlateModel> searchPlateModels = <PlateModel>[].obs;
-
   RxBool displayListPlate = false.obs;
+
+  RxList<CommentPostModel> commentPostModels = <CommentPostModel>[].obs;
 }

@@ -458,7 +458,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               _videoListController.currentPlayer.pause();
 
               Get.to(ReviewDetailPage(
-                videoModel: appController.videoModels[index],
+                videoModel: appController.videoModels[index], docIdVideo: appController.docIdVideos[index],
               ))!
                   .then((value) => _videoListController.currentPlayer.play());
             },
