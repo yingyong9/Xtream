@@ -123,8 +123,13 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
                         physics: const ScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: appController.commentPostModels.length,
-                        itemBuilder: (context, index) => WidgetText(
-                            data: appController.commentPostModels[index].post),
+                        itemBuilder: (context, index) => Row(
+                          children: [
+                            WidgetAvatar(urlImage: appController.commentPostModels[index].mapUserModel['urlAvatar'], size: 30,),
+                            WidgetText(
+                                data: appController.commentPostModels[index].post),
+                          ],
+                        ),
                       );
               }),
               const SizedBox(
