@@ -455,29 +455,42 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         ? const SizedBox()
         : InkWell(
             onTap: () {
+              _videoListController.currentPlayer.pause();
+
               Get.to(ReviewDetailPage(
-                videoModel: appController.videoModels[index],
-              ));
+                videoModel: appController.videoModels[index], docIdVideo: appController.docIdVideos[index],
+              ))!
+                  .then((value) => _videoListController.currentPlayer.play());
             },
             child: Container(
               color: ColorPlate.back1.withOpacity(0.75),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   appController.videoModels[index].mapReview!['urlImageReviews'].isEmpty ? const SizedBox() : Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: WidgetImageNetwork(
-                      boxFit: BoxFit.cover,
-                      urlImage: appController
-                          .videoModels[index].mapReview!['urlImageReviews'].last,
-                      size: 80,
-                      tapFunc: () {
-                        Get.to(ListReview(
-                          videoModel: appController.videoModels[index],
-                        ));
-                      },
-                    ),
-                  ),
+                  appController.videoModels[index].mapReview!['urlImageReviews']
+                          .isEmpty
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: WidgetImageNetwork(
+                            urlImage: appController.videoModels[index].image,
+                            size: 80,
+                            boxFit: BoxFit.cover,
+                          ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: WidgetImageNetwork(
+                            boxFit: BoxFit.cover,
+                            urlImage: appController.videoModels[index]
+                                .mapReview!['urlImageReviews'].last,
+                            size: 80,
+                            tapFunc: () {
+                              Get.to(ListReview(
+                                videoModel: appController.videoModels[index],
+                              ));
+                            },
+                          ),
+                        ),
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     height: 80,
