@@ -43,15 +43,21 @@ class ReviewDetailPage extends StatelessWidget {
               ),
               SizedBox(
                 height: boxConstraints.maxHeight * 0.7,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  physics: const ClampingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: videoModel.mapReview!['urlImageReviews'].length,
-                  itemBuilder: (context, index) => WidgetImageNetwork(
-                      urlImage: videoModel.mapReview!['urlImageReviews']
-                          [index]),
-                ),
+                child: videoModel.mapReview!['urlImageReviews'].isEmpty
+                    ? WidgetImageNetwork(
+                        urlImage: videoModel.image,
+                        boxFit: BoxFit.cover,
+                      )
+                    : ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        physics: const ClampingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount:
+                            videoModel.mapReview!['urlImageReviews'].length,
+                        itemBuilder: (context, index) => WidgetImageNetwork(
+                            urlImage: videoModel.mapReview!['urlImageReviews']
+                                [index]),
+                      ),
               ),
               WidgetText(data: videoModel.mapReview!['nameReview']),
               Text(videoModel.mapReview!['review']),
