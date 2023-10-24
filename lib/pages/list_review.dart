@@ -14,6 +14,10 @@ class ListReview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: SafeArea(child: WidgetImageNetwork(urlImage: videoModel.mapReview!['urlImageReview'])),);
+    return Scaffold(
+      body: SafeArea(
+          child: WidgetImageNetwork(
+              urlImage: videoModel.mapReview!['urlImageReviews'].last)),
+    );
   }
 }

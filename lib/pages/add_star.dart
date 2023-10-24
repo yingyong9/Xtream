@@ -1,0 +1,102 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'package:xstream/models/video_model.dart';
+import 'package:xstream/style/style.dart';
+import 'package:xstream/utility/app_controller.dart';
+import 'package:xstream/utility/app_service.dart';
+import 'package:xstream/views/widget_back_button.dart';
+import 'package:xstream/views/widget_ratting_only.dart';
+import 'package:xstream/views/widget_text.dart';
+
+class AddStar extends StatefulWidget {
+  const AddStar({
+    Key? key,
+    required this.videoModel,
+  }) : super(key: key);
+
+  final VideoModel videoModel;
+
+  @override
+  State<AddStar> createState() => _AddStarState();
+}
+
+class _AddStarState extends State<AddStar> {
+  AppController appController = Get.put(AppController());
+
+  @override
+  void initState() {
+    super.initState();
+    AppService().processReadPlateWhereNameReview(
+        collectionPlate: widget.videoModel.mapReview!['type'],
+        namePlate: widget.videoModel.mapReview!['nameReview']);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: ColorPlate.back1,
+        elevation: 0,
+        leading: const WidgetBackButton(),
+        title: WidgetText(data: widget.videoModel.mapReview!['nameReview']),
+      ),
+      body: LayoutBuilder(builder: (context, BoxConstraints boxConstraints) {
+        return Obx(() {
+          return SizedBox(
+            width: boxConstraints.maxWidth,
+            height: boxConstraints.maxHeight,
+            child: Stack(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    WidgetRatingStarOnly(
+                      ratingUpdateFunc: (p0) {},
+                    ),
+                    const WidgetText(data: 'จาก 100 คน'),
+                  ],
+                ),
+                Positioned(
+                  top: 50,
+                  child: appController.addStartReviewModels.isEmpty
+                      ? const SizedBox()
+                      : SizedBox(
+                          width: boxConstraints.maxWidth,
+                          height: boxConstraints.maxHeight-80,
+                          child: ListView.builder(
+                            physics: const ScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount:
+                                appController.addStartReviewModels.length,
+                            itemBuilder: (context, index) => Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                WidgetText(
+                                    data: appController
+                                        .addStartReviewModels[index]
+                                        .mapUserModel['name']),
+                                WidgetRatingStarOnly(
+                                  ratingUpdateFunc: (p0) {},
+                                ),
+                                WidgetText(
+                                    data: appController
+                                        .addStartReviewModels[index].review),
+                                const SizedBox(
+                                  height: 32,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                ),
+              ],
+            ),
+          );
+        });
+      }),
+    );
+  }
+}

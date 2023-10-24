@@ -484,11 +484,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                             urlImage: appController.videoModels[index]
                                 .mapReview!['urlImageReviews'].last,
                             size: 80,
-                            tapFunc: () {
-                              Get.to(ListReview(
-                                videoModel: appController.videoModels[index],
-                              ));
-                            },
+                            // tapFunc: () {
+                            //   Get.to(ListReview(
+                            //     videoModel: appController.videoModels[index],
+                            //   ));
+                            // },
                           ),
                         ),
                   Container(
