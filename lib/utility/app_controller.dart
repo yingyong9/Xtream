@@ -15,6 +15,7 @@ import 'package:xstream/models/order_model.dart';
 import 'package:xstream/models/plate_model.dart';
 import 'package:xstream/models/province_model.dart';
 import 'package:xstream/models/remark_model.dart';
+import 'package:xstream/models/review_model.dart';
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
 
@@ -74,4 +75,6 @@ class AppController extends GetxController {
   RxBool displayListPlate = false.obs;
 
   RxList<CommentPostModel> commentPostModels = <CommentPostModel>[].obs;
+ 
+ RxList<ReviewModel> addStartReviewModels = <ReviewModel>[].obs;
 }

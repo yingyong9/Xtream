@@ -23,6 +23,7 @@ import 'package:path/path.dart';
 import 'package:xstream/models/amphure_model.dart';
 import 'package:xstream/models/chat_comment_model.dart';
 import 'package:xstream/models/comment_model.dart';
+import 'package:xstream/models/comment_post_model.dart';
 import 'package:xstream/models/districe_model.dart';
 import 'package:xstream/models/invoid_model.dart';
 import 'package:xstream/models/landmark_model.dart';
@@ -954,5 +955,38 @@ class AppService {
     });
   }
 
- 
+  Future<void> processReadPlateWhereNameReview(
+      {required String collectionPlate, required String namePlate}) async {
+    FirebaseFirestore.instance
+        .collection(collectionPlate)
+        .where('name', isEqualTo: namePlate)
+        .get()
+        .then((value) async {
+      if (value.docs.isNotEmpty) {
+        for (var element in value.docs) {
+          String docIdPlate = element.id;
+
+          print('##24oct docIdPlate ----> $docIdPlate');
+          FirebaseFirestore.instance
+              .collection(collectionPlate)
+              .doc(docIdPlate)
+              .collection('review')
+              .orderBy('timestamp')
+              .get()
+              .then((value) {
+            if (appController.addStartReviewModels.isNotEmpty) {
+              appController.addStartReviewModels.clear();
+            }
+
+            if (value.docs.isNotEmpty) {
+              for (var element in value.docs) {
+                ReviewModel reviewModel = ReviewModel.fromMap(element.data());
+                appController.addStartReviewModels.add(reviewModel);
+              }
+            }
+          });
+        }
+      }
+    });
+  }
 }

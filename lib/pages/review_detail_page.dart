@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:xstream/models/comment_post_model.dart';
 
 import 'package:xstream/models/video_model.dart';
+import 'package:xstream/pages/add_star.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
@@ -83,59 +84,70 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
     return Scaffold(
       body: LayoutBuilder(builder: (context, BoxConstraints boxConstraints) {
         return SafeArea(
-          child: ListView(
-            children: [
-              head(),
-              displayImage(boxConstraints),
-              WidgetText(
-                data: widget.videoModel.mapReview!['nameReview'],
-                textStyle: AppConstant()
-                    .bodyStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              WidgetText(data: widget.videoModel.mapReview!['review']),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 110,
-                    child: RatingBar.builder(
-                      initialRating: widget.videoModel.mapReview!['rating'],
-                      itemSize: 20,
-                      itemCount: 5,
-                      itemBuilder: (context, index) => const Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                      onRatingUpdate: (value) {},
-                    ),
-                  ),
-                  WidgetText(
-                      data: widget.videoModel.mapReview!['rating'].toString()),
-                ],
-              ),
-              WidgetGfButton(
-                label: 'รีวิวเพื่อสังคม',
-                pressFunc: () {},
-              ),
-              Obx(() {
-                return appController.commentPostModels.isEmpty
-                    ? const SizedBox()
-                    : ListView.builder(
-                        physics: const ScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: appController.commentPostModels.length,
-                        itemBuilder: (context, index) => Row(
-                          children: [
-                            WidgetAvatar(urlImage: appController.commentPostModels[index].mapUserModel['urlAvatar'], size: 30,),
-                            WidgetText(
-                                data: appController.commentPostModels[index].post),
-                          ],
+          child: GestureDetector(
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            child: ListView(
+              children: [
+                head(),
+                displayImage(boxConstraints),
+                WidgetText(
+                  data: widget.videoModel.mapReview!['nameReview'],
+                  textStyle: AppConstant()
+                      .bodyStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                WidgetText(data: widget.videoModel.mapReview!['review']),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 110,
+                      child: RatingBar.builder(
+                        initialRating: widget.videoModel.mapReview!['rating'],
+                        itemSize: 20,
+                        itemCount: 5,
+                        itemBuilder: (context, index) => const Icon(
+                          Icons.star,
+                          color: Colors.amber,
                         ),
-                      );
-              }),
-              const SizedBox(
-                height: 100,
-              ),
-            ],
+                        onRatingUpdate: (value) {},
+                      ),
+                    ),
+                    WidgetText(
+                        data:
+                            widget.videoModel.mapReview!['rating'].toString()),
+                  ],
+                ),
+                WidgetGfButton(
+                  label: 'Review ${widget.videoModel.mapReview!['nameReview']}',
+                  pressFunc: () {
+                    Get.to( AddStar(videoModel: widget.videoModel,));
+                  },
+                ),
+                Obx(() {
+                  return appController.commentPostModels.isEmpty
+                      ? const SizedBox()
+                      : ListView.builder(
+                          physics: const ScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: appController.commentPostModels.length,
+                          itemBuilder: (context, index) => Row(
+                            children: [
+                              WidgetAvatar(
+                                urlImage: appController.commentPostModels[index]
+                                    .mapUserModel['urlAvatar'],
+                                size: 30,
+                              ),
+                              WidgetText(
+                                  data: appController
+                                      .commentPostModels[index].post),
+                            ],
+                          ),
+                        );
+                }),
+                const SizedBox(
+                  height: 100,
+                ),
+              ],
+            ),
           ),
         );
       }),
@@ -151,7 +163,7 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
               CommentPostModel commentPostModel = CommentPostModel(
                   post: textEditingController.text,
                   timestamp: Timestamp.fromDate(DateTime.now()),
-                  mapUserModel: widget.videoModel.mapUserModel);
+                  mapUserModel: appController.currentUserModels.last.toMap());
 
               FirebaseFirestore.instance
                   .collection('commentPost')

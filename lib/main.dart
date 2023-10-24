@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'WeHappy',
+      title: 'TikTik',
       theme: ThemeData(
         brightness: Brightness.dark,
         hintColor: Colors.white,
