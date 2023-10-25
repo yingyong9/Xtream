@@ -21,7 +21,9 @@ import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/utility/app_snackbar.dart';
+import 'package:xstream/views/add_bottom_sheet.dart';
 import 'package:xstream/views/bottom_sheet_authen.dart';
+import 'package:xstream/views/menu_add_bottom_sheet.dart';
 import 'package:xstream/views/product_bottomSheet.dart';
 import 'package:xstream/views/tikTokCommentBottomSheet.dart';
 import 'package:xstream/views/tikTokHeader.dart';
@@ -191,7 +193,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             isScrollControlled: true,
           );
         } else {
-          // Get.bottomSheet(const AddBottomSheet());
+          Get.bottomSheet(const MenuAddBottomSheet());
 
           //ไปเปิด state เลือกวีดีโอ
           // AppService().processUploadVideoFromGallery();

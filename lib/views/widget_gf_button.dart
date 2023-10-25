@@ -11,6 +11,7 @@ class WidgetGfButton extends StatelessWidget {
     required this.label,
     required this.pressFunc,
     this.color,
+    this.textColor,
     this.fullScreen,
     this.gfButtonType,
   }) : super(key: key);
@@ -18,12 +19,14 @@ class WidgetGfButton extends StatelessWidget {
   final String label;
   final Function() pressFunc;
   final Color? color;
+  final Color? textColor;
   final bool? fullScreen;
   final GFButtonType? gfButtonType;
+  
 
   @override
   Widget build(BuildContext context) {
-    return GFButton(
+    return GFButton(textColor: textColor,
       onPressed: pressFunc,
       child: WidgetText(data: label),
       fullWidthButton: fullScreen,
