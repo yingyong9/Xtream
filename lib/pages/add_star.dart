@@ -6,6 +6,7 @@ import 'package:xstream/models/video_model.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
+import 'package:xstream/views/widget_avatar.dart';
 import 'package:xstream/views/widget_back_button.dart';
 import 'package:xstream/views/widget_image_network.dart';
 import 'package:xstream/views/widget_ratting_only.dart';
@@ -75,10 +76,15 @@ class _AddStarState extends State<AddStar> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                WidgetText(
-                                    data: appController
-                                        .addStartReviewModels[index]
-                                        .mapUserModel['name']),
+                                Row(
+                                  children: [
+                                    WidgetAvatar(urlImage: appController.addStartReviewModels[index].mapUserModel['urlAvatar'], size: 25,),
+                                    WidgetText(
+                                        data: appController
+                                            .addStartReviewModels[index]
+                                            .mapUserModel['name']),
+                                  ],
+                                ),
                                 WidgetRatingStarOnly(
                                   initialRating: appController
                                       .addStartReviewModels[index].rating,
@@ -87,18 +93,12 @@ class _AddStarState extends State<AddStar> {
                                 WidgetText(
                                     data: appController
                                         .addStartReviewModels[index].review),
-                                SizedBox(
-                                  height: 120,
-                                  child: appController
-                                          .addStartReviewModels[index]
-                                          .urlImageReviews
-                                          .isEmpty
-                                      ? WidgetImageNetwork(
-                                          urlImage: widget.videoModel.image,
-                                          size: 120,
-                                          boxFit: BoxFit.cover,
-                                        )
-                                      : ListView.builder(
+                                appController.addStartReviewModels[index]
+                                        .urlImageReviews.isEmpty
+                                    ? const SizedBox()
+                                    : SizedBox(
+                                        height: 120,
+                                        child: ListView.builder(
                                           scrollDirection: Axis.horizontal,
                                           physics:
                                               const ClampingScrollPhysics(),
@@ -109,19 +109,22 @@ class _AddStarState extends State<AddStar> {
                                               .length,
                                           itemBuilder: (context, index2) =>
                                               Padding(
-                                                padding: const EdgeInsets.symmetric(horizontal: 4),
-                                                child: WidgetImageNetwork(
-                                                    urlImage: appController
-                                                        .addStartReviewModels[
-                                                            index]
-                                                        .urlImageReviews[index2],
-                                                    size: 120, boxFit: BoxFit.cover,),
-                                              ),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 4),
+                                            child: WidgetImageNetwork(
+                                              urlImage: appController
+                                                  .addStartReviewModels[index]
+                                                  .urlImageReviews[index2],
+                                              size: 120,
+                                              boxFit: BoxFit.cover,
+                                            ),
+                                          ),
                                         ),
-                                ),
-                                const SizedBox(
-                                  height: 32,
-                                )
+                                      ),
+                                      const Divider(color: Colors.white,),
+                                // const SizedBox(
+                                //   height: 32,
+                                // )
                               ],
                             ),
                           ),
