@@ -7,6 +7,7 @@ import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/widget_back_button.dart';
+import 'package:xstream/views/widget_image_network.dart';
 import 'package:xstream/views/widget_ratting_only.dart';
 import 'package:xstream/views/widget_text.dart';
 
@@ -64,7 +65,7 @@ class _AddStarState extends State<AddStar> {
                       ? const SizedBox()
                       : SizedBox(
                           width: boxConstraints.maxWidth,
-                          height: boxConstraints.maxHeight-80,
+                          height: boxConstraints.maxHeight - 80,
                           child: ListView.builder(
                             physics: const ScrollPhysics(),
                             shrinkWrap: true,
@@ -79,11 +80,45 @@ class _AddStarState extends State<AddStar> {
                                         .addStartReviewModels[index]
                                         .mapUserModel['name']),
                                 WidgetRatingStarOnly(
+                                  initialRating: appController
+                                      .addStartReviewModels[index].rating,
                                   ratingUpdateFunc: (p0) {},
                                 ),
                                 WidgetText(
                                     data: appController
                                         .addStartReviewModels[index].review),
+                                SizedBox(
+                                  height: 120,
+                                  child: appController
+                                          .addStartReviewModels[index]
+                                          .urlImageReviews
+                                          .isEmpty
+                                      ? WidgetImageNetwork(
+                                          urlImage: widget.videoModel.image,
+                                          size: 120,
+                                          boxFit: BoxFit.cover,
+                                        )
+                                      : ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          physics:
+                                              const ClampingScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: appController
+                                              .addStartReviewModels[index]
+                                              .urlImageReviews
+                                              .length,
+                                          itemBuilder: (context, index2) =>
+                                              Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 4),
+                                                child: WidgetImageNetwork(
+                                                    urlImage: appController
+                                                        .addStartReviewModels[
+                                                            index]
+                                                        .urlImageReviews[index2],
+                                                    size: 120, boxFit: BoxFit.cover,),
+                                              ),
+                                        ),
+                                ),
                                 const SizedBox(
                                   height: 32,
                                 )
