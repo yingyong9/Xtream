@@ -8,6 +8,7 @@ import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/widget_avatar.dart';
 import 'package:xstream/views/widget_back_button.dart';
+import 'package:xstream/views/widget_gf_button.dart';
 import 'package:xstream/views/widget_image_network.dart';
 import 'package:xstream/views/widget_ratting_only.dart';
 import 'package:xstream/views/widget_text.dart';
@@ -78,7 +79,12 @@ class _AddStarState extends State<AddStar> {
                               children: [
                                 Row(
                                   children: [
-                                    WidgetAvatar(urlImage: appController.addStartReviewModels[index].mapUserModel['urlAvatar'], size: 25,),
+                                    WidgetAvatar(
+                                      urlImage: appController
+                                          .addStartReviewModels[index]
+                                          .mapUserModel['urlAvatar'],
+                                      size: 25,
+                                    ),
                                     WidgetText(
                                         data: appController
                                             .addStartReviewModels[index]
@@ -121,7 +127,9 @@ class _AddStarState extends State<AddStar> {
                                           ),
                                         ),
                                       ),
-                                      const Divider(color: Colors.white,),
+                                const Divider(
+                                  color: Colors.white,
+                                ),
                                 // const SizedBox(
                                 //   height: 32,
                                 // )
@@ -135,6 +143,10 @@ class _AddStarState extends State<AddStar> {
           );
         });
       }),
+      bottomSheet: WidgetGfButton(
+        label: 'ติดดาว',
+        pressFunc: () {},fullScreen: true,color: ColorPlate.red,
+      ),
     );
   }
 }
