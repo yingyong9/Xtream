@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, prefer_final_fields
 
 import 'dart:io';
 
@@ -12,7 +12,6 @@ import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
 import 'package:xstream/pages/add_phone_shopper.dart';
 import 'package:xstream/pages/display_profile_tap_icon.dart';
-import 'package:xstream/pages/list_review.dart';
 import 'package:xstream/pages/review_detail_page.dart';
 import 'package:xstream/pages/searchPage.dart';
 import 'package:xstream/pages/show_map.dart';
@@ -195,7 +194,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           // Get.bottomSheet(const AddBottomSheet());
 
           //ไปเปิด state เลือกวีดีโอ
-          AppService().processUploadVideoFromGallery();
+          // AppService().processUploadVideoFromGallery();
         }
       },
     );
