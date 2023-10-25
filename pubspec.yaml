@@ -68,6 +68,7 @@ dependencies:
   geolocator: ^10.1.0
   google_maps_flutter: ^2.4.0
   
+  
 
 flutter_native_splash:
   color: "#000000"
