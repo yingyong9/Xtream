@@ -6,7 +6,10 @@ import 'package:xstream/models/video_model.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
+import 'package:xstream/views/widget_avatar.dart';
 import 'package:xstream/views/widget_back_button.dart';
+import 'package:xstream/views/widget_gf_button.dart';
+import 'package:xstream/views/widget_image_network.dart';
 import 'package:xstream/views/widget_ratting_only.dart';
 import 'package:xstream/views/widget_text.dart';
 
@@ -64,7 +67,7 @@ class _AddStarState extends State<AddStar> {
                       ? const SizedBox()
                       : SizedBox(
                           width: boxConstraints.maxWidth,
-                          height: boxConstraints.maxHeight-80,
+                          height: boxConstraints.maxHeight - 80,
                           child: ListView.builder(
                             physics: const ScrollPhysics(),
                             shrinkWrap: true,
@@ -74,19 +77,62 @@ class _AddStarState extends State<AddStar> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                WidgetText(
-                                    data: appController
-                                        .addStartReviewModels[index]
-                                        .mapUserModel['name']),
+                                Row(
+                                  children: [
+                                    WidgetAvatar(
+                                      urlImage: appController
+                                          .addStartReviewModels[index]
+                                          .mapUserModel['urlAvatar'],
+                                      size: 25,
+                                    ),
+                                    WidgetText(
+                                        data: appController
+                                            .addStartReviewModels[index]
+                                            .mapUserModel['name']),
+                                  ],
+                                ),
                                 WidgetRatingStarOnly(
+                                  initialRating: appController
+                                      .addStartReviewModels[index].rating,
                                   ratingUpdateFunc: (p0) {},
                                 ),
                                 WidgetText(
                                     data: appController
                                         .addStartReviewModels[index].review),
-                                const SizedBox(
-                                  height: 32,
-                                )
+                                appController.addStartReviewModels[index]
+                                        .urlImageReviews.isEmpty
+                                    ? const SizedBox()
+                                    : SizedBox(
+                                        height: 120,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          physics:
+                                              const ClampingScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: appController
+                                              .addStartReviewModels[index]
+                                              .urlImageReviews
+                                              .length,
+                                          itemBuilder: (context, index2) =>
+                                              Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 4),
+                                            child: WidgetImageNetwork(
+                                              urlImage: appController
+                                                  .addStartReviewModels[index]
+                                                  .urlImageReviews[index2],
+                                              size: 120,
+                                              boxFit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                const Divider(
+                                  color: Colors.white,
+                                ),
+                                // const SizedBox(
+                                //   height: 32,
+                                // )
                               ],
                             ),
                           ),
@@ -97,6 +143,10 @@ class _AddStarState extends State<AddStar> {
           );
         });
       }),
+      bottomSheet: WidgetGfButton(
+        label: 'ติดดาว',
+        pressFunc: () {},fullScreen: true,color: ColorPlate.red,
+      ),
     );
   }
 }

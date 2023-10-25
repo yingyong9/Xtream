@@ -2,25 +2,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-
 class WidgetRatingStarOnly extends StatelessWidget {
   const WidgetRatingStarOnly({
     Key? key,
-    
     this.sizeIcon,
+    this.initialRating,
     this.map,
     required this.ratingUpdateFunc,
   }) : super(key: key);
 
  
   final double? sizeIcon;
+  final double? initialRating;
   final Map<String, dynamic>? map;
   final Function(double) ratingUpdateFunc;
 
   @override
   Widget build(BuildContext context) {
     return RatingBar.builder(
-      initialRating: 0.0,
+      initialRating: initialRating ?? 0.0,
       minRating: 1,
       direction: Axis.horizontal,
       itemCount: 5,
