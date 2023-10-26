@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:xstream/pages/review_page.dart';
 import 'package:xstream/pages/watch_live_video.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_service.dart';
@@ -38,7 +39,8 @@ class MenuAddBottomSheet extends StatelessWidget {
             WidgetGfButton(
               label: 'Travel',
               pressFunc: () {
-                 Get.back();
+                Get.back();
+                 Get.to(ReviewPage(indexReviewCat: 1));
               },
               fullScreen: true,
               gfButtonType: GFButtonType.outline2x,
@@ -48,7 +50,8 @@ class MenuAddBottomSheet extends StatelessWidget {
             WidgetGfButton(
               label: 'Hotel',
               pressFunc: () {
-                 Get.back();
+                Get.back();
+                 Get.to(ReviewPage(indexReviewCat: 2));
               },
               fullScreen: true,
               gfButtonType: GFButtonType.outline2x,
@@ -58,7 +61,8 @@ class MenuAddBottomSheet extends StatelessWidget {
             WidgetGfButton(
               label: 'Food',
               pressFunc: () {
-                 Get.back();
+                Get.back();
+                Get.to(ReviewPage(indexReviewCat: 0));
               },
               fullScreen: true,
               gfButtonType: GFButtonType.outline2x,
@@ -68,7 +72,8 @@ class MenuAddBottomSheet extends StatelessWidget {
             WidgetGfButton(
               label: 'Other',
               pressFunc: () {
-                 Get.back();
+                Get.back();
+                 Get.to(ReviewPage(indexReviewCat: 3));
               },
               fullScreen: true,
               gfButtonType: GFButtonType.outline2x,
@@ -78,7 +83,7 @@ class MenuAddBottomSheet extends StatelessWidget {
             WidgetGfButton(
               label: 'สร้างร้านค้า',
               pressFunc: () {
-                 Get.back();
+                Get.back();
               },
               fullScreen: true,
               gfButtonType: GFButtonType.outline2x,

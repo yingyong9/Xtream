@@ -55,11 +55,7 @@ class _ReviewPageState extends State<ReviewPage> {
             collrctionPlate:
                 AppConstant.collectionPlates[widget.indexReviewCat])
         .then((value) {
-      // print('ขนาดของ plateModels ---> ${appController.plateModels.length}');
-
       appController.searchPlateModels.addAll(appController.plateModels);
-
-      //  print('ขนาดของ searchPlateModels ---> ${appController.searchPlateModels.length}');
     });
   }
 
@@ -88,25 +84,6 @@ class _ReviewPageState extends State<ReviewPage> {
                       children: [
                         SizedBox(
                           width: 250,
-                          // child: Obx(() {
-                          //   return appController.plateModels.isEmpty
-                          //       ? const SizedBox()
-                          //       : DropdownButton(
-                          //           value: null,
-                          //           hint:
-                          //               const WidgetText(data: 'โปรดเลือกร้าน'),
-                          //           items: appController.plateModels
-                          //               .map(
-                          //                 (element) => DropdownMenuItem(
-                          //                   child:
-                          //                       WidgetText(data: element.name),
-                          //                   value: element,
-                          //                 ),
-                          //               )
-                          //               .toList(),
-                          //           onChanged: (value) {},
-                          //         );
-                          // }),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -162,12 +139,6 @@ class _ReviewPageState extends State<ReviewPage> {
                                                   .toLowerCase()
                                                   .contains(p0.toLowerCase()))
                                               .toList();
-
-                                      print(
-                                          'ขนาดของ searchPLatModel ----> ${appController.searchPlateModels.length}');
-
-                                      // appController.searchPlateModels
-                                      //     .addAll(search);
                                     });
                                   } else {
                                     appController.displayListPlate.value =
@@ -220,7 +191,6 @@ class _ReviewPageState extends State<ReviewPage> {
                     sizeIcon: 30,
                     map: appController.foodSum,
                     ratingUpdateFunc: (double rating) {
-                      // appController.foodSum['โดยรวม'] = rating;
                       appController.rating.value = rating;
                     },
                   ),
@@ -238,26 +208,25 @@ class _ReviewPageState extends State<ReviewPage> {
         child: WidgetButton(
           label: 'โพสต์',
           pressFunc: () async {
-            // if (appController.xFiles.isEmpty) {
-            //   AppSnackBar(title: 'ยังไม่มีรูปภาพ', message: 'กรุณาเพิ่มรูปภาพ')
-            //       .errorSnackBar();
-            // } else {
-              if (formStateKey.currentState!.validate()) {
-                var urlImageReviews = <String>[];
 
-                if (appController.xFiles.isNotEmpty) {
-                  urlImageReviews = await AppService().processUploadMultiFile(path: 'review');
-                }
 
-                Map<String, dynamic> map = {};
-                map['nameReview'] = headReviewController.text;
-                map['review'] = reviewController.text;
-                map['type'] = AppConstant.collectionPlates[widget.indexReviewCat];
-                map['rating'] = appController.rating.value;
-                map['urlImageReviews'] = urlImageReviews;
+            if (formStateKey.currentState!.validate()) {
+              var urlImageReviews = <String>[];
 
-                Get.back(result: map);
-              
+              if (appController.xFiles.isNotEmpty) {
+                urlImageReviews =
+                    await AppService().processUploadMultiFile(path: 'review');
+              }
+
+              Map<String, dynamic> map = {};
+              map['nameReview'] = headReviewController.text;
+              map['review'] = reviewController.text;
+              map['type'] = AppConstant.collectionPlates[widget.indexReviewCat];
+              map['rating'] = appController.rating.value;
+              map['urlImageReviews'] = urlImageReviews;
+
+              //ตรงนี่แหละ ที่ Get Back และ ส่ง map กลับ
+              Get.back(result: map);
             }
           },
           fullWidthButton: true,
