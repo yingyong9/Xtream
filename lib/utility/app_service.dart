@@ -933,7 +933,7 @@ class AppService {
       if (value.docs.isNotEmpty) {
         for (var element in value.docs) {
           String docId = element.id;
-          print('##22oct docId ---------> $docId');
+          print('##26oct docId ---------> $docId');
 
           ReviewModel reviewModel = ReviewModel(
               rating: map['rating'],
@@ -988,5 +988,16 @@ class AppService {
         }
       }
     });
+  }
+
+  Future<String> findDocIdPlate(
+      {required String collection, required String name}) async {
+    var result =  FirebaseFirestore.instance
+        .collection(collection)
+        .where('name', isEqualTo: name).get();
+
+        
+
+    return '';
   }
 }
