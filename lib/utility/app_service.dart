@@ -992,12 +992,18 @@ class AppService {
 
   Future<String> findDocIdPlate(
       {required String collection, required String name}) async {
-    var result =  FirebaseFirestore.instance
+    String docIdPlate = '';
+    var result = await FirebaseFirestore.instance
         .collection(collection)
-        .where('name', isEqualTo: name).get();
+        .where('name', isEqualTo: name)
+        .get();
 
-        
+    if (result.docs.isNotEmpty) {
+      for (var element in result.docs) {
+        docIdPlate = element.id;
+      }
+    }
 
-    return '';
+    return docIdPlate;
   }
 }
