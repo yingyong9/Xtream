@@ -1,15 +1,27 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:xstream/models/review_model.dart';
+import 'package:xstream/pages/review_page.dart';
+import 'package:xstream/pages/review_page2.dart';
 import 'package:xstream/pages/watch_live_video.dart';
 import 'package:xstream/style/style.dart';
+import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/widget_gf_button.dart';
 import 'package:xstream/views/widget_icon_button.dart';
 import 'package:xstream/views/widget_text.dart';
 
-class MenuAddBottomSheet extends StatelessWidget {
+class MenuAddBottomSheet extends StatefulWidget {
   const MenuAddBottomSheet({super.key});
+
+  @override
+  State<MenuAddBottomSheet> createState() => _MenuAddBottomSheetState();
+}
+
+class _MenuAddBottomSheetState extends State<MenuAddBottomSheet> {
+  AppController appController = Get.put(AppController());
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +50,8 @@ class MenuAddBottomSheet extends StatelessWidget {
             WidgetGfButton(
               label: 'Travel',
               pressFunc: () {
-                 Get.back();
+                Get.back();
+                Get.to(ReviewPage2(indexReviewCat: 1));
               },
               fullScreen: true,
               gfButtonType: GFButtonType.outline2x,
@@ -48,7 +61,8 @@ class MenuAddBottomSheet extends StatelessWidget {
             WidgetGfButton(
               label: 'Hotel',
               pressFunc: () {
-                 Get.back();
+                Get.back();
+                Get.to(ReviewPage2(indexReviewCat: 2))?.then((value) {});
               },
               fullScreen: true,
               gfButtonType: GFButtonType.outline2x,
@@ -58,7 +72,13 @@ class MenuAddBottomSheet extends StatelessWidget {
             WidgetGfButton(
               label: 'Food',
               pressFunc: () {
-                 Get.back();
+                Get.back();
+                Get.to(const ReviewPage2(indexReviewCat: 0))?.then((value) {
+                  Map<String, dynamic> map = value;
+                  print('##26oct map ที่ได้จาก reviewPost ----> $map');
+
+                 
+                });
               },
               fullScreen: true,
               gfButtonType: GFButtonType.outline2x,
@@ -68,7 +88,8 @@ class MenuAddBottomSheet extends StatelessWidget {
             WidgetGfButton(
               label: 'Other',
               pressFunc: () {
-                 Get.back();
+                Get.back();
+                Get.to(ReviewPage2(indexReviewCat: 3));
               },
               fullScreen: true,
               gfButtonType: GFButtonType.outline2x,
@@ -78,7 +99,7 @@ class MenuAddBottomSheet extends StatelessWidget {
             WidgetGfButton(
               label: 'สร้างร้านค้า',
               pressFunc: () {
-                 Get.back();
+                Get.back();
               },
               fullScreen: true,
               gfButtonType: GFButtonType.outline2x,

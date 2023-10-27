@@ -1,23 +1,26 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/getwidget.dart';
+import 'package:xstream/models/review_model.dart';
 
 import 'package:xstream/pages/register_shop.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
+import 'package:xstream/utility/app_snackbar.dart';
 import 'package:xstream/views/widget_back_button.dart';
-import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_form_line.dart';
 import 'package:xstream/views/widget_gf_button.dart';
 import 'package:xstream/views/widget_ratting.dart';
 import 'package:xstream/views/widget_text.dart';
 
-class ReviewPage extends StatefulWidget {
-  const ReviewPage({
+class ReviewPage2 extends StatefulWidget {
+  const ReviewPage2({
     Key? key,
     required this.indexReviewCat,
   }) : super(key: key);
@@ -25,10 +28,10 @@ class ReviewPage extends StatefulWidget {
   final int indexReviewCat;
 
   @override
-  State<ReviewPage> createState() => _ReviewPageState();
+  State<ReviewPage2> createState() => _ReviewPage2State();
 }
 
-class _ReviewPageState extends State<ReviewPage> {
+class _ReviewPage2State extends State<ReviewPage2> {
   AppController appController = Get.put(AppController());
   TextEditingController headReviewController = TextEditingController();
   TextEditingController reviewController = TextEditingController();
@@ -105,6 +108,9 @@ class _ReviewPageState extends State<ReviewPage> {
                                                 appController
                                                     .searchPlateModels[index]
                                                     .name;
+
+                                            FocusManager.instance.primaryFocus
+                                                ?.unfocus();
                                           },
                                           child: Row(
                                             children: [
@@ -194,9 +200,29 @@ class _ReviewPageState extends State<ReviewPage> {
                       appController.rating.value = rating;
                     },
                   ),
+                  // const SizedBox(
+                  //   height: 64,
+                  // ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 200,
+                        child: CheckboxListTile(
+                          value: false,
+                          onChanged: (value) {},
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: const WidgetText(data: 'ตำแหน่งที่ตั้ง'),
+                        ),
+                      ),
+                    ],
+                  ),
+                  // promotionButton(),
+                  // saveButton(),
+                  // editButton(),
                   const SizedBox(
                     height: 64,
-                  )
+                  ),
                 ],
               ),
             ),
@@ -205,34 +231,114 @@ class _ReviewPageState extends State<ReviewPage> {
       }),
       bottomSheet: Container(
         decoration: const BoxDecoration(color: ColorPlate.back1),
-        child: WidgetButton(
-          label: 'โพสต์',
+        child: WidgetGfButton(
+          label: 'ติดดาว',
           pressFunc: () async {
-
-
             if (formStateKey.currentState!.validate()) {
+              String docIdPlate = await AppService().findDocIdPlate(
+                  collection:
+                      AppConstant.collectionPlates[widget.indexReviewCat],
+                  name: headReviewController.text);
+
+              print('##27oct docIdPlate ----> $docIdPlate');
+
               var urlImageReviews = <String>[];
 
-              if (appController.xFiles.isNotEmpty) {
-                urlImageReviews =
-                    await AppService().processUploadMultiFile(path: 'review');
-              }
+              // if (appController.xFiles.isNotEmpty) {
+              //   urlImageReviews =
+              //       await AppService().processUploadMultiFile(path: 'review2');
+              // }
 
-              Map<String, dynamic> map = {};
-              map['nameReview'] = headReviewController.text;
-              map['review'] = reviewController.text;
-              map['type'] = AppConstant.collectionPlates[widget.indexReviewCat];
-              map['rating'] = appController.rating.value;
-              map['urlImageReviews'] = urlImageReviews;
+              ReviewModel reviewModel = ReviewModel(
+                  rating: appController.rating.value,
+                  review: reviewController.text,
+                  urlImageReviews: urlImageReviews,
+                  timestamp: Timestamp.fromDate(DateTime.now()),
+                  mapUserModel: appController.currentUserModels.last.toMap());
 
-              //ตรงนี่แหละ ที่ Get Back และ ส่ง map กลับ
-              Get.back(result: map);
+              print('##27oct reviewModel ---> ${reviewModel.toMap()}');
+
+              FirebaseFirestore.instance
+                  .collection(
+                      AppConstant.collectionPlates[widget.indexReviewCat])
+                  .doc(docIdPlate)
+                  .collection('review')
+                  .doc()
+                  .set(reviewModel.toMap())
+                  .then((value) {
+                Get.back();
+                AppSnackBar(
+                        title: 'ติดดาวสำเร็จ',
+                        message:
+                            'ติดดาว ${headReviewController.text}')
+                    .normalSnackBar();
+              });
             }
           },
-          fullWidthButton: true,
           color: ColorPlate.red,
+          fullScreen: true,
         ),
       ),
+      // bottomSheet: Container(
+      //   decoration: const BoxDecoration(color: ColorPlate.back1),
+      //   child: WidgetButton(
+      //     label: 'โพสต์',
+      //     pressFunc: () async {
+      //       if (formStateKey.currentState!.validate()) {
+      //         var urlImageReviews = <String>[];
+
+      //         if (appController.xFiles.isNotEmpty) {
+      //           urlImageReviews =
+      //               await AppService().processUploadMultiFile(path: 'review');
+      //         }
+
+      //         Map<String, dynamic> map = {};
+      //         map['nameReview'] = headReviewController.text;
+      //         map['review'] = reviewController.text;
+      //         map['type'] = AppConstant.collectionPlates[widget.indexReviewCat];
+      //         map['rating'] = appController.rating.value;
+      //         map['urlImageReviews'] = urlImageReviews;
+
+      //         //ตรงนี่แหละ ที่ Get Back และ ส่ง map กลับ
+      //         Get.back(result: map);
+      //       }
+      //     },
+      //     fullWidthButton: true,
+      //     color: ColorPlate.red,
+      //   ),
+      // ),
+    );
+  }
+
+  WidgetGfButton editButton() {
+    return WidgetGfButton(
+      label: 'แก้ไข',
+      pressFunc: () {},
+      gfButtonType: GFButtonType.outline2x,
+    );
+  }
+
+  WidgetGfButton saveButton() {
+    return WidgetGfButton(
+      label: 'บันทึก',
+      pressFunc: () async {
+        if (formStateKey.currentState!.validate()) {
+          String docIdPlate = await AppService().findDocIdPlate(
+              collection: AppConstant.collectionPlates[widget.indexReviewCat],
+              name: headReviewController.text);
+
+          print('');
+        }
+      },
+      gfButtonType: GFButtonType.outline2x,
+    );
+  }
+
+  WidgetGfButton promotionButton() {
+    return WidgetGfButton(
+      label: 'โปรโมชั่น',
+      pressFunc: () {},
+      gfButtonType: GFButtonType.outline2x,
     );
   }
 
