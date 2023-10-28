@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:xstream/models/plate_model.dart';
 import 'package:xstream/models/review_model.dart';
 
 import 'package:xstream/pages/register_shop.dart';
@@ -242,37 +243,26 @@ class _ReviewPage2State extends State<ReviewPage2> {
 
               print('##27oct docIdPlate ----> $docIdPlate');
 
-              var urlImageReviews = <String>[];
+              if (docIdPlate.isEmpty) {
+                //ชื่อร้านใหม่
 
-              // if (appController.xFiles.isNotEmpty) {
-              //   urlImageReviews =
-              //       await AppService().processUploadMultiFile(path: 'review2');
-              // }
+                PlateModel plateModel =
+                    PlateModel(name: headReviewController.text, province: '');
 
-              ReviewModel reviewModel = ReviewModel(
-                  rating: appController.rating.value,
-                  review: reviewController.text,
-                  urlImageReviews: urlImageReviews,
-                  timestamp: Timestamp.fromDate(DateTime.now()),
-                  mapUserModel: appController.currentUserModels.last.toMap());
+                DocumentReference documentReference = FirebaseFirestore.instance
+                    .collection(
+                        AppConstant.collectionPlates[widget.indexReviewCat])
+                    .doc();
 
-              print('##27oct reviewModel ---> ${reviewModel.toMap()}');
-
-              FirebaseFirestore.instance
-                  .collection(
-                      AppConstant.collectionPlates[widget.indexReviewCat])
-                  .doc(docIdPlate)
-                  .collection('review')
-                  .doc()
-                  .set(reviewModel.toMap())
-                  .then((value) {
-                Get.back();
-                AppSnackBar(
-                        title: 'ติดดาวสำเร็จ',
-                        message:
-                            'ติดดาว ${headReviewController.text}')
-                    .normalSnackBar();
-              });
+                await documentReference
+                    .set(plateModel.toMap())
+                    .then((value) async {
+                  docIdPlate = documentReference.id;
+                  await methodAddNewReview(docIdPlate);
+                });
+              } else {
+                await methodAddNewReview(docIdPlate);
+              }
             }
           },
           color: ColorPlate.red,
@@ -308,6 +298,38 @@ class _ReviewPage2State extends State<ReviewPage2> {
       //   ),
       // ),
     );
+  }
+
+  Future<void> methodAddNewReview(String docIdPlate) async {
+    var urlImageReviews = <String>[];
+
+    if (appController.xFiles.isNotEmpty) {
+      urlImageReviews =
+          await AppService().processUploadMultiFile(path: 'review2');
+    }
+
+    ReviewModel reviewModel = ReviewModel(
+        rating: appController.rating.value,
+        review: reviewController.text,
+        urlImageReviews: urlImageReviews,
+        timestamp: Timestamp.fromDate(DateTime.now()),
+        mapUserModel: appController.currentUserModels.last.toMap());
+
+    print('##27oct reviewModel ---> ${reviewModel.toMap()}');
+
+    FirebaseFirestore.instance
+        .collection(AppConstant.collectionPlates[widget.indexReviewCat])
+        .doc(docIdPlate)
+        .collection('review')
+        .doc()
+        .set(reviewModel.toMap())
+        .then((value) {
+      Get.back();
+      AppSnackBar(
+              title: 'ติดดาวสำเร็จ',
+              message: 'ติดดาว ${headReviewController.text}')
+          .normalSnackBar();
+    });
   }
 
   WidgetGfButton editButton() {

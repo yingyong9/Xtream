@@ -11,7 +11,6 @@ import 'package:xstream/models/video_model.dart';
 import 'package:xstream/pages/add_star.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
-import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/widget_avatar.dart';
 import 'package:xstream/views/widget_back_button.dart';
 import 'package:xstream/views/widget_form.dart';
@@ -119,7 +118,9 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
                 WidgetGfButton(
                   label: 'Review ${widget.videoModel.mapReview!['nameReview']}',
                   pressFunc: () {
-                    Get.to( AddStar(videoModel: widget.videoModel,));
+                    Get.to(AddStar(
+                      videoModel: widget.videoModel,
+                    ));
                   },
                 ),
                 Obx(() {
