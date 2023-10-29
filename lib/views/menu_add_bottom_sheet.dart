@@ -1,17 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:xstream/models/review_model.dart';
-import 'package:xstream/pages/review_page.dart';
 import 'package:xstream/pages/review_page2.dart';
-import 'package:xstream/pages/watch_live_video.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/widget_gf_button.dart';
-import 'package:xstream/views/widget_icon_button.dart';
-import 'package:xstream/views/widget_text.dart';
 
 class MenuAddBottomSheet extends StatefulWidget {
   const MenuAddBottomSheet({super.key});
@@ -37,7 +31,7 @@ class _MenuAddBottomSheetState extends State<MenuAddBottomSheet> {
           padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 8),
           children: [
             WidgetGfButton(
-              label: 'Video',
+              label: 'Review',
               pressFunc: () {
                 Get.back();
                 AppService().processUploadVideoFromGallery();
@@ -48,7 +42,7 @@ class _MenuAddBottomSheetState extends State<MenuAddBottomSheet> {
               color: Colors.white,
             ),
             WidgetGfButton(
-              label: 'Travel',
+              label: 'นักสำรวจสถานที่ท่องเที่ยว',
               pressFunc: () {
                 Get.back();
                 Get.to(ReviewPage2(indexReviewCat: 1));
@@ -59,7 +53,7 @@ class _MenuAddBottomSheetState extends State<MenuAddBottomSheet> {
               color: Colors.white,
             ),
             WidgetGfButton(
-              label: 'Hotel',
+              label: 'นักสำรวจ Hotel',
               pressFunc: () {
                 Get.back();
                 Get.to(ReviewPage2(indexReviewCat: 2))?.then((value) {});
@@ -70,7 +64,7 @@ class _MenuAddBottomSheetState extends State<MenuAddBottomSheet> {
               color: Colors.white,
             ),
             WidgetGfButton(
-              label: 'Food',
+              label: 'นักสำรวจ Food',
               pressFunc: () {
                 Get.back();
                 Get.to(const ReviewPage2(indexReviewCat: 0))?.then((value) {
@@ -86,10 +80,10 @@ class _MenuAddBottomSheetState extends State<MenuAddBottomSheet> {
               color: Colors.white,
             ),
             WidgetGfButton(
-              label: 'Other',
+              label: 'นักสำรวจทุกอย่าง',
               pressFunc: () {
                 Get.back();
-                Get.to(ReviewPage2(indexReviewCat: 3));
+                Get.to(const ReviewPage2(indexReviewCat: 3));
               },
               fullScreen: true,
               gfButtonType: GFButtonType.outline2x,

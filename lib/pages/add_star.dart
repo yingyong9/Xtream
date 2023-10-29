@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import 'package:xstream/models/video_model.dart';
 import 'package:xstream/style/style.dart';
+import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/widget_avatar.dart';
@@ -28,9 +29,21 @@ class AddStar extends StatefulWidget {
 class _AddStarState extends State<AddStar> {
   AppController appController = Get.put(AppController());
 
+  int? indexReviewCat;
+
   @override
   void initState() {
     super.initState();
+
+    int i = 0;
+
+    for (var element in AppConstant.collectionPlates) {
+      if (element == widget.videoModel.mapReview!['type']) {
+        
+      }
+      i++;
+    }
+
     AppService().processReadPlateWhereNameReview(
         collectionPlate: widget.videoModel.mapReview!['type'],
         namePlate: widget.videoModel.mapReview!['nameReview']);
@@ -145,7 +158,9 @@ class _AddStarState extends State<AddStar> {
       }),
       bottomSheet: WidgetGfButton(
         label: 'ติดดาว',
-        pressFunc: () {},fullScreen: true,color: ColorPlate.red,
+        pressFunc: () {},
+        fullScreen: true,
+        color: ColorPlate.red,
       ),
     );
   }

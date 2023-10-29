@@ -317,16 +317,14 @@ class _DetailPostState extends State<DetailPost> {
     ))!
         .then((value) {
       Map<String, dynamic> map = value;
-      print('##22oct map ที่ได้จาก reviewPage ----> $map');
+      print('##28oct map ที่ได้จาก reviewPage ----> $map');
 
       AppService()
           .processInsertReview(
               collectionName: map['type'], name: map['nameReview'], map: map)
           .then((value) {
-             insertVideoOnly(mapReview: map);
-          });
-
-     
+        insertVideoOnly(mapReview: map);
+      });
     });
   }
 
@@ -334,14 +332,16 @@ class _DetailPostState extends State<DetailPost> {
     String? urlImage = await AppService().processUploadThumbnailVideo(
         fileThumbnail: widget.fileThumbnail, nameFile: widget.nameFileImage);
 
+    // AppService().processInsertReview(
+    //     collectionName: collectionName, name: name, map: map);
+
     AppService()
         .processFtpUploadAndInsertDataVideo(
-      fileVideo: widget.fileVideo,
-      nameFileVideo: widget.nameFileVideo,
-      urlThumbnail: urlImage!,
-      detail: detailController.text,
-      mapReview: mapReview,
-    )
+            fileVideo: widget.fileVideo,
+            nameFileVideo: widget.nameFileVideo,
+            urlThumbnail: urlImage!,
+            detail: detailController.text,
+            mapReview: mapReview ?? appController.specialMapReview)
         .then((value) {
       Get.back();
     });
