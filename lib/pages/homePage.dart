@@ -274,9 +274,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         onDisplayImageProduct: () {
                           _videoListController.currentPlayer.pause();
 
-                          // UserModel ownerVideoUserModel = UserModel.fromMap(
-                          //     appController.videoModels[i].mapUserModel);
-
+                        
                           if (appController.currentUserModels.isEmpty) {
                             Get.bottomSheet(
                               const BottomSheetAuthen(),
@@ -442,8 +440,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       } else {}
                     },
                   ),
-                  // currentPage ?? const WidgetProgress(),
-                  // currentPage == null ? const WidgetProgress() : currentPage ,
+               
                 ],
               ),
             );
@@ -485,11 +482,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                             urlImage: appController.videoModels[index]
                                 .mapReview!['urlImageReviews'].last,
                             size: 80,
-                            // tapFunc: () {
-                            //   Get.to(ListReview(
-                            //     videoModel: appController.videoModels[index],
-                            //   ));
-                            // },
+                           
                           ),
                         ),
                   Container(
@@ -503,9 +496,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           width: 200,
                           child: WidgetText(
                               data: appController
-                                  .videoModels[index].mapReview!['nameReview']),
+                                  .videoModels[index].mapReview!['nameReview'] ?? ''),
                         ),
-                        // const SizedBox(height: 10,),
+                       
                         SizedBox(
                           width: 230,
                           child: Row(
@@ -564,34 +557,5 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           );
   }
 
-  // Widget commentButton() {
-  //   return SizedBox(
-  //     width: 200,
-  //     // margin: const EdgeInsets.only(left: 20),
-  //     child: WidgetButton(
-  //       label: 'แสดงความคิดเห็น ...',
-  //       pressFunc: () {
-  //         if (appController.currentUserModels.isEmpty) {
-  //           Get.bottomSheet(
-  //             const BottomSheetAuthen(),
-  //             isScrollControlled: true,
-  //           );
-  //         } else {
-  //           appController.screenHeights.add(screenHeight! * 0.5 - 50);
-  //           Get.bottomSheet(
-  //             TikTokCommentBottomSheet(
-  //               docIdVideo:
-  //                   appController.docIdVideos[appController.indexVideo.value],
-  //               indexVideo: appController.indexVideo.value,
-  //             ),
-  //           ).then((value) {
-  //             appController.screenHeights.add(screenHeight!);
-  //           });
-  //         }
-  //       },
-  //       // color: ColorPlate.back1.withOpacity(0.5),
-  //       color: GFColors.PRIMARY,
-  //     ),
-  //   );
-  // }
+  
 }
