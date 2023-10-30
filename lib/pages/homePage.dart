@@ -192,10 +192,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             isScrollControlled: true,
           );
         } else {
-          Get.bottomSheet(const MenuAddBottomSheet());
+         
 
           //ไปเปิด state เลือกวีดีโอ
-          // AppService().processUploadVideoFromGallery();
+          AppService().processUploadVideoFromGallery();
         }
       },
     );
@@ -214,10 +214,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               _videoListController.currentPlayer.pause();
               Get.to(const ShowMap());
             },
-            onTiker: () {
-              _videoListController.currentPlayer.pause();
-              Get.to(const AddPhoneShopper());
-            },
+           onStar: (){
+             _videoListController.currentPlayer.pause();
+             Get.bottomSheet(const MenuAddBottomSheet());
+           },
           )
         : Container();
 
@@ -340,10 +340,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         },
                         onShare: () {},
                         onAddButton: () {
-                          print(
-                              'onAddButton Work at uid ของคนที่กด --> ${appController.currentUserModels.last.uid}');
-                          print(
-                              'onAddButton Work at uid ของคนที่จะไปอยู่ด้วย --> ${appController.videoModels[i].mapUserModel['uid']}');
+                         
 
                           AppService().processAddLoginToFriend(
                               mapFriendModel:

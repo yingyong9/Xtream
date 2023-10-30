@@ -6,14 +6,14 @@ import 'package:xstream/views/widget_text.dart';
 
 class WidgetTextButton extends StatelessWidget {
   const WidgetTextButton({
-    Key? key,
+    super.key,
     required this.label,
-    required this.pressFunc,
+     this.pressFunc,
     this.textStyle,
-  }) : super(key: key);
+  });
 
   final String label;
-  final Function() pressFunc;
+  final Function()? pressFunc;
   final TextStyle? textStyle;
   
 

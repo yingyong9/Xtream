@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:xstream/style/style.dart';
 
-class WidgetFormLine extends StatelessWidget {
-  const WidgetFormLine({
+class WidgetFormNoLine extends StatelessWidget {
+  const WidgetFormNoLine({
     super.key,
     this.textEditingController,
     this.hint,
@@ -27,20 +27,24 @@ class WidgetFormLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      validator: validateFunc,
-      onChanged: changeFunc,
-      keyboardType: textInputType ?? TextInputType.text,
-      decoration: InputDecoration(
-        suffixIcon: suffixWidget,
-        prefixIcon: prefixWidget,
-        label: labelWidget,
-        hintText: hint,
-        hintStyle: StandardTextStyle.normalWithOpacity,
-        // filled: true,
-        // border: InputBorder.none,
+    return SizedBox(
+      height: 40,
+      child: TextFormField(
+        validator: validateFunc,
+        onChanged: changeFunc,
+        keyboardType: textInputType ?? TextInputType.text,
+        decoration: InputDecoration(contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          border: InputBorder.none,
+          suffixIcon: suffixWidget,
+          prefixIcon: prefixWidget,
+          label: labelWidget,
+          hintText: hint,
+          hintStyle: StandardTextStyle.normalWithOpacity,
+          // filled: true,
+          // border: InputBorder.none,
+        ),
+        controller: textEditingController,
       ),
-      controller: textEditingController,
     );
   }
 }

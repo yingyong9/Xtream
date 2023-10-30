@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:xstream/models/video_model.dart';
+import 'package:xstream/pages/insert_start.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
@@ -38,9 +39,7 @@ class _AddStarState extends State<AddStar> {
     int i = 0;
 
     for (var element in AppConstant.collectionPlates) {
-      if (element == widget.videoModel.mapReview!['type']) {
-        
-      }
+      if (element == widget.videoModel.mapReview!['type']) {}
       i++;
     }
 
@@ -158,7 +157,9 @@ class _AddStarState extends State<AddStar> {
       }),
       bottomSheet: WidgetGfButton(
         label: 'ติดดาว',
-        pressFunc: () {},
+        pressFunc: () {
+          Get.to(InsertStar(videoModel: widget.videoModel,));
+        },
         fullScreen: true,
         color: ColorPlate.red,
       ),

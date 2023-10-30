@@ -30,19 +30,19 @@ class _MenuAddBottomSheetState extends State<MenuAddBottomSheet> {
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 8),
           children: [
+            // WidgetGfButton(
+            //   label: 'Review',
+            //   pressFunc: () {
+            //     Get.back();
+            //     AppService().processUploadVideoFromGallery();
+            //   },
+            //   fullScreen: true,
+            //   gfButtonType: GFButtonType.outline2x,
+            //   textColor: Colors.white,
+            //   color: Colors.white,
+            // ),
             WidgetGfButton(
-              label: 'Review',
-              pressFunc: () {
-                Get.back();
-                AppService().processUploadVideoFromGallery();
-              },
-              fullScreen: true,
-              gfButtonType: GFButtonType.outline2x,
-              textColor: Colors.white,
-              color: Colors.white,
-            ),
-            WidgetGfButton(
-              label: 'นักสำรวจสถานที่ท่องเที่ยว',
+              label: 'Travel',
               pressFunc: () {
                 Get.back();
                 Get.to(ReviewPage2(indexReviewCat: 1));
@@ -53,7 +53,7 @@ class _MenuAddBottomSheetState extends State<MenuAddBottomSheet> {
               color: Colors.white,
             ),
             WidgetGfButton(
-              label: 'นักสำรวจ Hotel',
+              label: 'Hotel',
               pressFunc: () {
                 Get.back();
                 Get.to(ReviewPage2(indexReviewCat: 2))?.then((value) {});
@@ -64,7 +64,7 @@ class _MenuAddBottomSheetState extends State<MenuAddBottomSheet> {
               color: Colors.white,
             ),
             WidgetGfButton(
-              label: 'นักสำรวจ Food',
+              label: 'Food',
               pressFunc: () {
                 Get.back();
                 Get.to(const ReviewPage2(indexReviewCat: 0))?.then((value) {
@@ -80,7 +80,7 @@ class _MenuAddBottomSheetState extends State<MenuAddBottomSheet> {
               color: Colors.white,
             ),
             WidgetGfButton(
-              label: 'นักสำรวจทุกอย่าง',
+              label: 'Other',
               pressFunc: () {
                 Get.back();
                 Get.to(const ReviewPage2(indexReviewCat: 3));
@@ -90,16 +90,16 @@ class _MenuAddBottomSheetState extends State<MenuAddBottomSheet> {
               textColor: Colors.white,
               color: Colors.white,
             ),
-            WidgetGfButton(
-              label: 'สร้างร้านค้า',
-              pressFunc: () {
-                Get.back();
-              },
-              fullScreen: true,
-              gfButtonType: GFButtonType.outline2x,
-              textColor: Colors.white,
-              color: Colors.white,
-            ),
+            // WidgetGfButton(
+            //   label: 'สร้างร้านค้า',
+            //   pressFunc: () {
+            //     Get.back();
+            //   },
+            //   fullScreen: true,
+            //   gfButtonType: GFButtonType.outline2x,
+            //   textColor: Colors.white,
+            //   color: Colors.white,
+            // ),
           ],
         ),
       ),

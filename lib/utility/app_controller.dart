@@ -73,10 +73,9 @@ class AppController extends GetxController {
   RxList<PlateModel> plateModels = <PlateModel>[].obs;
   RxList<PlateModel> searchPlateModels = <PlateModel>[].obs;
   RxBool displayListPlate = false.obs;
-
   RxList<CommentPostModel> commentPostModels = <CommentPostModel>[].obs;
- 
- RxList<ReviewModel> addStartReviewModels = <ReviewModel>[].obs;
+  RxList<ReviewModel> addStartReviewModels = <ReviewModel>[].obs;
+  RxMap<String, dynamic> specialMapReview = <String, dynamic>{}.obs;
 
- RxMap<String, dynamic> specialMapReview = <String,dynamic>{}.obs;
+  RxDouble rateStar = 0.0.obs;
 }
