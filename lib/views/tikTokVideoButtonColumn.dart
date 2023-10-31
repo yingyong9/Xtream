@@ -66,35 +66,34 @@ class TikTokButtonColumn extends StatelessWidget {
         // color: Colors.grey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container( padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(color: ColorPlate.red),
-              child: WidgetText(data: 'ติดดาว'),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: const BoxDecoration(color: ColorPlate.red),
+              child: const WidgetText(data: '  ติดดาว  '),
             ),
             const SizedBox(
-              height: 8,
+              height: 16,
             ),
             Tapped(
               child: TikTokAvatar(
                 videoModel: videoModel,
                 onAddButton: onAddButton,
+                size: 48,
               ),
               onTap: onAvatar,
             ),
             Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Column(
                   children: [
                     WidgetImage(
                       path: 'images/like.png',
-                      size: 36,
+                      size: 30,
                       tapFunc: () {
-                        print('tab up at docIdVideo ---> $docIdVideo');
-                        print('tab up at indexVideo ---> $indexVideo');
-
                         Map<String, dynamic> map =
                             appController.videoModels[indexVideo].toMap();
                         int up = appController.videoModels[indexVideo].up!;
@@ -122,12 +121,13 @@ class TikTokButtonColumn extends StatelessWidget {
               height: 8,
             ),
             Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 _IconButton(
                   icon: const WidgetImage(
                     path: 'images/comment2.png',
-                    size: 36,
+                    size: 30,
                   ),
                   text:
                       appController.videoModels[indexVideo].comment.toString(),
@@ -136,13 +136,14 @@ class TikTokButtonColumn extends StatelessWidget {
               ],
             ),
             Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Column(
                   children: [
                     WidgetImage(
                       path: 'images/star.png',
-                      size: 36,
+                      size: 30,
                       tapFunc: () {
                         Map<String, dynamic> map =
                             appController.videoModels[indexVideo].toMap();
@@ -170,11 +171,12 @@ class TikTokButtonColumn extends StatelessWidget {
               ],
             ),
             Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 WidgetImage(
                   path: 'images/share.png',
-                  size: 36,
+                  size: 30,
                   tapFunc: () {
                     Map<String, dynamic> map =
                         appController.videoModels[indexVideo].toMap();
@@ -399,13 +401,15 @@ class FavoriteIcon extends StatelessWidget {
 
 class TikTokAvatar extends StatefulWidget {
   const TikTokAvatar({
-    Key? key,
+    super.key,
     required this.videoModel,
     this.onAddButton,
-  }) : super(key: key);
+    this.size,
+  });
 
   final VideoModel videoModel;
   final Function()? onAddButton;
+  final double? size;
 
   @override
   State<TikTokAvatar> createState() => _TikTokAvatarState();
@@ -439,8 +443,8 @@ class _TikTokAvatarState extends State<TikTokAvatar> {
   @override
   Widget build(BuildContext context) {
     Widget avatar = Container(
-      width: SysSize.avatar,
-      height: SysSize.avatar,
+      width: widget.size ?? SysSize.avatar,
+      height: widget.size ?? SysSize.avatar,
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         border: Border.all(
