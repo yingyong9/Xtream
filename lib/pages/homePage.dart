@@ -192,8 +192,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             isScrollControlled: true,
           );
         } else {
-         
-
           //ไปเปิด state เลือกวีดีโอ
           AppService().processUploadVideoFromGallery();
         }
@@ -214,10 +212,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               _videoListController.currentPlayer.pause();
               Get.to(const ShowMap());
             },
-           onStar: (){
-             _videoListController.currentPlayer.pause();
-             Get.bottomSheet(const MenuAddBottomSheet());
-           },
+            onStar: () {
+              _videoListController.currentPlayer.pause();
+
+              Get.to(const ShowMap());
+
+              //เปิด BottomSheet
+              //  Get.bottomSheet(const MenuAddBottomSheet());
+            },
           )
         : Container();
 
@@ -274,7 +276,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         onDisplayImageProduct: () {
                           _videoListController.currentPlayer.pause();
 
-                        
                           if (appController.currentUserModels.isEmpty) {
                             Get.bottomSheet(
                               const BottomSheetAuthen(),
@@ -340,8 +341,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         },
                         onShare: () {},
                         onAddButton: () {
-                         
-
                           AppService().processAddLoginToFriend(
                               mapFriendModel:
                                   appController.videoModels[i].mapUserModel);
@@ -437,7 +436,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       } else {}
                     },
                   ),
-               
                 ],
               ),
             );
@@ -479,7 +477,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                             urlImage: appController.videoModels[index]
                                 .mapReview!['urlImageReviews'].last,
                             size: 80,
-                           
                           ),
                         ),
                   Container(
@@ -492,10 +489,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         SizedBox(
                           width: 200,
                           child: WidgetText(
-                              data: appController
-                                  .videoModels[index].mapReview!['nameReview'] ?? ''),
+                              data: appController.videoModels[index]
+                                      .mapReview!['nameReview'] ??
+                                  ''),
                         ),
-                       
+
                         SizedBox(
                           width: 230,
                           child: Row(
@@ -553,6 +551,4 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             ),
           );
   }
-
-  
 }

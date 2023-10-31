@@ -15,6 +15,7 @@ import 'package:xstream/utility/app_dialog.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/widget_avatar.dart';
 import 'package:xstream/views/widget_button.dart';
+import 'package:xstream/views/widget_gf_button.dart';
 import 'package:xstream/views/widget_icon_button.dart';
 import 'package:xstream/views/widget_image.dart';
 import 'package:xstream/views/widget_image_network.dart';
@@ -36,7 +37,7 @@ class TikTokButtonColumn extends StatelessWidget {
   final int indexVideo;
 
   const TikTokButtonColumn({
-    Key? key,
+    super.key,
     this.bottomPadding,
     required this.isFavorite,
     this.onFavorite,
@@ -49,7 +50,7 @@ class TikTokButtonColumn extends StatelessWidget {
     required this.videoModel,
     required this.docIdVideo,
     required this.indexVideo,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -61,12 +62,20 @@ class TikTokButtonColumn extends StatelessWidget {
         // right: 16,
       ),
       child: SizedBox(
-        width: 60,
+        width: 70,
         // color: Colors.grey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Container( padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(color: ColorPlate.red),
+              child: WidgetText(data: 'ติดดาว'),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
             Tapped(
               child: TikTokAvatar(
                 videoModel: videoModel,

@@ -55,7 +55,7 @@ class _TikTokHeaderState extends State<TikTokHeader> {
     );
     return Container(
       // color: Colors.black.withOpacity(0.3),
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.only(left: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -84,19 +84,17 @@ class _TikTokHeaderState extends State<TikTokHeader> {
           Expanded(
             child: Tapped(
               onTap: widget.onStar,
-              child: Column(
-                children: [
-                  Container(
-                    height: 30,
-                    // color: Colors.black.withOpacity(0.5),
-                    // padding: const EdgeInsets.all(4),
-                    alignment: Alignment.centerRight,
-                    child: WidgetGfButton(
-                      label: 'นักสำรวจ',
-                      pressFunc: () {},color: ColorPlate.red,
-                    ),
-                  ),
-                ],
+              child: Container(
+                height: 30,
+                // color: Colors.black.withOpacity(0.5),
+                // padding: const EdgeInsets.all(4),
+                alignment: Alignment.centerRight,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(color: ColorPlate.red),
+                  child: WidgetText(data: 'นักสำรวจ'),
+                ),
               ),
             ),
           ),
