@@ -440,10 +440,7 @@ class _MiddlePage extends StatelessWidget {
   }
 }
 
-/// 左侧Widget
-///
-/// 通过 [Transform.scale] 进行根据 [offsetX] 缩放
-/// 最小 0.88 最大为 1
+
 class _LeftPageTransform extends StatelessWidget {
   final double? offsetX;
   final Widget? content;

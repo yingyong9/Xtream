@@ -10,6 +10,7 @@ import 'package:video_player/video_player.dart';
 import 'package:xstream/controller/tikTokVideoListController.dart';
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
+import 'package:xstream/pages/add_star.dart';
 import 'package:xstream/pages/display_profile_tap_icon.dart';
 import 'package:xstream/pages/review_detail_page.dart';
 import 'package:xstream/pages/searchPage.dart';
@@ -254,6 +255,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       //ส่วนของ Button ด้านข้าง
                       Widget buttons = TikTokButtonColumn(
                         isFavorite: isF,
+                        onSerway: () {
+                          _videoListController.currentPlayer.pause();
+                          Get.to(AddStar(
+                              videoModel: appController.videoModels[
+                                  appController.indexVideo.value]));
+                        },
                         onAvatar: () {
                           UserModel userModel = UserModel.fromMap(
                               appController.videoModels[i].mapUserModel);

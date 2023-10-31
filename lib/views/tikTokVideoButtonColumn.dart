@@ -8,6 +8,7 @@ import 'package:tapped/tapped.dart';
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
 import 'package:xstream/pages/add_address_delivery.dart';
+import 'package:xstream/pages/add_star.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
@@ -29,6 +30,7 @@ class TikTokButtonColumn extends StatelessWidget {
   final Function? onComment;
   final Function? onShare;
   final Function? onAvatar;
+  final Function? onSerway;
   final Function()? onDisplayImageProduct;
   final Function()? onTapImageLive;
   final Function()? onAddButton;
@@ -44,6 +46,7 @@ class TikTokButtonColumn extends StatelessWidget {
     this.onComment,
     this.onShare,
     this.onAvatar,
+    this.onSerway,
     this.onDisplayImageProduct,
     this.onTapImageLive,
     this.onAddButton,
@@ -68,10 +71,13 @@ class TikTokButtonColumn extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: const BoxDecoration(color: ColorPlate.red),
-              child: const WidgetText(data: '  ติดดาว  '),
+            videoModel.mapReview!.isEmpty ? const SizedBox() : Tapped(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: const BoxDecoration(color: ColorPlate.red),
+                child: const WidgetText(data: '  ติดดาว  '),
+              ),
+              onTap: onSerway,
             ),
             const SizedBox(
               height: 16,
