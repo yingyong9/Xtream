@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xstream/models/review_model.dart';
 
 import 'package:xstream/models/video_model.dart';
 import 'package:xstream/style/style.dart';
@@ -31,6 +33,7 @@ class _InsertStarState extends State<InsertStar> {
   AppController appController = Get.put(AppController());
 
   var options = <String>[];
+  var textEditControllers = <TextEditingController>[];
 
   @override
   void initState() {
@@ -40,16 +43,20 @@ class _InsertStarState extends State<InsertStar> {
         AppConstant.collectionPlates[0]) {
       //Food
       options.addAll(AppConstant.optionFoods);
+      createTextEditController();
     } else if (widget.videoModel.mapReview!['type'] ==
         AppConstant.collectionPlates[1]) {
       //Travel
       options.addAll(AppConstant.optionTravels);
+      createTextEditController();
     } else if (widget.videoModel.mapReview!['type'] ==
         AppConstant.collectionPlates[2]) {
       //Hotel
       options.addAll(AppConstant.optionHotels);
+      createTextEditController();
     } else {
       options.addAll(AppConstant.optionOthers);
+      createTextEditController();
     }
 
     if (appController.rateStar.value != 0.0) {
@@ -58,6 +65,10 @@ class _InsertStarState extends State<InsertStar> {
 
     if (appController.imageNetworkWidgets.isNotEmpty) {
       appController.imageNetworkWidgets.clear();
+    }
+
+    if (appController.xFiles.isNotEmpty) {
+      appController.xFiles.clear();
     }
 
     appController.imageNetworkWidgets.add(inkwellWidget());
@@ -127,8 +138,14 @@ class _InsertStarState extends State<InsertStar> {
                     const WidgetText(data: ' : '),
                     Expanded(
                         child: (index == (options.length - 1))
-                            ? const WidgetFormMultiLine()
-                            : const WidgetFormNoLine()),
+                            ? WidgetFormMultiLine(
+                                textEditingController:
+                                    textEditControllers[index],
+                              )
+                            : WidgetFormNoLine(
+                                textEditingController:
+                                    textEditControllers[index],
+                              )),
                   ],
                 ),
               ),
@@ -170,13 +187,39 @@ class _InsertStarState extends State<InsertStar> {
     );
   }
 
-  void processSentInsertStart() {
+  Future<void> processSentInsertStart() async {
+    var urlImageReviews = <String>[];
 
+    if (appController.xFiles.isNotEmpty) {
+      urlImageReviews =
+          await AppService().processUploadMultiFile(path: 'review');
+    }
 
+    var chooseOptions = <String>[];
 
+    for (var i = 0; i < options.length; i++) {
+      if (textEditControllers[i].text.isNotEmpty) {
+        chooseOptions.add(options[i]);
+      }
+    }
 
+    ReviewModel reviewModel = ReviewModel(
+      rating: appController.rateStar.value,
+      review: '',
+      urlImageReviews: urlImageReviews,
+      timestamp: Timestamp.fromDate(DateTime.now()),
+      mapUserModel: appController.currentUserModels.last.toMap(),
+      options: chooseOptions,
+      valueOptions: [],
+    );
 
-    
-    print('You Click Sent');
+    // print('##1nov You Click Sent reviewModel ----> ${reviewModel.toMap()}');
+    print('##1nov You Click Sent reviewModel at chooseOption ----> ${reviewModel.options}');
+  }
+
+  void createTextEditController() {
+    for (var element in options) {
+      textEditControllers.add(TextEditingController());
+    }
   }
 }

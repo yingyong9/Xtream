@@ -9,12 +9,17 @@ class ReviewModel {
   final List<String> urlImageReviews;
   final Timestamp timestamp;
   final Map<String, dynamic> mapUserModel;
+  final List<String>? options;
+  final List<String>? valueOptions;
+
   ReviewModel({
     required this.rating,
     required this.review,
     required this.urlImageReviews,
     required this.timestamp,
     required this.mapUserModel,
+    this.options,
+    this.valueOptions,
   });
 
   Map<String, dynamic> toMap() {
@@ -24,6 +29,8 @@ class ReviewModel {
       'urlImageReviews': urlImageReviews,
       'timestamp': timestamp,
       'mapUserModel': mapUserModel,
+      'options': options,
+      'valueOptions': valueOptions,
     };
   }
 
@@ -34,10 +41,13 @@ class ReviewModel {
       urlImageReviews: List<String>.from(map['urlImageReviews'] ?? []),
       timestamp: (map['timestamp'] ?? Timestamp(0, 0)),
       mapUserModel: Map<String, dynamic>.from(map['mapUserModel'] ?? {}),
+      options: List<String>.from(map['options'] ?? []),
+      valueOptions: List<String>.from(map['valueOptions'] ?? []),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory ReviewModel.fromJson(String source) => ReviewModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ReviewModel.fromJson(String source) =>
+      ReviewModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }
