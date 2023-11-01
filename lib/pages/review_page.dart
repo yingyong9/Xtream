@@ -1,8 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xstream/models/plate_model.dart';
+import 'package:xstream/models/review_model.dart';
 
 import 'package:xstream/pages/register_shop.dart';
 import 'package:xstream/style/style.dart';
@@ -208,25 +211,90 @@ class _ReviewPageState extends State<ReviewPage> {
         child: WidgetButton(
           label: 'โพสต์',
           pressFunc: () async {
-
-
             if (formStateKey.currentState!.validate()) {
-              var urlImageReviews = <String>[];
+              String docIdPlate = await AppService().findDocIdPlate(
+                  collection:
+                      AppConstant.collectionPlates[widget.indexReviewCat],
+                  name: headReviewController.text);
 
-              if (appController.xFiles.isNotEmpty) {
-                urlImageReviews =
-                    await AppService().processUploadMultiFile(path: 'review');
+              print('##31oct docIdPlate ----> $docIdPlate');
+
+              if (docIdPlate.isEmpty) {
+                //ชื่อร้านใหม่
+
+                PlateModel plateModel =
+                    PlateModel(name: headReviewController.text, province: '');
+
+                DocumentReference documentReference = FirebaseFirestore.instance
+                    .collection(
+                        AppConstant.collectionPlates[widget.indexReviewCat])
+                    .doc();
+
+                await documentReference
+                    .set(plateModel.toMap())
+                    .then((value) async {
+                  docIdPlate = documentReference.id;
+
+                  print('##1nov docIdPlate ใหม่ที่ได้ ----> $docIdPlate');
+
+                  var urlImageReviews = <String>[];
+
+                  if (appController.xFiles.isNotEmpty) {
+                    urlImageReviews = await AppService()
+                        .processUploadMultiFile(path: 'review');
+                  }
+
+                  await methodAddNewReview(docIdPlate).then((value) {
+                    Map<String, dynamic> map = {};
+                    map['nameReview'] = headReviewController.text;
+                    map['review'] = reviewController.text;
+                    map['type'] =
+                        AppConstant.collectionPlates[widget.indexReviewCat];
+                    map['rating'] = appController.rating.value;
+                    map['urlImageReviews'] = urlImageReviews;
+
+                    //ตรงนี่แหละ ที่ Get Back และ ส่ง map กลับ
+                    Get.back(result: map);
+                  });
+                });
+              } else {
+                var urlImageReviews = <String>[];
+
+                if (appController.xFiles.isNotEmpty) {
+                  urlImageReviews =
+                      await AppService().processUploadMultiFile(path: 'review');
+                }
+
+                await methodAddNewReview(docIdPlate).then((value) {
+                  Map<String, dynamic> map = {};
+                  map['nameReview'] = headReviewController.text;
+                  map['review'] = reviewController.text;
+                  map['type'] =
+                      AppConstant.collectionPlates[widget.indexReviewCat];
+                  map['rating'] = appController.rating.value;
+                  map['urlImageReviews'] = urlImageReviews;
+
+                  //ตรงนี่แหละ ที่ Get Back และ ส่ง map กลับ
+                  Get.back(result: map);
+                });
               }
 
-              Map<String, dynamic> map = {};
-              map['nameReview'] = headReviewController.text;
-              map['review'] = reviewController.text;
-              map['type'] = AppConstant.collectionPlates[widget.indexReviewCat];
-              map['rating'] = appController.rating.value;
-              map['urlImageReviews'] = urlImageReviews;
+              // var urlImageReviews = <String>[];
 
-              //ตรงนี่แหละ ที่ Get Back และ ส่ง map กลับ
-              Get.back(result: map);
+              // if (appController.xFiles.isNotEmpty) {
+              //   urlImageReviews =
+              //       await AppService().processUploadMultiFile(path: 'review');
+              // }
+
+              // Map<String, dynamic> map = {};
+              // map['nameReview'] = headReviewController.text;
+              // map['review'] = reviewController.text;
+              // map['type'] = AppConstant.collectionPlates[widget.indexReviewCat];
+              // map['rating'] = appController.rating.value;
+              // map['urlImageReviews'] = urlImageReviews;
+
+              // //ตรงนี่แหละ ที่ Get Back และ ส่ง map กลับ
+              // Get.back(result: map);
             }
           },
           fullWidthButton: true,
@@ -311,6 +379,32 @@ class _ReviewPageState extends State<ReviewPage> {
         ),
       ),
     );
+  }
+
+  Future<void> methodAddNewReview(String docIdPlate) async {
+    var urlImageReviews = <String>[];
+
+    if (appController.xFiles.isNotEmpty) {
+      urlImageReviews =
+          await AppService().processUploadMultiFile(path: 'review2');
+    }
+
+    ReviewModel reviewModel = ReviewModel(
+        rating: appController.rating.value,
+        review: reviewController.text,
+        urlImageReviews: urlImageReviews,
+        timestamp: Timestamp.fromDate(DateTime.now()),
+        mapUserModel: appController.currentUserModels.last.toMap());
+
+    print('##27oct reviewModel ---> ${reviewModel.toMap()}');
+
+    FirebaseFirestore.instance
+        .collection(AppConstant.collectionPlates[widget.indexReviewCat])
+        .doc(docIdPlate)
+        .collection('review')
+        .doc()
+        .set(reviewModel.toMap())
+        .then((value) {});
   }
 }
 

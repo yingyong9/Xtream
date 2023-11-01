@@ -2,6 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:xstream/style/style.dart';
 
 class AppConstant {
+  static List<String> optionFoods = <String>[
+    'รสชาติ',
+    'วัตถุติบ',
+    'ราคา',
+    'บริการ',
+    'สภาพแวดล้อม',
+    'อื่นๆ',
+  ];
+  static List<String> optionTravels = <String>[
+    'รสชาติ2',
+    'รสชาติ2',
+    'วัตถุติบ2',
+    'ราคา',
+    'บริการ',
+    'สภาพแวดล้อม',
+    'อื่นๆ',
+  ];
+  static List<String> optionHotels = <String>[
+    'รสชาติ3',
+    'วัตถุติบ3',
+    'วัตถุติบ3',
+    'ราคา',
+    'บริการ',
+    'สภาพแวดล้อม3',
+    'อื่นๆ',
+  ];
+  static List<String> optionOthers = <String>[
+    'รสชาติ4',
+    'วัตถุติบ4',
+    'วัตถุติบ3',
+    'ราคา',
+    'บริการ',
+    'สภาพแวดล้อม3',
+    'อื่นๆ',
+  ];
+
+
   static List<String> reviewCats = <String>[
     'อาหาร',
     'ท่องเทียว/ทัวร์',
@@ -43,5 +80,6 @@ class AppConstant {
         color: color ?? ColorPlate.white,
       );
 
-  BoxDecoration borderBox() => BoxDecoration(border: Border.all(color: ColorPlate.gray));
+  BoxDecoration borderBox() =>
+      BoxDecoration(border: Border.all(color: ColorPlate.gray));
 }

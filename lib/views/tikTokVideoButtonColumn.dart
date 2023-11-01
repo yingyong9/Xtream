@@ -8,6 +8,7 @@ import 'package:tapped/tapped.dart';
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
 import 'package:xstream/pages/add_address_delivery.dart';
+import 'package:xstream/pages/add_star.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
@@ -15,6 +16,7 @@ import 'package:xstream/utility/app_dialog.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/widget_avatar.dart';
 import 'package:xstream/views/widget_button.dart';
+import 'package:xstream/views/widget_gf_button.dart';
 import 'package:xstream/views/widget_icon_button.dart';
 import 'package:xstream/views/widget_image.dart';
 import 'package:xstream/views/widget_image_network.dart';
@@ -28,6 +30,7 @@ class TikTokButtonColumn extends StatelessWidget {
   final Function? onComment;
   final Function? onShare;
   final Function? onAvatar;
+  final Function? onSerway;
   final Function()? onDisplayImageProduct;
   final Function()? onTapImageLive;
   final Function()? onAddButton;
@@ -36,20 +39,21 @@ class TikTokButtonColumn extends StatelessWidget {
   final int indexVideo;
 
   const TikTokButtonColumn({
-    Key? key,
+    super.key,
     this.bottomPadding,
     required this.isFavorite,
     this.onFavorite,
     this.onComment,
     this.onShare,
     this.onAvatar,
+    this.onSerway,
     this.onDisplayImageProduct,
     this.onTapImageLive,
     this.onAddButton,
     required this.videoModel,
     required this.docIdVideo,
     required this.indexVideo,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -61,31 +65,41 @@ class TikTokButtonColumn extends StatelessWidget {
         // right: 16,
       ),
       child: SizedBox(
-        width: 60,
+        width: 70,
         // color: Colors.grey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            videoModel.mapReview!.isEmpty ? const SizedBox() : Tapped(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: const BoxDecoration(color: ColorPlate.red),
+                child: const WidgetText(data: '  ติดดาว  '),
+              ),
+              onTap: onSerway,
+            ),
+            const SizedBox(
+              height: 16,
+            ),
             Tapped(
               child: TikTokAvatar(
                 videoModel: videoModel,
                 onAddButton: onAddButton,
+                size: 48,
               ),
               onTap: onAvatar,
             ),
             Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Column(
                   children: [
                     WidgetImage(
                       path: 'images/like.png',
-                      size: 36,
+                      size: 30,
                       tapFunc: () {
-                        print('tab up at docIdVideo ---> $docIdVideo');
-                        print('tab up at indexVideo ---> $indexVideo');
-
                         Map<String, dynamic> map =
                             appController.videoModels[indexVideo].toMap();
                         int up = appController.videoModels[indexVideo].up!;
@@ -113,12 +127,13 @@ class TikTokButtonColumn extends StatelessWidget {
               height: 8,
             ),
             Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 _IconButton(
                   icon: const WidgetImage(
                     path: 'images/comment2.png',
-                    size: 36,
+                    size: 30,
                   ),
                   text:
                       appController.videoModels[indexVideo].comment.toString(),
@@ -127,13 +142,14 @@ class TikTokButtonColumn extends StatelessWidget {
               ],
             ),
             Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Column(
                   children: [
                     WidgetImage(
                       path: 'images/star.png',
-                      size: 36,
+                      size: 30,
                       tapFunc: () {
                         Map<String, dynamic> map =
                             appController.videoModels[indexVideo].toMap();
@@ -161,11 +177,12 @@ class TikTokButtonColumn extends StatelessWidget {
               ],
             ),
             Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 WidgetImage(
                   path: 'images/share.png',
-                  size: 36,
+                  size: 30,
                   tapFunc: () {
                     Map<String, dynamic> map =
                         appController.videoModels[indexVideo].toMap();
@@ -390,13 +407,15 @@ class FavoriteIcon extends StatelessWidget {
 
 class TikTokAvatar extends StatefulWidget {
   const TikTokAvatar({
-    Key? key,
+    super.key,
     required this.videoModel,
     this.onAddButton,
-  }) : super(key: key);
+    this.size,
+  });
 
   final VideoModel videoModel;
   final Function()? onAddButton;
+  final double? size;
 
   @override
   State<TikTokAvatar> createState() => _TikTokAvatarState();
@@ -430,8 +449,8 @@ class _TikTokAvatarState extends State<TikTokAvatar> {
   @override
   Widget build(BuildContext context) {
     Widget avatar = Container(
-      width: SysSize.avatar,
-      height: SysSize.avatar,
+      width: widget.size ?? SysSize.avatar,
+      height: widget.size ?? SysSize.avatar,
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         border: Border.all(

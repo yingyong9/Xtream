@@ -10,7 +10,7 @@ import 'package:video_player/video_player.dart';
 import 'package:xstream/controller/tikTokVideoListController.dart';
 import 'package:xstream/models/user_model.dart';
 import 'package:xstream/models/video_model.dart';
-import 'package:xstream/pages/add_phone_shopper.dart';
+import 'package:xstream/pages/add_star.dart';
 import 'package:xstream/pages/display_profile_tap_icon.dart';
 import 'package:xstream/pages/review_detail_page.dart';
 import 'package:xstream/pages/searchPage.dart';
@@ -22,7 +22,6 @@ import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/utility/app_snackbar.dart';
 import 'package:xstream/views/bottom_sheet_authen.dart';
-import 'package:xstream/views/menu_add_bottom_sheet.dart';
 import 'package:xstream/views/product_bottomSheet.dart';
 import 'package:xstream/views/tikTokCommentBottomSheet.dart';
 import 'package:xstream/views/tikTokHeader.dart';
@@ -192,8 +191,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             isScrollControlled: true,
           );
         } else {
-         
-
           //ไปเปิด state เลือกวีดีโอ
           AppService().processUploadVideoFromGallery();
         }
@@ -214,10 +211,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               _videoListController.currentPlayer.pause();
               Get.to(const ShowMap());
             },
-           onStar: (){
-             _videoListController.currentPlayer.pause();
-             Get.bottomSheet(const MenuAddBottomSheet());
-           },
+            onStar: () {
+              _videoListController.currentPlayer.pause();
+
+              Get.to(const ShowMap());
+
+              //เปิด BottomSheet
+              //  Get.bottomSheet(const MenuAddBottomSheet());
+            },
           )
         : Container();
 
@@ -254,6 +255,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       //ส่วนของ Button ด้านข้าง
                       Widget buttons = TikTokButtonColumn(
                         isFavorite: isF,
+                        onSerway: () {
+                          _videoListController.currentPlayer.pause();
+                          Get.to(AddStar(
+                              videoModel: appController.videoModels[
+                                  appController.indexVideo.value]));
+                        },
                         onAvatar: () {
                           UserModel userModel = UserModel.fromMap(
                               appController.videoModels[i].mapUserModel);
@@ -274,7 +281,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         onDisplayImageProduct: () {
                           _videoListController.currentPlayer.pause();
 
-                        
                           if (appController.currentUserModels.isEmpty) {
                             Get.bottomSheet(
                               const BottomSheetAuthen(),
@@ -340,8 +346,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         },
                         onShare: () {},
                         onAddButton: () {
-                         
-
                           AppService().processAddLoginToFriend(
                               mapFriendModel:
                                   appController.videoModels[i].mapUserModel);
@@ -437,7 +441,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       } else {}
                     },
                   ),
-               
                 ],
               ),
             );
@@ -479,7 +482,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                             urlImage: appController.videoModels[index]
                                 .mapReview!['urlImageReviews'].last,
                             size: 80,
-                           
                           ),
                         ),
                   Container(
@@ -492,10 +494,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         SizedBox(
                           width: 200,
                           child: WidgetText(
-                              data: appController
-                                  .videoModels[index].mapReview!['nameReview'] ?? ''),
+                              data: appController.videoModels[index]
+                                      .mapReview!['nameReview'] ??
+                                  ''),
                         ),
-                       
+
                         SizedBox(
                           width: 230,
                           child: Row(
@@ -553,6 +556,4 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             ),
           );
   }
-
-  
 }

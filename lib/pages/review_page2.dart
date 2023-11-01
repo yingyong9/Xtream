@@ -237,14 +237,14 @@ class _ReviewPage2State extends State<ReviewPage2> {
             Expanded(
               flex: 1,
               child: WidgetGfButton(
-                label: 'ติดดาว',
+                label: 'บันทึก',
                 pressFunc: () async {
                   if (formStateKey.currentState!.validate()) {
                     await processAddNewReview().then((value) {
                       Get.back();
                       AppSnackBar(
-                              title: 'ติดดาวสำเร็จ',
-                              message: 'ติดดาว ${headReviewController.text}')
+                              title: 'บันทึกสำเร็จ',
+                              message: 'การสำรวจ ${headReviewController.text} สมบูรณ์แล้ว ')
                           .normalSnackBar();
                     });
                   }
@@ -289,6 +289,7 @@ class _ReviewPage2State extends State<ReviewPage2> {
   }
 
   Future<void> processAddNewReview() async {
+
     String docIdPlate = await AppService().findDocIdPlate(
         collection: AppConstant.collectionPlates[widget.indexReviewCat],
         name: headReviewController.text);
@@ -338,11 +339,7 @@ class _ReviewPage2State extends State<ReviewPage2> {
         .doc()
         .set(reviewModel.toMap())
         .then((value) {
-      // Get.back();
-      // AppSnackBar(
-      //         title: 'ติดดาวสำเร็จ',
-      //         message: 'ติดดาว ${headReviewController.text}')
-      //     .normalSnackBar();
+     
     });
   }
 

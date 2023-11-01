@@ -17,9 +17,9 @@ import 'package:xstream/views/widget_text.dart';
 
 class AddStar extends StatefulWidget {
   const AddStar({
-    Key? key,
+    super.key,
     required this.videoModel,
-  }) : super(key: key);
+  });
 
   final VideoModel videoModel;
 

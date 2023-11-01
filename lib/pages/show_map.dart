@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:xstream/pages/detail_discovery.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
+import 'package:xstream/views/menu_add_bottom_sheet.dart';
 import 'package:xstream/views/widget_back_button.dart';
 import 'package:xstream/views/widget_button.dart';
 import 'package:xstream/views/widget_text.dart';
@@ -47,7 +48,7 @@ class _ShowMapState extends State<ShowMap> {
                             ),
                             myLocationEnabled: true,
                           ),
-                          const WidgetBackButton(),
+                          const WidgetBackButton(color: Colors.black,),
                         ],
                       ),
                     ));
@@ -57,9 +58,10 @@ class _ShowMapState extends State<ShowMap> {
         decoration: BoxDecoration(color: Colors.grey.shade200),
         child: WidgetButton(
           fullWidthButton: true,
-          label: 'คลิกที่นี่',
+          label: 'ไปสำรวจกัน',
           pressFunc: () {
-            Get.to(const DetailDiscovery());
+            // Get.to(const DetailDiscovery());
+            Get.bottomSheet(const MenuAddBottomSheet());
           },
         ),
       ),

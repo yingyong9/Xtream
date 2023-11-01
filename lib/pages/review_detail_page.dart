@@ -21,10 +21,10 @@ import 'package:xstream/views/widget_text.dart';
 
 class ReviewDetailPage extends StatefulWidget {
   const ReviewDetailPage({
-    Key? key,
+    super.key,
     required this.videoModel,
     required this.docIdVideo,
-  }) : super(key: key);
+  });
 
   final VideoModel videoModel;
   final String docIdVideo;

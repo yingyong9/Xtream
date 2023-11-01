@@ -4,6 +4,7 @@ import 'package:tapped/tapped.dart';
 import 'package:xstream/style/style.dart';
 
 import 'package:xstream/utility/app_constant.dart';
+import 'package:xstream/views/widget_gf_button.dart';
 import 'package:xstream/views/widget_text.dart';
 
 import 'selectText.dart';
@@ -54,7 +55,7 @@ class _TikTokHeaderState extends State<TikTokHeader> {
     );
     return Container(
       // color: Colors.black.withOpacity(0.3),
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.only(left: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -80,59 +81,22 @@ class _TikTokHeaderState extends State<TikTokHeader> {
               child: headSwitch,
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Expanded(
-              //   child: Tapped(
-              //     onTap: widget.onDiscover,
-              //     child: Container(
-              //       color: Colors.black.withOpacity(0),
-              //       padding: const EdgeInsets.all(4),
-              //       alignment: Alignment.centerRight,
-              //       child: const WidgetText(data: 'นักสำรวจ'),
-              //     ),
-              //   ),
-              // ),
-              // Expanded(
-              //   child: Tapped(
-              //     onTap: widget.onTiker,
-              //     child: Container(
-              //       color: Colors.black.withOpacity(0),
-              //       padding: const EdgeInsets.all(4),
-              //       alignment: Alignment.centerRight,
-              //       child:  WidgetText(data: 'Tiker',textStyle: AppConstant().bodyStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-              //     ),
-              //   ),
-              // ),
-              Expanded(
-                child: Tapped(
-                  onTap: widget.onStar,
-                  child: Column(
-                    children: [
-                      Container(height: 30,
-                        // color: Colors.black.withOpacity(0.5),
-                        // padding: const EdgeInsets.all(4),
-                        alignment: Alignment.centerRight,
-                        child: Row(mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.star, color: Colors.yellow,),
-                            const SizedBox(width: 8,),
-                            WidgetText(
-                              data: 'ติดดาว',
-                              textStyle: AppConstant().bodyStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                  color: ColorPlate.red),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+          Expanded(
+            child: Tapped(
+              onTap: widget.onStar,
+              child: Container(
+                height: 30,
+                // color: Colors.black.withOpacity(0.5),
+                // padding: const EdgeInsets.all(4),
+                alignment: Alignment.centerRight,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(color: ColorPlate.red),
+                  child: WidgetText(data: 'นักสำรวจ'),
                 ),
               ),
-            ],
+            ),
           ),
           // Expanded(
           //   child: Tapped(
