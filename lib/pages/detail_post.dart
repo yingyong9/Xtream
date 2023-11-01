@@ -329,6 +329,7 @@ class _DetailPostState extends State<DetailPost> {
   }
 
   Future<void> insertVideoOnly({Map<String, dynamic>? mapReview}) async {
+    
     String? urlImage = await AppService().processUploadThumbnailVideo(
         fileThumbnail: widget.fileThumbnail, nameFile: widget.nameFileImage);
 

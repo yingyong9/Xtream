@@ -234,12 +234,49 @@ class _ReviewPageState extends State<ReviewPage> {
                     .set(plateModel.toMap())
                     .then((value) async {
                   docIdPlate = documentReference.id;
-                  await methodAddNewReview(docIdPlate)
-                      .then((value) => Get.back());
+
+                  print('##1nov docIdPlate ใหม่ที่ได้ ----> $docIdPlate');
+
+                  var urlImageReviews = <String>[];
+
+                  if (appController.xFiles.isNotEmpty) {
+                    urlImageReviews = await AppService()
+                        .processUploadMultiFile(path: 'review');
+                  }
+
+                  await methodAddNewReview(docIdPlate).then((value) {
+                    Map<String, dynamic> map = {};
+                    map['nameReview'] = headReviewController.text;
+                    map['review'] = reviewController.text;
+                    map['type'] =
+                        AppConstant.collectionPlates[widget.indexReviewCat];
+                    map['rating'] = appController.rating.value;
+                    map['urlImageReviews'] = urlImageReviews;
+
+                    //ตรงนี่แหละ ที่ Get Back และ ส่ง map กลับ
+                    Get.back(result: map);
+                  });
                 });
               } else {
-                await methodAddNewReview(docIdPlate)
-                    .then((value) => Get.back());
+                var urlImageReviews = <String>[];
+
+                if (appController.xFiles.isNotEmpty) {
+                  urlImageReviews =
+                      await AppService().processUploadMultiFile(path: 'review');
+                }
+
+                await methodAddNewReview(docIdPlate).then((value) {
+                  Map<String, dynamic> map = {};
+                  map['nameReview'] = headReviewController.text;
+                  map['review'] = reviewController.text;
+                  map['type'] =
+                      AppConstant.collectionPlates[widget.indexReviewCat];
+                  map['rating'] = appController.rating.value;
+                  map['urlImageReviews'] = urlImageReviews;
+
+                  //ตรงนี่แหละ ที่ Get Back และ ส่ง map กลับ
+                  Get.back(result: map);
+                });
               }
 
               // var urlImageReviews = <String>[];
