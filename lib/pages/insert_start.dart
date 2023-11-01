@@ -82,7 +82,9 @@ class _InsertStarState extends State<InsertStar> {
                       ? Colors.white30
                       : ColorPlate.red),
               pressFunc: () {
-                if (appController.rateStar.value != 0.0) {}
+                if (appController.rateStar.value != 0.0) {
+                  processSentInsertStart();
+                }
               },
             );
           })
@@ -166,5 +168,15 @@ class _InsertStarState extends State<InsertStar> {
       mainAxisSpacing: 4,
       crossAxisSpacing: 4,
     );
+  }
+
+  void processSentInsertStart() {
+
+
+
+
+
+    
+    print('You Click Sent');
   }
 }
