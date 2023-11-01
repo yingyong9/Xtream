@@ -30,9 +30,27 @@ class InsertStar extends StatefulWidget {
 class _InsertStarState extends State<InsertStar> {
   AppController appController = Get.put(AppController());
 
+  var options = <String>[];
+
   @override
   void initState() {
     super.initState();
+
+    if (widget.videoModel.mapReview!['type'] ==
+        AppConstant.collectionPlates[0]) {
+      //Food
+      options.addAll(AppConstant.optionFoods);
+    } else if (widget.videoModel.mapReview!['type'] ==
+        AppConstant.collectionPlates[1]) {
+      //Travel
+      options.addAll(AppConstant.optionTravels);
+    } else if (widget.videoModel.mapReview!['type'] ==
+        AppConstant.collectionPlates[2]) {
+      //Hotel
+      options.addAll(AppConstant.optionHotels);
+    } else {
+      options.addAll(AppConstant.optionOthers);
+    }
 
     if (appController.rateStar.value != 0.0) {
       appController.rateStar.value = 0.0;
@@ -64,9 +82,7 @@ class _InsertStarState extends State<InsertStar> {
                       ? Colors.white30
                       : ColorPlate.red),
               pressFunc: () {
-                if (appController.rateStar.value != 0.0) {
-                  
-                }
+                if (appController.rateStar.value != 0.0) {}
               },
             );
           })
@@ -97,41 +113,22 @@ class _InsertStarState extends State<InsertStar> {
               ),
               imageGridView(),
               // const WidgetFormMultiLine(hint: 'เขียนรีวิวสถานที่นี่้',maxLines: 10,),
-              Row(
-                children: [
-                  WidgetText(data: 'รสชาติ :'),
-                  Expanded(child: WidgetFormNoLine()),
-                ],
-              ),
-              Row(
-                children: [
-                  WidgetText(data: 'วัตถุดิบ :'),
-                  Expanded(child: WidgetFormNoLine()),
-                ],
-              ),
-              Row(
-                children: [
-                  WidgetText(data: 'ราคา :'),
-                  Expanded(child: WidgetFormNoLine()),
-                ],
-              ),
-              Row(
-                children: [
-                  WidgetText(data: 'บริการ :'),
-                  Expanded(child: WidgetFormNoLine()),
-                ],
-              ),
-              Row(
-                children: [
-                  WidgetText(data: 'สถาพแวดล้อม :'),
-                  Expanded(child: WidgetFormNoLine()),
-                ],
-              ),
-              Row(
-                children: [
-                  WidgetText(data: 'อื่นๆ :'),
-                  Expanded(child: WidgetFormNoLine()),
-                ],
+
+              ListView.builder(
+                physics: const ScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: options.length,
+                itemBuilder: (context, index) => Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    WidgetText(data: options[index]),
+                    const WidgetText(data: ' : '),
+                    Expanded(
+                        child: (index == (options.length - 1))
+                            ? const WidgetFormMultiLine()
+                            : const WidgetFormNoLine()),
+                  ],
+                ),
               ),
             ],
           ),
