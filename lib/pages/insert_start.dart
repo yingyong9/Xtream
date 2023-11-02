@@ -10,7 +10,6 @@ import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
 import 'package:xstream/views/widget_back_button.dart';
-import 'package:xstream/views/widget_form_line.dart';
 import 'package:xstream/views/widget_form_multiline.dart';
 import 'package:xstream/views/widget_form_no_line.dart';
 import 'package:xstream/views/widget_ratting_only.dart';
@@ -125,8 +124,6 @@ class _InsertStarState extends State<InsertStar> {
                 ),
               ),
               imageGridView(),
-              // const WidgetFormMultiLine(hint: 'เขียนรีวิวสถานที่นี่้',maxLines: 10,),
-
               ListView.builder(
                 physics: const ScrollPhysics(),
                 shrinkWrap: true,
@@ -134,8 +131,16 @@ class _InsertStarState extends State<InsertStar> {
                 itemBuilder: (context, index) => Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    WidgetText(data: options[index]),
-                    const WidgetText(data: ' : '),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      height: 32,
+                      child: WidgetText(data: options[index]),
+                    ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      height: 32,
+                      child: const WidgetText(data: ' : '),
+                    ),
                     Expanded(
                         child: (index == (options.length - 1))
                             ? WidgetFormMultiLine(
@@ -196,10 +201,12 @@ class _InsertStarState extends State<InsertStar> {
     }
 
     var chooseOptions = <String>[];
+    var chooseValue = <String>[];
 
     for (var i = 0; i < options.length; i++) {
       if (textEditControllers[i].text.isNotEmpty) {
         chooseOptions.add(options[i]);
+        chooseValue.add(textEditControllers[i].text);
       }
     }
 
@@ -210,11 +217,24 @@ class _InsertStarState extends State<InsertStar> {
       timestamp: Timestamp.fromDate(DateTime.now()),
       mapUserModel: appController.currentUserModels.last.toMap(),
       options: chooseOptions,
-      valueOptions: [],
+      valueOptions: chooseValue,
     );
 
     // print('##1nov You Click Sent reviewModel ----> ${reviewModel.toMap()}');
-    print('##1nov You Click Sent reviewModel at chooseOption ----> ${reviewModel.options}');
+    print(
+        '##1nov You Click Sent reviewModel at chooseOption ----> ${reviewModel.options}');
+    print(
+        '##1nov You Click Sent reviewModel at chooseValue ----> ${reviewModel.valueOptions}');
+
+    AppService()
+        .processInsertReview(
+            collectionName: widget.videoModel.mapReview!['type'],
+            name: widget.videoModel.mapReview!['nameReview'],
+            map: reviewModel.toMap())
+        .then((value) {
+      print('##2nov Success insert Review');
+      Get.back();
+    });
   }
 
   void createTextEditController() {

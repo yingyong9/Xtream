@@ -76,6 +76,7 @@ class AppController extends GetxController {
   RxList<CommentPostModel> commentPostModels = <CommentPostModel>[].obs;
   RxList<ReviewModel> addStartReviewModels = <ReviewModel>[].obs;
   RxMap<String, dynamic> specialMapReview = <String, dynamic>{}.obs;
-
   RxDouble rateStar = 0.0.obs;
+
+  RxDouble totalRating = 0.0.obs;
 }

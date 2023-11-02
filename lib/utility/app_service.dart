@@ -53,6 +53,12 @@ class AppService {
     return dateFormat.format(timestamp.toDate());
   }
 
+  String doubleToString({required double number}) {
+    NumberFormat numberFormat = NumberFormat('##0.00', 'en_US');
+    String result = numberFormat.format(number);
+    return result;
+  }
+
   Future<void> processTakePhoto({required ImageSource imageSource}) async {
     var result = await ImagePicker()
         .pickImage(source: imageSource, maxWidth: 800, maxHeight: 800);
@@ -921,10 +927,11 @@ class AppService {
     });
   }
 
-  Future<void> processInsertReview(
-      {required String collectionName,
-      required String name,
-      required Map<String, dynamic> map}) async {
+  Future<void> processInsertReview({
+    required String collectionName,
+    required String name,
+    required Map<String, dynamic> map,
+  }) async {
     FirebaseFirestore.instance
         .collection(collectionName)
         .where('name', isEqualTo: name)
@@ -936,11 +943,14 @@ class AppService {
           print('##26oct docId ---------> $docId');
 
           ReviewModel reviewModel = ReviewModel(
-              rating: map['rating'],
-              review: map['review'],
-              urlImageReviews: map['urlImageReviews'],
-              timestamp: Timestamp.fromDate(DateTime.now()),
-              mapUserModel: appController.currentUserModels.last.toMap());
+            rating: map['rating'] ?? 0.0,
+            review: map['review'] ?? '',
+            urlImageReviews: map['urlImageReviews'],
+            timestamp: Timestamp.fromDate(DateTime.now()),
+            mapUserModel: appController.currentUserModels.last.toMap(),
+            options: map['options'] ?? [],
+            valueOptions: map['valueOptions'] ?? [],
+          );
 
           print('reviewModels ---> ${reviewModel.toMap()}');
 
