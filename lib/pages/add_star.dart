@@ -36,6 +36,8 @@ class _AddStarState extends State<AddStar> {
   void initState() {
     super.initState();
 
+    // appController.totalRating.value = 0.0;
+
     int i = 0;
 
     for (var element in AppConstant.collectionPlates) {
@@ -43,9 +45,31 @@ class _AddStarState extends State<AddStar> {
       i++;
     }
 
-    AppService().processReadPlateWhereNameReview(
-        collectionPlate: widget.videoModel.mapReview!['type'],
-        namePlate: widget.videoModel.mapReview!['nameReview']);
+    readReview();
+  }
+
+  void readReview() {
+    AppService()
+        .processReadPlateWhereNameReview(
+            collectionPlate: widget.videoModel.mapReview!['type'],
+            namePlate: widget.videoModel.mapReview!['nameReview'])
+        .then((value) async {
+      appController.totalRating.value = await calculateRating();
+    });
+  }
+
+  Future<double> calculateRating() async {
+    double resultRating = 0.0;
+    double result = 0.0;
+    for (var element in appController.addStartReviewModels) {
+      resultRating = resultRating + element.rating.toDouble();
+    }
+    if (appController.addStartReviewModels.isNotEmpty) {
+      result =
+          resultRating / appController.addStartReviewModels.length.toDouble();
+    }
+   
+    return result;
   }
 
   @override
@@ -59,19 +83,38 @@ class _AddStarState extends State<AddStar> {
       ),
       body: LayoutBuilder(builder: (context, BoxConstraints boxConstraints) {
         return Obx(() {
+          print(
+              '##2nov totalRating at body ----> ${appController.totalRating} ');
           return SizedBox(
             width: boxConstraints.maxWidth,
             height: boxConstraints.maxHeight,
             child: Stack(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    WidgetRatingStarOnly(
-                      ratingUpdateFunc: (p0) {},
-                    ),
-                    const WidgetText(data: 'จาก 100 คน'),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      WidgetRatingStarOnly(
+                        initialRating: appController.totalRating.value,
+                        ratingUpdateFunc: (p0) {},
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      WidgetText(
+                        data: AppService().doubleToString(
+                            number: appController.totalRating.value),
+                        textStyle: AppConstant()
+                            .bodyStyle(color: ColorPlate.red, fontSize: 14),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      WidgetText(
+                          data:
+                              '(${appController.addStartReviewModels.length} รีวิว)'),
+                    ],
+                  ),
                 ),
                 Positioned(
                   top: 50,
@@ -139,6 +182,36 @@ class _AddStarState extends State<AddStar> {
                                           ),
                                         ),
                                       ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                appController.addStartReviewModels[index]
+                                        .options!.isEmpty
+                                    ? const SizedBox()
+                                    : ListView.builder(
+                                        physics: const ScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount: appController
+                                            .addStartReviewModels[index]
+                                            .options!
+                                            .length,
+                                        itemBuilder: (context, index2) => Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            WidgetText(
+                                                data:
+                                                    '${appController.addStartReviewModels[index].options![index2]} :'),
+                                            WidgetText(
+                                                data: appController
+                                                    .addStartReviewModels[index]
+                                                    .valueOptions![index2]),
+                                          ],
+                                        ),
+                                      ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
                                 const Divider(
                                   color: Colors.white,
                                 ),
@@ -158,7 +231,12 @@ class _AddStarState extends State<AddStar> {
       bottomSheet: WidgetGfButton(
         label: 'ติดดาว',
         pressFunc: () {
-          Get.to(InsertStar(videoModel: widget.videoModel,));
+          Get.to(InsertStar(
+            videoModel: widget.videoModel,
+          ))!
+              .then((value) {
+            readReview();
+          });
         },
         fullScreen: true,
         color: ColorPlate.red,
