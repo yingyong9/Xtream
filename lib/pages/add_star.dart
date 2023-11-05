@@ -14,6 +14,7 @@ import 'package:xstream/views/widget_gf_button.dart';
 import 'package:xstream/views/widget_image_network.dart';
 import 'package:xstream/views/widget_ratting_only.dart';
 import 'package:xstream/views/widget_text.dart';
+import 'package:xstream/views/widget_text_general.dart';
 
 class AddStar extends StatefulWidget {
   const AddStar({
@@ -123,7 +124,7 @@ class _AddStarState extends State<AddStar> {
                       : SizedBox(
                           width: boxConstraints.maxWidth,
                           height: boxConstraints.maxHeight - 80,
-                          child: ListView.builder(
+                          child: ListView.builder(padding: const EdgeInsets.symmetric(horizontal: 16),
                             physics: const ScrollPhysics(),
                             shrinkWrap: true,
                             itemCount:
@@ -151,7 +152,7 @@ class _AddStarState extends State<AddStar> {
                                       .addStartReviewModels[index].rating,
                                   ratingUpdateFunc: (p0) {},
                                 ),
-                                WidgetText(
+                                WidgetTextGeneral(
                                     data: appController
                                         .addStartReviewModels[index].review),
                                 appController.addStartReviewModels[index]

@@ -6,9 +6,9 @@ import 'package:xstream/views/widget_image_network.dart';
 
 class ListReview extends StatelessWidget {
   const ListReview({
-    Key? key,
+    super.key,
     required this.videoModel,
-  }) : super(key: key);
+  });
 
   final VideoModel videoModel;
 
