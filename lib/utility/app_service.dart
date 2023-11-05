@@ -139,6 +139,8 @@ class AppService {
         //Sent Noti All User
         processSentAllNoti(title: 'วีดีโอใหม่', body: detail);
 
+        appController.displayControl.value = true;
+
         if (appController.files.isNotEmpty) {
           appController.files.clear();
         }

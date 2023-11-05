@@ -28,12 +28,12 @@ import 'package:xstream/views/widget_text_button.dart';
 
 class DetailPost extends StatefulWidget {
   const DetailPost({
-    Key? key,
+    super.key,
     required this.fileThumbnail,
     required this.fileVideo,
     required this.nameFileVideo,
     required this.nameFileImage,
-  }) : super(key: key);
+  });
 
   final File fileThumbnail;
   final File fileVideo;
@@ -167,7 +167,7 @@ class _DetailPostState extends State<DetailPost> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            groupType(),
+            appController.displayControl.value ? groupType() : const SizedBox(),
             WidgetGfButton(
               color: ColorPlate.red,
               label: 'โพสต์',
@@ -329,12 +329,10 @@ class _DetailPostState extends State<DetailPost> {
   }
 
   Future<void> insertVideoOnly({Map<String, dynamic>? mapReview}) async {
-    
+    AppDialog().dialogProgress();
+
     String? urlImage = await AppService().processUploadThumbnailVideo(
         fileThumbnail: widget.fileThumbnail, nameFile: widget.nameFileImage);
-
-    // AppService().processInsertReview(
-    //     collectionName: collectionName, name: name, map: map);
 
     AppService()
         .processFtpUploadAndInsertDataVideo(
@@ -344,6 +342,7 @@ class _DetailPostState extends State<DetailPost> {
             detail: detailController.text,
             mapReview: mapReview ?? appController.specialMapReview)
         .then((value) {
+      Get.back();
       Get.back();
     });
   } // end

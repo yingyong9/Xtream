@@ -22,9 +22,9 @@ import 'package:xstream/views/widget_text.dart';
 
 class ReviewPage2 extends StatefulWidget {
   const ReviewPage2({
-    Key? key,
+    super.key,
     required this.indexReviewCat,
-  }) : super(key: key);
+  });
 
   final int indexReviewCat;
 
@@ -44,6 +44,8 @@ class _ReviewPage2State extends State<ReviewPage2> {
   @override
   void initState() {
     super.initState();
+
+    
 
     appController.displayListPlate.value = false;
 
@@ -244,7 +246,8 @@ class _ReviewPage2State extends State<ReviewPage2> {
                       Get.back();
                       AppSnackBar(
                               title: 'บันทึกสำเร็จ',
-                              message: 'การสำรวจ ${headReviewController.text} สมบูรณ์แล้ว ')
+                              message:
+                                  'การสำรวจ ${headReviewController.text} สมบูรณ์แล้ว ')
                           .normalSnackBar();
                     });
                   }
@@ -258,6 +261,8 @@ class _ReviewPage2State extends State<ReviewPage2> {
                 label: 'Add Video',
                 pressFunc: () async {
                   await processAddNewReview().then((value) async {
+                    appController.displayControl.value = false;
+
                     var urlImageReviews = <String>[];
 
                     if (appController.xFiles.isNotEmpty) {
@@ -289,7 +294,6 @@ class _ReviewPage2State extends State<ReviewPage2> {
   }
 
   Future<void> processAddNewReview() async {
-
     String docIdPlate = await AppService().findDocIdPlate(
         collection: AppConstant.collectionPlates[widget.indexReviewCat],
         name: headReviewController.text);
@@ -338,9 +342,7 @@ class _ReviewPage2State extends State<ReviewPage2> {
         .collection('review')
         .doc()
         .set(reviewModel.toMap())
-        .then((value) {
-     
-    });
+        .then((value) {});
   }
 
   WidgetGfButton editButton() {

@@ -12,11 +12,11 @@ import 'package:xstream/views/widget_text_button.dart';
 class AppDialog {
   void dialogProgress() {
     Get.dialog(WillPopScope(
-      child: WidgetProgress(),
-      onWillPop: ()async {
+      child: const WidgetProgress(),
+      onWillPop: () async {
         return false;
       },
-    ));
+    ), barrierDismissible: false);
   }
 
   void dialogShowUser(
@@ -105,22 +105,23 @@ class AppDialog {
     AlignmentGeometry? alignmentGeometry,
   }) {
     Get.dialog(
-      AlertDialog(
-        alignment: alignmentGeometry,
-        backgroundColor: ColorPlate.back2,
-        icon: icon,
-        title: title,
-        content: content,
-        actions: [
-          firstAction ??
-              WidgetTextButton(
-                label: 'Cancel',
-                pressFunc: () {
-                  Get.back();
-                },
-              ), secondAction ?? const SizedBox(),
-        ],
-      ),barrierDismissible: false
-    );
+        AlertDialog(
+          alignment: alignmentGeometry,
+          backgroundColor: ColorPlate.back2,
+          icon: icon,
+          title: title,
+          content: content,
+          actions: [
+            firstAction ??
+                WidgetTextButton(
+                  label: 'Cancel',
+                  pressFunc: () {
+                    Get.back();
+                  },
+                ),
+            secondAction ?? const SizedBox(),
+          ],
+        ),
+        barrierDismissible: false);
   }
 }
