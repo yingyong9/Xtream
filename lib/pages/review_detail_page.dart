@@ -18,6 +18,7 @@ import 'package:xstream/views/widget_gf_button.dart';
 import 'package:xstream/views/widget_icon_button_gf.dart';
 import 'package:xstream/views/widget_image_network.dart';
 import 'package:xstream/views/widget_text.dart';
+import 'package:xstream/views/widget_text_general.dart';
 
 class ReviewDetailPage extends StatefulWidget {
   const ReviewDetailPage({
@@ -89,32 +90,48 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
               children: [
                 head(),
                 displayImage(boxConstraints),
-                WidgetText(
-                  data: widget.videoModel.mapReview!['nameReview'],
-                  textStyle: AppConstant()
-                      .bodyStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                WidgetText(data: widget.videoModel.mapReview!['review']),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 110,
-                      child: RatingBar.builder(
-                        initialRating: widget.videoModel.mapReview!['rating'],
-                        itemSize: 20,
-                        itemCount: 5,
-                        itemBuilder: (context, index) => const Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        onRatingUpdate: (value) {},
+
+
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      WidgetText(
+                        data: widget.videoModel.mapReview!['nameReview'],
+                        textStyle: AppConstant()
+                            .bodyStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    WidgetText(
-                        data:
-                            widget.videoModel.mapReview!['rating'].toString()),
-                  ],
+                      const SizedBox(height: 8,),
+                      WidgetTextGeneral(data: widget.videoModel.mapReview!['review']),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 110,
+                            child: RatingBar.builder(
+                              initialRating: widget.videoModel.mapReview!['rating'],
+                              itemSize: 20,
+                              itemCount: 5,
+                              itemBuilder: (context, index) => const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              onRatingUpdate: (value) {},
+                            ),
+                          ),
+                          WidgetText(
+                              data:
+                                  widget.videoModel.mapReview!['rating'].toString()),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
+
+
+
+
+
                 WidgetGfButton(
                   label: 'Review ${widget.videoModel.mapReview!['nameReview']}',
                   pressFunc: () {
