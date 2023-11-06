@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_print
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -37,10 +37,7 @@ class _AddStarState extends State<AddStar> {
   void initState() {
     super.initState();
 
-    // appController.totalRating.value = 0.0;
-
     int i = 0;
-
     for (var element in AppConstant.collectionPlates) {
       if (element == widget.videoModel.mapReview!['type']) {}
       i++;
@@ -50,27 +47,9 @@ class _AddStarState extends State<AddStar> {
   }
 
   void readReview() {
-    AppService()
-        .processReadPlateWhereNameReview(
-            collectionPlate: widget.videoModel.mapReview!['type'],
-            namePlate: widget.videoModel.mapReview!['nameReview'])
-        .then((value) async {
-      appController.totalRating.value = await calculateRating();
-    });
-  }
-
-  Future<double> calculateRating() async {
-    double resultRating = 0.0;
-    double result = 0.0;
-    for (var element in appController.addStartReviewModels) {
-      resultRating = resultRating + element.rating.toDouble();
-    }
-    if (appController.addStartReviewModels.isNotEmpty) {
-      result =
-          resultRating / appController.addStartReviewModels.length.toDouble();
-    }
-   
-    return result;
+    AppService().processReadPlateWhereNameReview(
+        collectionPlate: widget.videoModel.mapReview!['type'],
+        namePlate: widget.videoModel.mapReview!['nameReview']);
   }
 
   @override
@@ -124,7 +103,8 @@ class _AddStarState extends State<AddStar> {
                       : SizedBox(
                           width: boxConstraints.maxWidth,
                           height: boxConstraints.maxHeight - 80,
-                          child: ListView.builder(padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: ListView.builder(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
                             physics: const ScrollPhysics(),
                             shrinkWrap: true,
                             itemCount:
