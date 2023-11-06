@@ -969,37 +969,41 @@ class AppService {
 
   Future<void> processReadPlateWhereNameReview(
       {required String collectionPlate, required String namePlate}) async {
-    FirebaseFirestore.instance
-        .collection(collectionPlate)
-        .where('name', isEqualTo: namePlate)
-        .get()
-        .then((value) async {
-      if (value.docs.isNotEmpty) {
-        for (var element in value.docs) {
-          String docIdPlate = element.id;
+    try {
+      FirebaseFirestore.instance
+          .collection(collectionPlate)
+          .where('name', isEqualTo: namePlate)
+          .get()
+          .then((value) async {
+        if (value.docs.isNotEmpty) {
+          for (var element in value.docs) {
+            String docIdPlate = element.id;
 
-          print('##24oct docIdPlate ----> $docIdPlate');
-          FirebaseFirestore.instance
-              .collection(collectionPlate)
-              .doc(docIdPlate)
-              .collection('review')
-              .orderBy('timestamp')
-              .get()
-              .then((value) {
-            if (appController.addStartReviewModels.isNotEmpty) {
-              appController.addStartReviewModels.clear();
-            }
-
-            if (value.docs.isNotEmpty) {
-              for (var element in value.docs) {
-                ReviewModel reviewModel = ReviewModel.fromMap(element.data());
-                appController.addStartReviewModels.add(reviewModel);
+            FirebaseFirestore.instance
+                .collection(collectionPlate)
+                .doc(docIdPlate)
+                .collection('review')
+                .orderBy('timestamp')
+                .get()
+                .then((value) {
+              if (appController.addStartReviewModels.isNotEmpty) {
+                appController.addStartReviewModels.clear();
               }
-            }
-          });
+
+              if (value.docs.isNotEmpty) {
+                for (var element in value.docs) {
+                  ReviewModel reviewModel = ReviewModel.fromMap(element.data());
+                  appController.addStartReviewModels.add(reviewModel);
+                }
+                print(
+                    '##6nov onIf appController.addStartReviewModels.length ---> ${appController.addStartReviewModels.length}');
+                calculateRating();
+              }
+            });
+          }
         }
-      }
-    });
+      });
+    } finally {}
   }
 
   Future<String> findDocIdPlate(
@@ -1017,5 +1021,23 @@ class AppService {
     }
 
     return docIdPlate;
+  }
+
+  Future<void> calculateRating() async {
+    double resultRating = 0.0;
+
+    // appController.totalRating.value = 0.0;
+
+    for (var element in appController.addStartReviewModels) {
+      resultRating = resultRating + element.rating.toDouble();
+    }
+    print('##6nov resultRating ----> $resultRating');
+    if (appController.addStartReviewModels.isNotEmpty) {
+      appController.totalRating.value =
+          resultRating / appController.addStartReviewModels.length.toDouble();
+          print(
+        '##6nov at calculatrRating appController.rateStar ---> ${appController.totalRating}');
+    }
+    
   }
 }

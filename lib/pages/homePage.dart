@@ -98,6 +98,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
       AppService().listenChatComment(docIdVideo: appController.docIdVideos[0]);
 
+      if (appController.videoModels[0].mapReview!.isNotEmpty) {
+        AppService().processReadPlateWhereNameReview(
+            collectionPlate: appController.videoModels[0].mapReview!['type'],
+            namePlate: appController.videoModels[0].mapReview!['nameReview']);
+      }
+
       WidgetsBinding.instance.addObserver(this);
       _videoListController.init(
         pageController: _pageController,
@@ -419,7 +425,21 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       return currentVideo;
                     },
                     onPageChanged: (value) {
-                      print('##29sep value =======> $value');
+                      print('##6nov onPageChange value =======> $value');
+                      print('##6nov onPageChange indevVideo =======> ${appController.indexVideo}');
+
+                      if (appController
+                          .videoModels[value]
+                          .mapReview!
+                          .isNotEmpty) {
+                        AppService().processReadPlateWhereNameReview(
+                            collectionPlate: appController
+                                .videoModels[value]
+                                .mapReview!['type'],
+                            namePlate: appController
+                                .videoModels[value]
+                                .mapReview!['nameReview']);
+                      }
 
                       if (appController.chatCommentModels.isNotEmpty) {
                         appController.chatCommentModels.clear();
@@ -450,110 +470,119 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Widget displayReview({required int index}) {
     return appController.videoModels[index].mapReview!.isEmpty
         ? const SizedBox()
-        : InkWell(
-            onTap: () {
-              _videoListController.currentPlayer.pause();
+        : Obx(() {
+            print(
+                '##6nov appController.rateStar ---> ${appController.totalRating}');
+            return InkWell(
+              onTap: () {
+                _videoListController.currentPlayer.pause();
 
-              Get.to(ReviewDetailPage(
-                videoModel: appController.videoModels[index],
-                docIdVideo: appController.docIdVideos[index],
-              ))!
-                  .then((value) => _videoListController.currentPlayer.play());
-            },
-            child: Container(
-              color: ColorPlate.back1.withOpacity(0.75),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  appController.videoModels[index].mapReview!['urlImageReviews']
-                          .isEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: WidgetImageNetwork(
-                            urlImage: appController.videoModels[index].image,
-                            size: 80,
-                            boxFit: BoxFit.cover,
+                Get.to(ReviewDetailPage(
+                  videoModel: appController.videoModels[index],
+                  docIdVideo: appController.docIdVideos[index],
+                ))!
+                    .then((value) => _videoListController.currentPlayer.play());
+              },
+              child: Container(
+                color: ColorPlate.back1.withOpacity(0.75),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    appController.videoModels[index]
+                            .mapReview!['urlImageReviews'].isEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: WidgetImageNetwork(
+                              urlImage: appController.videoModels[index].image,
+                              size: 80,
+                              boxFit: BoxFit.cover,
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: WidgetImageNetwork(
+                              boxFit: BoxFit.cover,
+                              urlImage: appController.videoModels[index]
+                                  .mapReview!['urlImageReviews'].last,
+                              size: 80,
+                            ),
                           ),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: WidgetImageNetwork(
-                            boxFit: BoxFit.cover,
-                            urlImage: appController.videoModels[index]
-                                .mapReview!['urlImageReviews'].last,
-                            size: 80,
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      height: 80,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: 200,
+                            child: WidgetText(
+                                data: appController.videoModels[index]
+                                        .mapReview!['nameReview'] ??
+                                    ''),
                           ),
-                        ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    height: 80,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 200,
-                          child: WidgetText(
-                              data: appController.videoModels[index]
-                                      .mapReview!['nameReview'] ??
-                                  ''),
-                        ),
 
-                        SizedBox(
-                          width: 230,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SizedBox(
-                                    width: 110,
-                                    child: RatingBar.builder(
-                                      initialRating: appController
-                                          .videoModels[index]
-                                          .mapReview!['rating'],
-                                      itemSize: 20,
-                                      itemCount: 5,
-                                      itemBuilder: (context, index) =>
-                                          const Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
+                          SizedBox(
+                            width: 230,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SizedBox(
+                                      width: 110,
+                                      child: RatingBar.builder(
+                                        initialRating:
+                                            appController.totalRating.value,
+                                        itemSize: 20,
+                                        itemCount: 5,
+                                        itemBuilder: (context, index) =>
+                                            const Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                        onRatingUpdate: (value) {},
                                       ),
-                                      onRatingUpdate: (value) {},
                                     ),
-                                  ),
-                                  WidgetText(
-                                      data: appController.videoModels[index]
-                                          .mapReview!['rating']
-                                          .toString()),
-                                ],
-                              ),
-                              const Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(Icons.star_border),
-                                  WidgetText(data: '500'),
-                                ],
-                              ),
-                            ],
+                                    WidgetText(
+                                        data: AppService().doubleToString(
+                                            number: appController
+                                                .totalRating.value)),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    WidgetText(
+                                        data:
+                                            '(${appController.addStartReviewModels.length} รีวิว)'),
+                                  ],
+                                ),
+                                // const Row(
+                                //   mainAxisSize: MainAxisSize.min,
+                                //   children: [
+                                //     Icon(Icons.star_border),
+                                //     WidgetText(data: '500'),
+                                //   ],
+                                // ),
+                              ],
+                            ),
                           ),
-                        ),
-                        // const SizedBox(height:4,),
-                        SizedBox(
-                          width: 200,
-                          child: WidgetText(
-                            data: appController
-                                .videoModels[index].mapReview!['review'],
-                            maxLines: 1,
+                          // const SizedBox(height:4,),
+                          SizedBox(
+                            width: 200,
+                            child: WidgetText(
+                              data: appController
+                                  .videoModels[index].mapReview!['review'],
+                              maxLines: 1,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
+            );
+          });
   }
 }
