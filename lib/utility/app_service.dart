@@ -996,7 +996,7 @@ class AppService {
                   appController.addStartReviewModels.add(reviewModel);
                 }
                 print(
-                    'onIf appController.addStartReviewModels.length ---> ${appController.addStartReviewModels.length}');
+                    '##6nov onIf appController.addStartReviewModels.length ---> ${appController.addStartReviewModels.length}');
                 calculateRating();
               }
             });
@@ -1026,14 +1026,18 @@ class AppService {
   Future<void> calculateRating() async {
     double resultRating = 0.0;
 
-    appController.totalRating.value = 0.0;
+    // appController.totalRating.value = 0.0;
 
     for (var element in appController.addStartReviewModels) {
       resultRating = resultRating + element.rating.toDouble();
     }
+    print('##6nov resultRating ----> $resultRating');
     if (appController.addStartReviewModels.isNotEmpty) {
       appController.totalRating.value =
           resultRating / appController.addStartReviewModels.length.toDouble();
+          print(
+        '##6nov at calculatrRating appController.rateStar ---> ${appController.totalRating}');
     }
+    
   }
 }
