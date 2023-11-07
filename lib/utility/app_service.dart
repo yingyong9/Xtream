@@ -653,6 +653,31 @@ class AppService {
     });
   }
 
+  Future<void> processEditTimeVideo({required String docIdVideo}) async {
+    await FirebaseFirestore.instance
+        .collection('video')
+        .doc(docIdVideo)
+        .get()
+        .then((value) async {
+      VideoModel videoModel = VideoModel.fromMap(value.data()!);
+
+      Map<String, dynamic> map = videoModel.toMap();
+
+      map['timestamp'] = Timestamp.fromDate(DateTime.now());
+
+      await FirebaseFirestore.instance
+          .collection('video')
+          .doc(docIdVideo)
+          .update(map)
+          .then((value) {
+        print('Decrease up Success');
+        if (Platform.isAndroid) {
+          Restart.restartApp();
+        }
+      });
+    });
+  }
+
   Future<void> readAllInvoid() async {
     if (appController.invoidModels.isNotEmpty) {
       appController.invoidModels.clear();
@@ -1035,9 +1060,8 @@ class AppService {
     if (appController.addStartReviewModels.isNotEmpty) {
       appController.totalRating.value =
           resultRating / appController.addStartReviewModels.length.toDouble();
-          print(
-        '##6nov at calculatrRating appController.rateStar ---> ${appController.totalRating}');
+      print(
+          '##6nov at calculatrRating appController.rateStar ---> ${appController.totalRating}');
     }
-    
   }
 }

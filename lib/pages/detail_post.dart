@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:xstream/pages/add_option_product.dart';
+import 'package:xstream/pages/choose_type_review.dart';
 import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/pages/manage_product.dart';
 import 'package:xstream/pages/review_page.dart';
@@ -167,7 +168,7 @@ class _DetailPostState extends State<DetailPost> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            appController.displayControl.value ? groupType() : const SizedBox(),
+            // appController.displayControl.value ? groupType() : const SizedBox(),
             WidgetGfButton(
               color: ColorPlate.red,
               label: 'โพสต์',
@@ -202,7 +203,13 @@ class _DetailPostState extends State<DetailPost> {
                 } else if (appController.files.isEmpty) {
                   // Video Only
 
-                  await insertVideoOnly();
+                  Get.to(const ChooseTypeReivew())?.then((value) async {
+                    Get.back();
+
+                    print('##7nov ค่าที่ได้กลับมาจาก ReviewPage ----> $value');
+
+                    await insertVideoOnly(mapReview: value);
+                  });
                 } else {
                   // Have Product
 

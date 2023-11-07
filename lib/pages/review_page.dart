@@ -21,9 +21,9 @@ import 'package:xstream/views/widget_text.dart';
 
 class ReviewPage extends StatefulWidget {
   const ReviewPage({
-    Key? key,
+    super.key,
     required this.indexReviewCat,
-  }) : super(key: key);
+  });
 
   final int indexReviewCat;
 
@@ -81,96 +81,80 @@ class _ReviewPageState extends State<ReviewPage> {
                   ),
                   SizedBox(
                     width: double.infinity,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        SizedBox(
-                          width: 250,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              appController.displayListPlate.value
-                                  ? Container(
-                                      padding: const EdgeInsets.all(8),
-                                      width: 250,
-                                      height: 150,
-                                      decoration: AppConstant().borderBox(),
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        physics: const ScrollPhysics(),
-                                        itemCount: appController
-                                            .searchPlateModels.length,
-                                        itemBuilder: (context, index) =>
-                                            InkWell(
-                                          onTap: () {
-                                            headReviewController.text =
-                                                appController
-                                                    .searchPlateModels[index]
-                                                    .name;
-                                          },
-                                          child: Row(
-                                            children: [
-                                              WidgetText(
-                                                  data: appController
-                                                      .searchPlateModels[index]
-                                                      .name),
-                                            ],
-                                          ),
-                                        ),
+                    child: SizedBox(
+                      width: 250,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          appController.displayListPlate.value
+                              ? Container(
+                                  padding: const EdgeInsets.all(8),
+                                  width: 250,
+                                  height: 150,
+                                  decoration: AppConstant().borderBox(),
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: const ScrollPhysics(),
+                                    itemCount:
+                                        appController.searchPlateModels.length,
+                                    itemBuilder: (context, index) => InkWell(
+                                      onTap: () {
+                                        headReviewController.text =
+                                            appController
+                                                .searchPlateModels[index].name;
+
+                                        FocusManager.instance.primaryFocus?.unfocus();
+                                      },
+                                      child: Row(
+                                        children: [
+                                          WidgetText(
+                                              data: appController
+                                                  .searchPlateModels[index]
+                                                  .name),
+                                        ],
                                       ),
-                                    )
-                                  : const SizedBox(),
-                              WidgetFormLine(
-                                hint: 'ชื่อสถานที่รีวิว',
-                                textEditingController: headReviewController,
-                                changeFunc: (p0) {
-                                  if (p0.isNotEmpty) {
-                                    appController.displayListPlate.value = true;
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox(),
+                          WidgetFormLine(
+                            hint: 'ชื่อที่รีวิว',
+                            textEditingController: headReviewController,
+                            changeFunc: (p0) {
+                              if (p0.isNotEmpty) {
+                                appController.displayListPlate.value = true;
 
-                                    debouncer.run(() {
-                                      if (appController
-                                          .searchPlateModels.isNotEmpty) {
-                                        appController.searchPlateModels.clear();
-                                        appController.searchPlateModels
-                                            .addAll(appController.plateModels);
-                                      }
-
-                                      appController.searchPlateModels.value =
-                                          appController.searchPlateModels
-                                              .where((element) => element.name
-                                                  .toLowerCase()
-                                                  .contains(p0.toLowerCase()))
-                                              .toList();
-                                    });
-                                  } else {
-                                    appController.displayListPlate.value =
-                                        false;
+                                debouncer.run(() {
+                                  if (appController
+                                      .searchPlateModels.isNotEmpty) {
+                                    appController.searchPlateModels.clear();
                                     appController.searchPlateModels
                                         .addAll(appController.plateModels);
                                   }
-                                },
-                                validateFunc: (p0) {
-                                  if (p0?.isEmpty ?? true) {
-                                    return 'โปรดกรอกชื่อสถานที่รีวิว';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                            ],
+
+                                  appController.searchPlateModels.value =
+                                      appController.searchPlateModels
+                                          .where((element) => element.name
+                                              .toLowerCase()
+                                              .contains(p0.toLowerCase()))
+                                          .toList();
+                                });
+                              } else {
+                                appController.displayListPlate.value = false;
+                                appController.searchPlateModels
+                                    .addAll(appController.plateModels);
+                              }
+                            },
+                            validateFunc: (p0) {
+                              if (p0?.isEmpty ?? true) {
+                                return 'โปรดกรอกชื่อสถานที่รีวิว';
+                              } else {
+                                return null;
+                              }
+                            },
                           ),
-                        ),
-                        WidgetGfButton(
-                          label: 'เพิ่ม',
-                          pressFunc: () {
-                            Get.to(RegisterShop(
-                              collectionPlate: AppConstant
-                                  .collectionPlates[widget.indexReviewCat],
-                            ));
-                          },
-                        )
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -184,7 +168,7 @@ class _ReviewPageState extends State<ReviewPage> {
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
                     decoration:
-                        const InputDecoration(hintText: 'เขียนรีวิวสถานที่นี้'),
+                        const InputDecoration(hintText: 'เขียนรีวิว'),
                   ),
                   const SizedBox(
                     height: 32,
@@ -211,6 +195,7 @@ class _ReviewPageState extends State<ReviewPage> {
         child: WidgetButton(
           label: 'โพสต์',
           pressFunc: () async {
+            
             if (formStateKey.currentState!.validate()) {
               String docIdPlate = await AppService().findDocIdPlate(
                   collection:
@@ -279,22 +264,7 @@ class _ReviewPageState extends State<ReviewPage> {
                 });
               }
 
-              // var urlImageReviews = <String>[];
-
-              // if (appController.xFiles.isNotEmpty) {
-              //   urlImageReviews =
-              //       await AppService().processUploadMultiFile(path: 'review');
-              // }
-
-              // Map<String, dynamic> map = {};
-              // map['nameReview'] = headReviewController.text;
-              // map['review'] = reviewController.text;
-              // map['type'] = AppConstant.collectionPlates[widget.indexReviewCat];
-              // map['rating'] = appController.rating.value;
-              // map['urlImageReviews'] = urlImageReviews;
-
-              // //ตรงนี่แหละ ที่ Get Back และ ส่ง map กลับ
-              // Get.back(result: map);
+             
             }
           },
           fullWidthButton: true,
