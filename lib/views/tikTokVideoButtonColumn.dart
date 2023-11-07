@@ -71,14 +71,17 @@ class TikTokButtonColumn extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            videoModel.mapReview!.isEmpty ? const SizedBox() : Tapped(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: const BoxDecoration(color: ColorPlate.red),
-                child: const WidgetText(data: '  ติดดาว  '),
-              ),
-              onTap: onSerway,
-            ),
+            videoModel.mapReview!.isEmpty
+                ? const SizedBox()
+                : Tapped(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: const BoxDecoration(color: ColorPlate.red),
+                      child: const WidgetText(data: '  ติดดาว  '),
+                    ),
+                    onTap: onSerway,
+                  ),
             const SizedBox(
               height: 16,
             ),
@@ -194,7 +197,11 @@ class TikTokButtonColumn extends StatelessWidget {
                     appController.videoModels[indexVideo] =
                         VideoModel.fromMap(map);
 
-                    AppService().processDecrease(docIdVideo: docIdVideo);
+                    AppService()
+                        .processDecrease(docIdVideo: docIdVideo)
+                        .then((value) {
+                      AppService().processEditTimeVideo(docIdVideo: docIdVideo);
+                    });
                   },
                 ),
               ],
