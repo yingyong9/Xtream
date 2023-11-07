@@ -16,6 +16,8 @@ import 'package:xstream/pages/review_detail_page.dart';
 import 'package:xstream/pages/searchPage.dart';
 import 'package:xstream/pages/show_map.dart';
 import 'package:xstream/pages/userDetailOwnerVideo.dart';
+import 'package:xstream/pages/userDetailPage.dart';
+import 'package:xstream/pages/userPage.dart';
 import 'package:xstream/style/physics.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
@@ -279,6 +281,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                               isScrollControlled: true,
                             );
                           } else {
+                            // Get.to(UserPage(isSelfPage: false));
+
+                            //หน้าวีดีโอเดิม
                             Get.to(UserDetailOwnerVideo(
                               ownerVideoUserModel: userModel,
                             ));
@@ -426,19 +431,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     },
                     onPageChanged: (value) {
                       print('##6nov onPageChange value =======> $value');
-                      print('##6nov onPageChange indevVideo =======> ${appController.indexVideo}');
+                      print(
+                          '##6nov onPageChange indevVideo =======> ${appController.indexVideo}');
 
                       if (appController
-                          .videoModels[value]
-                          .mapReview!
-                          .isNotEmpty) {
+                          .videoModels[value].mapReview!.isNotEmpty) {
                         AppService().processReadPlateWhereNameReview(
                             collectionPlate: appController
-                                .videoModels[value]
-                                .mapReview!['type'],
+                                .videoModels[value].mapReview!['type'],
                             namePlate: appController
-                                .videoModels[value]
-                                .mapReview!['nameReview']);
+                                .videoModels[value].mapReview!['nameReview']);
                       }
 
                       if (appController.chatCommentModels.isNotEmpty) {
