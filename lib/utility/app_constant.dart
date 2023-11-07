@@ -38,11 +38,12 @@ class AppConstant {
     'อื่นๆ',
   ];
 
-
   static List<String> reviewCats = <String>[
     'อาหาร',
     'ท่องเทียว/ทัวร์',
     'ที่พัก',
+    'วีดีโอ',
+    'มูเตลู',
     'อื่นๆ',
   ];
 
@@ -50,6 +51,8 @@ class AppConstant {
     'Food',
     'Travel',
     'Hotel',
+    'Vdo',
+    'Mutelu',
     'Other',
   ];
 

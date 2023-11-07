@@ -17,10 +17,11 @@ class WidgetImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(onTap: tapFunc,
       child: Image.asset(
-        path ?? 'images/happy.png',
+        path ?? 'images/tuktuk.png',
         width: size,
         height: size,
       ),
+      
     );
   }
 }
