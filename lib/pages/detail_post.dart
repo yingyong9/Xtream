@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'package:xstream/pages/add_option_product.dart';
 import 'package:xstream/pages/choose_type_review.dart';
 import 'package:xstream/pages/homePage.dart';
@@ -34,12 +35,14 @@ class DetailPost extends StatefulWidget {
     required this.fileVideo,
     required this.nameFileVideo,
     required this.nameFileImage,
+    this.fromeReviewPage2,
   });
 
   final File fileThumbnail;
   final File fileVideo;
   final String nameFileVideo;
   final String nameFileImage;
+  final bool? fromeReviewPage2;
 
   @override
   State<DetailPost> createState() => _DetailPostState();
@@ -203,13 +206,19 @@ class _DetailPostState extends State<DetailPost> {
                 } else if (appController.files.isEmpty) {
                   // Video Only
 
-                  Get.to(const ChooseTypeReivew())?.then((value) async {
+                  if (widget.fromeReviewPage2 ?? false) {
                     Get.back();
+                    await insertVideoOnly();
+                  } else {
+                    Get.to(const ChooseTypeReivew())?.then((value) async {
+                      Get.back();
 
-                    print('##7nov ค่าที่ได้กลับมาจาก ReviewPage ----> $value');
+                      print(
+                          '##7nov ค่าที่ได้กลับมาจาก ReviewPage ----> $value');
 
-                    await insertVideoOnly(mapReview: value);
-                  });
+                      await insertVideoOnly(mapReview: value);
+                    });
+                  }
                 } else {
                   // Have Product
 

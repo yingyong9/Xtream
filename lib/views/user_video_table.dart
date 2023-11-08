@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-
-
 import 'package:get/get.dart';
+
+import 'package:xstream/models/user_model.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/utility/app_service.dart';
@@ -11,10 +11,10 @@ import 'package:xstream/views/widget_image_network.dart';
 class UserVideoTable extends StatefulWidget {
   const UserVideoTable({
     Key? key,
-    required this.uid,
+    required this.userModel,
   }) : super(key: key);
 
-  final String uid;
+  final UserModel userModel;
 
   @override
   State<UserVideoTable> createState() => _UserVideoTableState();
@@ -24,8 +24,8 @@ class _UserVideoTableState extends State<UserVideoTable> {
   @override
   void initState() {
     super.initState();
-    
-    AppService().findUrlImageVideo(uid: widget.uid);
+
+    AppService().findUrlImageVideo(uid: widget.userModel.uid);
   }
 
   @override
@@ -34,7 +34,7 @@ class _UserVideoTableState extends State<UserVideoTable> {
         init: AppController(),
         builder: (AppController appController) {
           print(
-              '##2aug postVideoModel ----> ${appController.postVideoModels.length}');
+              '##9nov postVideoModel ----> ${appController.postVideoModels.length}');
           return Column(
             children: <Widget>[
               Container(

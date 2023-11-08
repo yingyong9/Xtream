@@ -397,7 +397,9 @@ class AppService {
     });
   }
 
-  Future<void> processUploadVideoFromGallery() async {
+  Future<void> processUploadVideoFromGallery({bool? fromReviewPage2}) async {
+    bool myfromReviewPage2 = fromReviewPage2 ?? false;
+
     try {
       var result = await ImagePicker().pickVideo(source: ImageSource.gallery);
       if (result != null) {
@@ -412,11 +414,15 @@ class AppService {
 
         File thumbnailFile = File(pathThumbnailFile.toString());
 
-        Get.offAll(CheckVideo(
+        Get.offAll(
+          CheckVideo(
             fileThumbnail: thumbnailFile,
             fileVideo: file,
             nameFileVideo: nameFileVideo,
-            nameFileImage: nameFileImage));
+            nameFileImage: nameFileImage,
+            fromReviewPage2: myfromReviewPage2,
+          ),
+        );
 
         //ส่วนของเดิม ที่ไม่มีการ Check Video
         // Get.offAll(DetailPost(
@@ -509,16 +515,23 @@ class AppService {
   }
 
   Future<void> findUrlImageVideo({required String uid}) async {
-    FirebaseFirestore.instance.collection('video').get().then((value) {
+    FirebaseFirestore.instance
+        .collection('video')
+        .where('uidPost', isEqualTo: uid)
+        .get()
+        .then((value) {
       if (appController.postVideoModels.isNotEmpty) {
         appController.postVideoModels.clear();
       }
 
+      int i = 0;
+
       for (var element in value.docs) {
-        VideoModel videoModel = VideoModel.fromMap(element.data());
-        if (uid == videoModel.uidPost) {
-          appController.postVideoModels.add(videoModel);
-        }
+        if (i < 100) {
+  VideoModel videoModel = VideoModel.fromMap(element.data());
+  appController.postVideoModels.add(videoModel);
+}
+        i++;
       }
     });
   }

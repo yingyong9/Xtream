@@ -43,6 +43,7 @@ class AppConstant {
     'ท่องเทียว/ทัวร์',
     'ที่พัก',
     'วีดีโอ',
+    'ภาพยนต์ และ ทีวี',
     'มูเตลู',
     'อื่นๆ',
   ];
@@ -52,6 +53,7 @@ class AppConstant {
     'Travel',
     'Hotel',
     'Vdo',
+    'MovieAndTV',
     'Mutelu',
     'Other',
   ];
