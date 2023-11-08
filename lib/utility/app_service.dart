@@ -515,16 +515,23 @@ class AppService {
   }
 
   Future<void> findUrlImageVideo({required String uid}) async {
-    FirebaseFirestore.instance.collection('video').get().then((value) {
+    FirebaseFirestore.instance
+        .collection('video')
+        .where('uidPost', isEqualTo: uid)
+        .get()
+        .then((value) {
       if (appController.postVideoModels.isNotEmpty) {
         appController.postVideoModels.clear();
       }
 
+      int i = 0;
+
       for (var element in value.docs) {
-        VideoModel videoModel = VideoModel.fromMap(element.data());
-        if (uid == videoModel.uidPost) {
-          appController.postVideoModels.add(videoModel);
-        }
+        if (i < 100) {
+  VideoModel videoModel = VideoModel.fromMap(element.data());
+  appController.postVideoModels.add(videoModel);
+}
+        i++;
       }
     });
   }

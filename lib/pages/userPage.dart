@@ -166,9 +166,11 @@ class _UserPageState extends State<UserPage> {
                     ),
                   ),
                 ),
-                appController.currentUserModels.isEmpty ? const SizedBox() : UserVideoTable(
-                  uid: appController.currentUserModels.last.uid,
-                ),
+                appController.currentUserModels.isEmpty
+                    ? const SizedBox()
+                    : UserVideoTable(
+                        userModel: appController.currentUserModels.last,
+                      ),
               ],
             ),
           ),

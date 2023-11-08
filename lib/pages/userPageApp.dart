@@ -162,7 +162,7 @@ class _UserPageAppState extends State<UserPageApp> {
                 appController.currentUserModels.isEmpty
                     ? const SizedBox()
                     : UserVideoTable(
-                        uid: appController.currentUserModels.last.uid,
+                        userModel: widget.userModel,
                       ),
               ],
             ),
@@ -201,7 +201,7 @@ class _UserPageAppState extends State<UserPageApp> {
                   child: Container(
                     width: 30,
                     height: 30,
-                    margin: EdgeInsets.all(16),
+                    margin: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.36),
                       borderRadius: BorderRadius.circular(15),
@@ -220,7 +220,9 @@ class _UserPageAppState extends State<UserPageApp> {
                 ),
               ),
             ),
-            const Positioned(top: 32,left: 16,
+            const Positioned(
+              top: 32,
+              left: 16,
               child: WidgetBackButton(),
             ),
           ],
