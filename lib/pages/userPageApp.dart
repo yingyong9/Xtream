@@ -9,11 +9,14 @@ import 'package:xstream/models/user_model.dart';
 import 'package:xstream/pages/edit_profile.dart';
 import 'package:xstream/pages/userDetailPage.dart';
 import 'package:xstream/style/style.dart';
+import 'package:xstream/utility/app_constant.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/views/topToolRow.dart';
 import 'package:xstream/views/user_video_table.dart';
 import 'package:xstream/views/widget_avatar.dart';
+import 'package:xstream/views/widget_back_button.dart';
 import 'package:xstream/views/widget_image_network.dart';
+import 'package:xstream/views/widget_text.dart';
 
 class UserPageApp extends StatefulWidget {
   final bool canPop;
@@ -56,7 +59,7 @@ class _UserPageAppState extends State<UserPageApp> {
         children: <Widget>[
           Tapped(
             child: const _UserRightButton(
-              // title: widget.isSelfPage ? 'แก้ไขโปรไฟร์' : 'เจ้าของวีดีโอ',
+              // title: true ? 'แก้ไขโปรไฟร์' : 'เจ้าของวีดีโอ',
               title: '',
             ),
             onTap: () {
@@ -99,7 +102,10 @@ class _UserPageAppState extends State<UserPageApp> {
           Container(height: 20),
           Stack(
             alignment: Alignment.bottomLeft,
-            children: <Widget>[likeButton, avatar],
+            children: <Widget>[
+              // likeButton,
+              avatar,
+            ],
           ),
           Container(
             color: ColorPlate.back1,
@@ -114,25 +120,15 @@ class _UserPageAppState extends State<UserPageApp> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            appController.currentUserModels.isEmpty
-                                ? ''
-                                : appController.currentUserModels.last.name,
-                            style: StandardTextStyle.big,
+                          WidgetText(
+                            data: widget.userModel.name,
+                            textStyle: AppConstant().bodyStyle(
+                                fontSize: 24, fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
                       Container(height: 8),
                       Container(height: 10),
-                      // const Row(
-                      //   children: <Widget>[
-                      //     _UserTag(tag: 'สินค้าของคุณ'),
-                      //     _UserTag(tag: 'เพิ่มเพื่อน'),
-                      //     _UserTag(tag: 'คำสั่งซื้อของคุณ'),
-                      //     // _UserTag(tag: '狮子座'),
-                      //   ],
-                      // ),
-                      // Container(height: 10),
                     ],
                   ),
                 ),
@@ -174,56 +170,61 @@ class _UserPageAppState extends State<UserPageApp> {
         ],
       );
     });
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          colors: <Color>[
-            ColorPlate.back1,
-            ColorPlate.back1,
-          ],
-        ),
-      ),
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: <Widget>[
-          Container(
-            margin: const EdgeInsets.only(top: 400),
-            height: double.infinity,
-            width: double.infinity,
-            color: ColorPlate.back1,
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            colors: <Color>[
+              ColorPlate.back1,
+              ColorPlate.back1,
+            ],
           ),
-          body,
-          Container(
-            margin: const EdgeInsets.only(top: 20),
-            height: 62,
-            child: TopToolRow(
-              canPop: widget.canPop,
-              onPop: widget.onPop,
-              right: Tapped(
-                child: Container(
-                  width: 30,
-                  height: 30,
-                  margin: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.36),
-                    borderRadius: BorderRadius.circular(15),
+        ),
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.only(top: 400),
+              height: double.infinity,
+              width: double.infinity,
+              color: ColorPlate.back1,
+            ),
+            body,
+            Container(
+              margin: const EdgeInsets.only(top: 20),
+              height: 62,
+              child: TopToolRow(
+                canPop: widget.canPop,
+                onPop: widget.onPop,
+                right: Tapped(
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    margin: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.36),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    alignment: Alignment.center,
+                    child: const Icon(
+                      Icons.more_horiz,
+                      size: 24,
+                    ),
                   ),
-                  alignment: Alignment.center,
-                  child: Icon(
-                    Icons.more_horiz,
-                    size: 24,
-                  ),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (ctx) => UserDetailPage(),
+                    ));
+                  },
                 ),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (ctx) => UserDetailPage(),
-                  ));
-                },
               ),
             ),
-          ),
-        ],
+            const Positioned(top: 32,left: 16,
+              child: WidgetBackButton(),
+            ),
+          ],
+        ),
       ),
     );
   }
