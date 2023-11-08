@@ -282,7 +282,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                               isScrollControlled: true,
                             );
                           } else {
-                            Get.to(UserPageApp(isSelfPage: false));
+                            Get.to(UserPageApp(userModel: userModel,));
 
                             //หน้าวีดีโอเดิม
                             // Get.to(UserDetailOwnerVideo(

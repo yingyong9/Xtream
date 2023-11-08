@@ -1,8 +1,11 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tapped/tapped.dart';
+
+import 'package:xstream/models/user_model.dart';
 import 'package:xstream/pages/edit_profile.dart';
 import 'package:xstream/pages/userDetailPage.dart';
 import 'package:xstream/style/style.dart';
@@ -13,17 +16,20 @@ import 'package:xstream/views/widget_image_network.dart';
 
 class UserPageApp extends StatefulWidget {
   final bool canPop;
-  final bool isSelfPage;
+  final bool? isSelfPage;
   final Function? onPop;
   final Function? onSwitch;
 
+  final UserModel userModel;
+
   const UserPageApp({
-    super.key,
+    Key? key,
     this.canPop = false,
+    this.isSelfPage,
     this.onPop,
-    required this.isSelfPage,
     this.onSwitch,
-  });
+    required this.userModel,
+  }) : super(key: key);
 
   @override
   _UserPageAppState createState() => _UserPageAppState();
@@ -166,9 +172,11 @@ class _UserPageAppState extends State<UserPageApp> {
                     ),
                   ),
                 ),
-                appController.currentUserModels.isEmpty ? const SizedBox() : UserVideoTable(
-                  uid: appController.currentUserModels.last.uid,
-                ),
+                appController.currentUserModels.isEmpty
+                    ? const SizedBox()
+                    : UserVideoTable(
+                        uid: appController.currentUserModels.last.uid,
+                      ),
               ],
             ),
           ),
