@@ -281,7 +281,7 @@ class _ReviewPage2State extends State<ReviewPage2> {
 
                       appController.specialMapReview.value = map;
 
-                      AppService().processUploadVideoFromGallery();
+                      AppService().processUploadVideoFromGallery(fromReviewPage2: true);
                     }
                   });
                 },

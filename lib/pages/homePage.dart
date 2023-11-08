@@ -18,6 +18,7 @@ import 'package:xstream/pages/show_map.dart';
 import 'package:xstream/pages/userDetailOwnerVideo.dart';
 import 'package:xstream/pages/userDetailPage.dart';
 import 'package:xstream/pages/userPage.dart';
+import 'package:xstream/pages/userPageApp.dart';
 import 'package:xstream/style/physics.dart';
 import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
@@ -281,12 +282,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                               isScrollControlled: true,
                             );
                           } else {
-                            // Get.to(UserPage(isSelfPage: false));
+                            Get.to(UserPageApp(isSelfPage: false));
 
                             //หน้าวีดีโอเดิม
-                            Get.to(UserDetailOwnerVideo(
-                              ownerVideoUserModel: userModel,
-                            ));
+                            // Get.to(UserDetailOwnerVideo(
+                            //   ownerVideoUserModel: userModel,
+                            // ));
                           }
                         },
                         onDisplayImageProduct: () {

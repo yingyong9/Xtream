@@ -397,7 +397,9 @@ class AppService {
     });
   }
 
-  Future<void> processUploadVideoFromGallery() async {
+  Future<void> processUploadVideoFromGallery({bool? fromReviewPage2}) async {
+    bool myfromReviewPage2 = fromReviewPage2 ?? false;
+
     try {
       var result = await ImagePicker().pickVideo(source: ImageSource.gallery);
       if (result != null) {
@@ -412,11 +414,15 @@ class AppService {
 
         File thumbnailFile = File(pathThumbnailFile.toString());
 
-        Get.offAll(CheckVideo(
+        Get.offAll(
+          CheckVideo(
             fileThumbnail: thumbnailFile,
             fileVideo: file,
             nameFileVideo: nameFileVideo,
-            nameFileImage: nameFileImage));
+            nameFileImage: nameFileImage,
+            fromReviewPage2: myfromReviewPage2,
+          ),
+        );
 
         //ส่วนของเดิม ที่ไม่มีการ Check Video
         // Get.offAll(DetailPost(

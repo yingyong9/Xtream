@@ -5,6 +5,7 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
+
 import 'package:xstream/pages/detail_post.dart';
 import 'package:xstream/pages/homePage.dart';
 import 'package:xstream/style/style.dart';
@@ -13,17 +14,19 @@ import 'package:xstream/views/widget_button.dart';
 
 class CheckVideo extends StatefulWidget {
   const CheckVideo({
-    Key? key,
+    super.key,
     required this.fileThumbnail,
     required this.fileVideo,
     required this.nameFileVideo,
     required this.nameFileImage,
-  }) : super(key: key);
+    this.fromReviewPage2,
+  });
 
   final File fileThumbnail;
   final File fileVideo;
   final String nameFileVideo;
   final String nameFileImage;
+  final bool? fromReviewPage2;
 
   @override
   State<CheckVideo> createState() => _CheckVideoState();
@@ -60,15 +63,6 @@ class _CheckVideoState extends State<CheckVideo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: ColorPlate.back1,
-      //   leading: WidgetBackButton(
-      //     pressFunc: () {
-      //       Get.offAll(const HomePage());
-      //     },
-      //   ),
-      //   elevation: 0,
-      // ),
       body: LayoutBuilder(builder: (context, BoxConstraints boxConstraints) {
         return Stack(
           children: [
@@ -82,7 +76,8 @@ class _CheckVideoState extends State<CheckVideo> {
             ),
             Positioned(
               top: 24,
-              child: WidgetBackButton(color: Colors.black,
+              child: WidgetBackButton(
+                color: Colors.black,
                 pressFunc: () {
                   Get.offAll(const HomePage());
                 },
@@ -100,11 +95,13 @@ class _CheckVideoState extends State<CheckVideo> {
             WidgetButton(
               label: 'ถัดไป',
               pressFunc: () {
-                 Get.offAll(DetailPost(
-            fileThumbnail: widget.fileThumbnail,
-            fileVideo: widget.fileVideo,
-            nameFileVideo: widget.nameFileVideo,
-            nameFileImage: widget.nameFileImage));
+                Get.offAll(DetailPost(
+                  fileThumbnail: widget.fileThumbnail,
+                  fileVideo: widget.fileVideo,
+                  nameFileVideo: widget.nameFileVideo,
+                  nameFileImage: widget.nameFileImage,
+                  fromeReviewPage2: widget.fromReviewPage2,
+                ));
               },
               color: ColorPlate.red,
             ),
