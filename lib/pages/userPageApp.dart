@@ -12,6 +12,7 @@ import 'package:xstream/style/style.dart';
 import 'package:xstream/utility/app_controller.dart';
 import 'package:xstream/views/topToolRow.dart';
 import 'package:xstream/views/user_video_table.dart';
+import 'package:xstream/views/widget_avatar.dart';
 import 'package:xstream/views/widget_image_network.dart';
 
 class UserPageApp extends StatefulWidget {
@@ -42,8 +43,7 @@ class _UserPageAppState extends State<UserPageApp> {
   void initState() {
     super.initState();
 
-    print(
-        '##7aug currentUserModel --> ${appController.currentUserModels.length}');
+    print('##8nov --> ${widget.userModel.toMap()}');
   }
 
   @override
@@ -66,39 +66,30 @@ class _UserPageAppState extends State<UserPageApp> {
         ],
       ),
     );
-    Widget avatar = Obx(() {
-      return appController.currentUserModels.isEmpty
-          ? const SizedBox()
-          : Container(
-              height: 120 + MediaQuery.of(context).padding.top,
-              // padding: EdgeInsets.only(left: 18),
-              alignment: Alignment.center,
-              child: OverflowBox(
-                // alignment: Alignment.bottomLeft,
-                minHeight: 20,
-                maxHeight: 300,
-                child: Container(
-                  height: 104,
-                  width: 104,
-                  margin: const EdgeInsets.only(bottom: 12),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(74),
-                    color: Colors.black,
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 1,
-                    ),
-                  ),
-                  child: ClipOval(
-                    child: WidgetImageNetwork(
-                      urlImage: appController.currentUserModels.last.urlAvatar,
-                      boxFit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
-            );
-    });
+    Widget avatar = Container(
+      height: 120 + MediaQuery.of(context).padding.top,
+      // padding: EdgeInsets.only(left: 18),
+      alignment: Alignment.center,
+      child: OverflowBox(
+        // alignment: Alignment.bottomLeft,
+        minHeight: 20,
+        maxHeight: 300,
+        child: Container(
+          height: 104,
+          width: 104,
+          margin: const EdgeInsets.only(bottom: 12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(74),
+            color: Colors.black,
+            border: Border.all(
+              color: Colors.white,
+              width: 1,
+            ),
+          ),
+          child: WidgetAvatar(urlImage: widget.userModel.urlAvatar),
+        ),
+      ),
+    );
     Widget body = Obx(() {
       return ListView(
         physics: const BouncingScrollPhysics(
